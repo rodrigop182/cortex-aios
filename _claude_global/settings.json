@@ -1,0 +1,111 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/guarda_seguranca.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/snapshot_memoria.py"
+          },
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/guardiao_escrita.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/registra_uso_memoria.py"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/retrieval_topico.py"
+          },
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/captura_regra.py"
+          },
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/captura_feedback.py"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/skills/handoff/scripts/detectar_handoff.py"
+          },
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/nudge_destilacao.py"
+          },
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/nudge_referencias.py"
+          },
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/guarda_tamanho_memoria.py"
+          },
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/sync_pull.py"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/precompact_flush.py"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/skills/fecha-sessao/scripts/registrar_sessao.py"
+          },
+          {
+            "type": "command",
+            "command": "python {{CAMINHO_CLAUDE}}/hooks/sync_push.py"
+          }
+        ]
+      }
+    ]
+  }
+}

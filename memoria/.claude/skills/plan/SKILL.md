@@ -1,0 +1,104 @@
+---
+name: plan
+description: Planeja uma tarefa ANTES de executar num plan.md curto (objetivo, porquê, critério de sucesso, como validar, arquivos tocados). Use quando o operador disser "planeja isso", "monta o plano", "antes de fazer, me mostra o plano", "/plan", "como você vai fazer X", ou quando a tarefa tiver mais de um passo. NÃO é o quadro visual (quadro-projeto) nem a pressão de plano (grill-me, que roda depois).
+---
+
+## O que esta skill faz
+
+Escreve o plano de uma tarefa num arquivo `plan.md` antes de executar, pra alinhar com o operador
+e dar à execução um alvo claro e um jeito de provar que terminou. É o "plan mode" do Claude Code
+sem precisar entrar no modo (que troca o fluxo todo): aqui é só um artefato de texto que a gente
+revisa e segue.
+
+Liga com a seção **"Planejar, delegar, verificar"** do CLAUDE.md. É a etapa "planejar". A
+validação ("verificar") fecha o ciclo no fim. A `grill-me` é opcional ENTRE planejar e executar,
+pra pressionar o plano antes de fechar.
+
+## Quando rodar
+
+- Tarefa com mais de um passo, ou que toca mais de um arquivo, ou que tem decisão de design.
+- O operador pediu o plano, ou pediu pra ver "como você vai fazer".
+- NÃO rodar pra tarefa de 1 linha (responder uma pergunta, um ajuste óbvio). Plano pra isso é
+  burocracia que custa token. Na dúvida, um plano curto é melhor que nenhum.
+
+## Onde mora o plan.md
+
+- Dentro do projeto/pasta da tarefa, na raiz: `plan.md`. Se a tarefa é de um cliente, vai na
+  pasta do cliente. Se é do AIOS, vai em `memoria/plan.md` (na raiz do seu CORTEX, a pasta que
+  você abre no VSCode).
+- Um `plan.md` por vez por contexto. Ao terminar uma tarefa, o plano cumprido pode ir pro
+  `archives/` ou virar uma entrada em `decisions/log.md` se houve decisão relevante.
+
+## O formato do plan.md
+
+Curto. Cabe numa tela. Sem encher linguiça. Template:
+
+```markdown
+# Plano: <título da tarefa>
+
+## Objetivo e porquê
+O que vamos construir e PRA QUE serve (o resultado pro operador / pro negócio).
+Sem o porquê, o plano fica frágil. Se o operador não deu, eu proponho minha leitura.
+
+## Como vai ficar pronto (critério de sucesso)
+O estado concreto que define "terminou". Mensurável de preferência.
+Ex: "página abre em localhost sem erro, hero correto no mobile, CTA em 1 linha".
+
+## Como eu valido (sem pedir o olho do operador ainda)
+O check objetivo que EU rodo antes de mostrar pra ele.
+Ex: "subo servidor local, abro headless, confiro screenshot do hero no mobile".
+
+## Passos
+1. ...
+2. ...
+(poucos, grandes o bastante pra não virar lista de tarefas de 1 minuto)
+
+## Arquivos que vou tocar
+- caminho/arquivo — o que muda
+(pontos de integração: o que pode quebrar em volta)
+
+## Riscos / como pode dar errado
+1-3 pontos. O que tentaria quebrar isso de propósito.
+```
+
+## Execução
+
+1. **Entender o pedido e o porquê.** Se o operador deu só o "como", proponho o "porquê" na minha
+   leitura e confirmo. Se algo do escopo está vago e muda o plano, pergunto agora (poucas
+   perguntas, com minha recomendação em cada). Se a tarefa pede pressão de verdade, ofereço rodar
+   a `grill-me` antes de fechar.
+2. **Escrever o `plan.md`** no formato acima. Curto. Honesto sobre risco.
+3. **Mostrar e esperar o OK.** O plano é pra alinhar, não pra eu aprovar sozinho. Mostro o
+   essencial (não preciso colar o arquivo inteiro se for grande) e espero o retorno do operador.
+   Se ele ajustar, edito o `plan.md`, não recomeço.
+4. **Executar contra o plano.** Sigo os passos. Se a realidade divergir do plano no meio,
+   atualizo o `plan.md` em vez de fingir que não mudou.
+5. **Validar e fechar.** Rodo o check que escrevi em "Como eu valido". Só depois de passar é que
+   chamo o olho do operador. Se houve decisão relevante, registro em `decisions/log.md`.
+
+## Anti-loop (regra importante)
+
+Algumas pessoas têm um loop destrutivo: iterar infinito até desistir. O `plan.md` é freio, não
+combustível. Então:
+
+- O plano serve pra DESTRAVAR a execução, não pra virar objeto de perfeição. Plano bom o bastante
+  e seguir > plano perfeito que nunca sai do papel.
+- Critério de "pronto" é o entregável final passar no check objetivo, não estar no ideal. A
+  bagunça do meio não importa se o último estado passa.
+- Teto de iteração padrão: 2 passes. Se em 2 passes o plano não fecha, é sinal de escopo mal
+  cortado. Reduza o escopo, não aumente as voltas.
+
+## Regras
+
+1. Padrões editoriais: no idioma do operador, sem em-dash, sem "não é X é Y", sem triplo retórico,
+   sem clichê de IA.
+2. Plano curto. Cabe numa tela. Custa token relido todo turno se inchar.
+3. Sempre tem "como eu valido" e "como pode dar errado". Plano sem critério de sucesso é vibe.
+4. Não recomeçar o plano a cada ajuste do operador: editar o `plan.md`.
+5. Não rodar pra tarefa trivial de 1 passo.
+
+## Aprendizados
+
+> (Atualizado quando esta skill erra e a gente corrige, ou acha um atalho. Convenção da casa.)
+
+- (nenhum ainda)

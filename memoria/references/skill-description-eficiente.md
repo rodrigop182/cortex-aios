@@ -1,0 +1,34 @@
+# Regras de compressão de description de skill
+
+Objetivo: cortar tokens da `description:` do frontmatter SEM perder poder de disparo. A description
+é injetada toda sessão (custa token sempre) e é o que faz a skill ACIONAR na hora certa. Comprimir
+errado (perder gatilho) é PIOR que não comprimir, porque a skill deixa de disparar.
+
+## PRESERVAR sempre (não cortar)
+1. **Os gatilhos de fala** — as frases entre aspas que o operador diz pra acionar ("baixa esse link",
+   "corta automático", "monta a aula"). São o coração do disparo. Pode ENXUGAR a lista (tirar
+   sinônimos quase idênticos), nunca esvaziá-la.
+2. **As exclusões "NÃO use pra X / isso é a skill Y"** — evitam disparo errado e colisão entre
+   skills irmãs. Manter, mas pode encurtar a frase.
+3. **O domínio/objeto** — o que a skill opera e o diferencial que a distingue de irmãs.
+
+## CORTAR (é gordura)
+1. **Explicação de como funciona por dentro** — detalhe de implementação, nome de biblioteca. Isso
+   é pro corpo do SKILL.md, não pra description.
+2. **Gatilhos redundantes** — "converte pra mp4", "converte pra mov", "converte pra webm" viram
+   "converte formato (mp4/mov/webm)". Mesma ideia repetida com outras palavras: funde.
+3. **Exemplos em excesso** — se há 6 exemplos do mesmo tipo de tarefa, 2-3 bastam pro modelo
+   generalizar.
+4. **Adjetivos de marketing** — vantagens óbvias repetidas em toda skill do mesmo tipo: dizer 1x
+   curto basta.
+5. **Repetição do nome da skill** dentro da própria description.
+
+## Forma
+- No idioma do operador, acentuação correta, sem em-dash (—). Usar vírgula, dois-pontos ou parêntese.
+- Frase corrida, densa. Pode usar barra (mp4/mov/webm) e parêntese pra agrupar.
+- Meta de tamanho: cortar 35-55% dos caracteres das gordas (>700 chars) sem perder gatilho. As já
+  curtas (<350) provavelmente não mexer.
+
+## Teste final de cada uma (a pergunta que decide)
+"Se o operador disser uma das frases-gatilho que ele REALMENTE usa, a versão compacta ainda dispara
+esta skill e não a irmã errada?" Se sim, aprovada. Se ficou ambígua com uma skill irmã, recuar.

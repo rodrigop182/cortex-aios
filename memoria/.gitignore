@@ -1,0 +1,43 @@
+# CORTEX — .gitignore da pasta memoria/ (o repo de SYNC entre dispositivos)
+# REGRA ESTRITA: segredo, senha, token e dado financeiro do usuário NUNCA sobem.
+# Ficam só no local. O hook sync_push.py tem uma segunda trava que aborta o push
+# se algo escapar. Defesa em camadas.
+
+# === Segredos (nunca versionar) ===
+.env
+*.env
+*.env.*
+*credential*
+*secret*
+*token*
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa*
+*password*
+*senha*
+.credentials.json
+mcp-needs-auth-cache.json
+
+# === Dado financeiro (nunca versionar) ===
+*financeiro*
+*faturamento*
+*extrato*
+*.ofx
+*.qif
+
+# === Estado efêmero de sessão (não vale sync) ===
+_sessions-pendentes.log
+_pendencias-abertas.md
+_sync-conflito.log
+
+# === Lixo de SO / editor ===
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+
+# NOTA: o PERFIL COMPACTO e as memórias curadas (MEMORY.md, context/, etc.) SOBEM
+# de propósito (é o ponto do sync). Só segredo e dado financeiro ficam de fora.
+# Se precisar guardar algo sensível na memória, envolva em <private>...</private>.

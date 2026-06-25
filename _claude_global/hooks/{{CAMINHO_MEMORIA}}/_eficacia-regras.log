@@ -1,0 +1,10 @@
+# _eficacia-regras.log — veredito de eficacia por regra (FASE 5, mecanismo 2).
+# Escrito pela DESTILACAO (skills fecha-sessao / aprender-do-dia / catch-up), que tem o contexto
+# da conversa pra ligar o feedback a uma regra especifica — um script nao consegue (o usuario diz
+# "agora sim", nao "a regra X funcionou"). Lido por poda_por_evidencia.py e pela skill /audit.
+#
+# Formato: AAAA-MM-DD HH:MM <TAB> slug.md <TAB> eficaz|reforcar <TAB> motivo curto
+#   eficaz   = a regra guiou o comportamento certo nesta sessao (PROTEGE da poda).
+#   reforcar = a regra existe mas FALHOU (o usuario corrigiu de novo o que ela ja mandava);
+#              sinaliza REESCREVER a redacao, nunca podar.
+# Linhas iniciadas por # sao ignoradas. NAO editar a mao no meio do trabalho (e backstage).

@@ -1,0 +1,8 @@
+skill-creator
+Copyright (c) Anthropic
+
+Esta skill é da Anthropic, licenciada sob a Apache License, Version 2.0 (ver LICENSE.txt
+nesta mesma pasta). O CORTEX OS a inclui sem modificação, preservando a licença e este
+aviso de atribuição, conforme exige a seção 4 da Apache 2.0.
+
+Para obter uma cópia da licença: http://www.apache.org/licenses/LICENSE-2.0

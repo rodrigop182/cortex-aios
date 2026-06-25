@@ -1,0 +1,48 @@
+# CORTEX OS — nunca versionar segredo nem dado pessoal do usuário
+
+# Segredos (REGRA ESTRITA: nunca entram no repo, ficam só no local)
+.env
+*.env
+*.env.*
+.credentials.json
+*credential*
+*secret*
+*token*
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa*
+*password*
+*senha*
+# Dado financeiro: nunca versionar
+*financeiro*
+*faturamento*
+*.ofx
+*.qif
+extrato*
+
+# Dados PESSOAIS preenchidos pelo usuário (o template vem com placeholders;
+# o que o /onboard escrever é privado de cada um e não deve voltar pro repo)
+memoria/context/sobre-mim.md
+memoria/context/sobre-operacao.md
+memoria/context/prioridades.md
+memoria/references/voz.md
+memoria/references/nicho-*.md
+memoria/decisions/log.md
+memoria/projects/*.md
+!memoria/projects/README.md
+memoria/archives/*
+!memoria/archives/README.md
+
+# Logs e estado de sessão
+*_sessions-pendentes.log
+*_pendencias-abertas.md
+handoff-session/handoff-*.md
+
+# Lixo de SO / editor
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+*.zip

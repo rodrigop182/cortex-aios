@@ -1,0 +1,3 @@
+# _regras-detectadas.log — detector de repeticao do captura_regra.py. Formato: HASH:palavras-chave
+# (uma linha por deteccao), serve so pra contar quantas vezes um pedido/regra ja apareceu.
+# Comeca vazio; nasce sozinho conforme voce conversa.

@@ -1,0 +1,41 @@
+=====================================================
+  CORTEX OS  -  COMECE POR AQUI  (leva 1 minuto)
+=====================================================
+
+Voce recebeu o CORTEX: um cerebro de IA que faz o seu Claude Code lembrar
+quem voce e e como voce trabalha, pra nao te reexplicar tudo a cada conversa.
+
+VOCE NAO PRECISA INSTALAR NA MAO. O seu proprio Claude Code instala pra voce.
+
+
+PASSO A PASSO
+-------------
+
+1. Deixe o arquivo CORTEX-OS.zip na sua pasta de DOWNLOADS.
+   (nao precisa abrir nem descompactar)
+
+2. Abra o Claude Code (no VSCode), em qualquer pasta.
+
+3. Copie e cole a mensagem abaixo no Claude Code, e mande:
+
+   ----------------------------------------------------------------
+   Instale o CORTEX OS pra mim. O arquivo CORTEX-OS.zip esta na minha
+   pasta de Downloads (se nao estiver, me pergunte onde esta).
+   Descompacte num lugar temporario, abra o INSTALAR-AGENTE.md de
+   dentro dele e siga a risca, com seguranca (faca backup antes de
+   sobrescrever qualquer coisa minha) e me guiando em portugues a
+   cada passo. No fim, me diga exatamente o que fazer pra comecar.
+   ----------------------------------------------------------------
+
+4. Aprove as permissoes que ele pedir. Ele copia tudo pros lugares
+   certos, ajusta o que precisa, e te diz o proximo passo
+   (abrir a pasta do CORTEX e rodar  /onboard ).
+
+
+E SE EU PREFERIR INSTALAR NA MAO?
+---------------------------------
+Veja o arquivo INSTALAR.md (tem o passo a passo manual).
+Se algo der errado, veja o TROUBLESHOOTING.md.
+
+
+Qualquer duvida, fale com quem te passou o CORTEX.

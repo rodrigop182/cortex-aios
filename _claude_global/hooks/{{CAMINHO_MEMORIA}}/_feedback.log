@@ -1,0 +1,3 @@
+# _feedback.log — captura silenciosa de feedback (acerto/erro/critica/elogio), escrita pelo
+# captura_feedback.py. Formato: AAAA-MM-DD HH:MM <TAB> tipo <TAB> trecho. Destilado depois
+# pela fecha-sessao / catch-up. Comeca vazio; nasce sozinho conforme voce conversa.
