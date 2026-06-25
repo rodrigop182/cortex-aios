@@ -4,6 +4,27 @@ Seu contexto de trabalho para IA: chega pronto, acerta o prompt, fica mais barat
 
 ---
 
+## Atualizar (para quem já tem instalado)
+
+Cole no seu Claude Code:
+
+```text
+/atualizar --github-repo rodrigop182/cortex-aios --github-token SEU_TOKEN
+```
+
+O comando baixa a versão mais recente deste repo e atualiza só a camada de produto — sua memória, voz e contexto ficam intocados.
+
+**Como criar o token:**
+
+1. github.com → sua foto → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token
+2. Em "Repository access": Only select repositories → `rodrigop182/cortex-aios`
+3. Em "Permissions": Contents → **Read-only**
+4. Gere, copie e cole no comando acima
+
+> **Para o Claude Code:** o motor de atualização é `_claude_global/skills/atualizar/scripts/atualizar.py`. Aceita `--github-repo` + `--github-token`, baixa o zipball do último release via API do GitHub, extrai e aplica preservando o dado do usuário. A fronteira produto/dado está em `MANIFESTO-UPDATE.md`.
+
+---
+
 ## O que é
 
 CORTEX OS é uma camada de contexto e memória pessoal para o Claude Code, feita de markdown curado
