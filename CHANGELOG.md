@@ -8,6 +8,29 @@ Antes de atualizar, leia a seção da versão pra qual você está indo.
 
 ---
 
+## [1.8.2] - 2026-06-26
+
+Compressão de contexto, léxico operacional e escrita Markdown orientada a agente.
+
+### Adicionado
+
+- `memoria/references/padrao-markdown-agentes.md`: padrão transversal de escrita `.md` para agente.
+- `memoria/references/lexico-operacional-cortex.md`: tradução entre fala leiga do operador e significado técnico.
+
+### Atualizado
+
+- `memoria/AGENTS.md` ficou mais curto e virou bootstrap real para Codex.
+- `memoria/references/criterio-roteamento-cortex.md` ganhou filtro de generalização para subir dor local quando o valor é sistêmico.
+- `memoria/references/fluxo-roteamento-aprendizado.md`, `principios-operacionais.md` e `ARQUITETURA.md` receberam cabeçalhos operacionais e ponteiros para o novo padrão de Markdown.
+- `CLAUDE.md` do template agora aponta explicitamente para o padrão de Markdown e para o léxico operacional.
+
+### Migração
+
+- De 1.8.1 para 1.8.2, o update preserva dados e substitui só a camada de produto.
+- Depois de atualizar, confira se `AGENTS.md` da pasta CORTEX viva ficou enxuto e se `references/padrao-markdown-agentes.md` e `references/lexico-operacional-cortex.md` existem.
+
+---
+
 ## [1.8.1] - 2026-06-26
 
 Melhorias de distribuição, instalação sem IA, configuração manual e suporte a Codex.

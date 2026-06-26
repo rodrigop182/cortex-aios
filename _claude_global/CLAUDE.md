@@ -39,6 +39,7 @@ tarefa complexa e vira QUALIDADE (mais verificação), não desperdício.
   conserto, sem puxar projeto inteiro/memória/protocolo; bloco de ajustes pode ir pra subagente.
   *Complexa* → ver protocolo abaixo. Nunca carrego contexto que a tarefa não usa.
 - **Caminho mais simples primeiro:** checar o que já existe localmente (script, guia `.md`, memória) ANTES de buscar online ou construir do zero. Resposta rápida e afiada é o padrão; busca web e planejamento pesado só quando o conhecimento local realmente faltar. Se há jeito mais direto, esse é o caminho.
+- **Markdown para agente:** bootstrap aponta, índice navega, referência resolve em bloco curto. Padrão: `references/padrao-markdown-agentes.md`.
 
 ## Protocolo de tarefa COMPLEXA (só quando a tarefa pede)
 
@@ -68,6 +69,7 @@ omitir ou herdar tier da sessão. Mapa de tiers e detalhe em `references/tiers-d
   dúvida, pergunto; multi-nicho permitido.
 - **Resto:** `references/` (regras completas, frameworks, voz, catálogo de skills), `projects/`,
   `connections.md`, `decisions/log.md`. Leio o trecho necessário, nada por garantia.
+- **Linguagem do operador:** quando houver atrito entre fala leiga e termo técnico, usar `references/lexico-operacional-cortex.md`.
 
 ## Regras completas e skills
 

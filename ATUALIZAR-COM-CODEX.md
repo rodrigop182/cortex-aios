@@ -36,9 +36,11 @@ Pasta Claude: [CAMINHO-DA-PASTA-.CLAUDE].
 Faça nesta ordem:
 1. Leia MANIFESTO-UPDATE.md da versão nova.
 2. Rode o atualizador em dry-run com --claude-dir e --cortex-dir.
-3. Resuma o que será escrito, removido e preservado.
-4. Só aplique se eu confirmar.
-5. Depois confira VERSION, context/, memory/ e projects/.
+3. Compare a versão nova com a antiga e explique TUDO que a antiga não tinha e a nova passa a ter.
+4. Resuma o que será escrito, removido e preservado.
+5. Mostre separadamente: (a) produto novo, (b) produto alterado, (c) dado preservado.
+6. Só aplique se eu confirmar.
+7. Depois confira VERSION, context/, memory/ e projects/.
 ```
 
 ## Comandos que o Codex deve usar
@@ -79,6 +81,52 @@ python3 "/caminho/do/CORTEX-novo/_claude_global/skills/atualizar/scripts/atualiz
 - `memory/MEMORY.md` preservado.
 - `projects/` preservado.
 - backup `_backup-update-*` criado.
+
+## O que o Codex deve EXPLICAR no dry-run
+
+Antes de aplicar, o Codex deve entregar um resumo em linguagem simples com estas três partes:
+
+### 1. O que o CORTEX antigo não tinha e agora passa a ter
+
+Listar capacidade por capacidade, não só arquivo por arquivo.
+
+Exemplo de formato:
+
+- **Léxico operacional:** o sistema agora traduz melhor fala leiga do operador para termo técnico e sabe quando subir um problema local para capacidade sistêmica.
+- **Padrão de Markdown para agente:** os `.md` agora têm critério explícito para gastar menos tokens e facilitar retrieval.
+- **Filtro de generalização:** pedidos que nascem locais passam a ser avaliados por valor sistêmico antes de virarem remendo nichado.
+- **Bootstrap mais enxuto no Codex:** `AGENTS.md` passa a carregar menos contexto e apontar mais para referências sob demanda.
+
+### 2. O que mudou no comportamento do sistema
+
+Explicar o efeito prático:
+
+- o que o agente vai entender melhor;
+- o que vai carregar menos;
+- o que vai ser encontrado mais rápido;
+- o que agora vira regra sistêmica em vez de ajuste local.
+
+### 3. O que NÃO muda
+
+Explicar explicitamente o que fica preservado:
+
+- contexto;
+- memória;
+- projetos;
+- decisões;
+- voz;
+- qualquer dado do usuário.
+
+## Regra de qualidade da explicação
+
+Não basta dizer "foram adicionados arquivos X e Y".
+
+O Codex deve explicar:
+
+- qual capacidade nova apareceu;
+- qual gap antigo ela fecha;
+- qual comportamento do sistema muda por causa disso;
+- quais arquivos do usuário continuam intocados.
 
 ## O que o Codex não deve fazer
 

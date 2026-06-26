@@ -1,67 +1,66 @@
 # AGENTS.md - CORTEX OS para Codex
 
-Você está na pasta CORTEX do usuário. Esta pasta guarda memória, regras, projetos e referências para
-um agente de IA operar com contexto.
+Bootstrap do Codex na pasta CORTEX instalada. Conteúdo pesado mora em `references/`, `projects/`, `context/` e `memory/`.
+
+## Regras de resposta
+
+- PT-BR, direto, ação primeiro.
+- Nunca inventar número, cliente, estatística, prova ou depoimento.
+- Faltou dado: usar `[PREENCHER: x]`.
+- Ler só os arquivos necessários.
+- Preservar dados do usuário, credenciais e qualquer trecho em `<private>...</private>`.
 
 ## Como trabalhar
 
-- Responda em PT-BR, direto e com ação primeiro.
-- Não invente número, cliente, depoimento, estatística ou prova. Se faltar dado, use
-  `[PREENCHER: ...]`.
-- Leia apenas os arquivos necessários para a tarefa.
-- Preserve dados do usuário: contexto, memória, projetos, decisões, credenciais e qualquer trecho
-  marcado com `<private>...</private>`.
-- Para projeto específico, procure primeiro uma ficha em `projects/`.
-- Para regras gerais, consulte `memory/MEMORY.md` e `references/` sob demanda.
+- Projeto específico: procurar primeiro a ficha em `projects/`.
+- Regra geral: consultar `references/` sob demanda.
+- Memória pessoal: usar `memory/MEMORY.md` como índice, não carregar tudo por garantia.
+- Arquivo quente: se releu 3+ vezes, criar ou usar `.cortex/SUMMARY.md` no projeto.
+
+## Padrões do sistema
+
+- Markdown para agente: `references/padrao-markdown-agentes.md`
+- Léxico operacional: `references/lexico-operacional-cortex.md`
+- Roteamento de regra vs. sistema: `references/criterio-roteamento-cortex.md`
+- Torneiras de token: `references/controle-torneiras-token.md`, quando existir
 
 ## Arquivos principais
 
-- `context/sobre-mim.md`: perfil do usuário.
-- `context/sobre-operacao.md`: como o trabalho funciona.
-- `context/prioridades.md`: foco dos próximos 90 dias.
-- `memory/MEMORY.md`: perfil compacto e índice de memórias.
-- `references/`: guias e regras.
-- `projects/`: projetos e clientes.
-- `decisions/log.md`: decisões importantes.
+- `context/`: perfil, operação e prioridades
+- `memory/MEMORY.md`: perfil compacto e índice
+- `references/`: guias, regras e critérios
+- `projects/`: clientes e projetos
+- `decisions/log.md`: decisões importantes
 
 ## Primeiro uso
 
-Se o perfil estiver vazio, ofereça uma das duas rotas:
+Se o perfil estiver vazio, oferecer:
+- `/onboard` no Claude Code, se existir
+- preenchimento manual pelo guia do pacote
 
-- rodar `/onboard` no Claude Code, se o usuário também usa Claude;
-- preencher manualmente os arquivos do guia `CONFIGURAR-SEM-IA.md` no pacote fonte.
+Se o contexto essencial estiver vazio, fazer só as perguntas mínimas antes de recomendar.
 
-Se o usuário pedir uma recomendação e os arquivos de contexto estiverem vazios, diga que falta
-configurar o perfil e faça só as perguntas essenciais.
+## Codex sem hooks
 
-## Codex não tem hooks do Claude Code
-
-No Codex, trate automações como rotina manual:
-
-- no fim de uma sessão importante, registre aprendizados em `decisions/log.md` ou `memory/MEMORY.md`;
-- quando uma correção se repetir, proponha virar regra em `references/` ou no projeto certo;
-- para atualização do produto, siga `ATUALIZAR-COM-CODEX.md` no pacote fonte;
-- para auditoria de saúde, use os checklists em `references/` e `CHECKLISTS/` quando disponíveis.
+No Codex, tratar automações como rotina manual:
+- registrar decisão importante em `decisions/log.md`
+- promover correção recorrente para regra ou referência
+- seguir o guia de atualização do pacote quando mexer no produto
 
 ## Segurança
 
-Nunca versionar ou mover para memória:
-
-- senha;
-- token;
-- chave de API;
-- webhook;
-- extrato;
-- saldo;
-- dado financeiro;
-- dado de cliente sem autorização.
-
-Se precisar de exemplo, peça dado fictício.
+Nunca versionar, memorizar ou expor:
+- senha
+- token
+- chave de API
+- webhook
+- dado financeiro
+- dado sensível de cliente sem autorização
 
 ## Critério de boa resposta
 
-- Usa o contexto local quando ele é relevante.
-- Não carrega pasta inteira por garantia.
-- Recomenda próximo passo concreto.
-- Explica risco quando a ação pode sobrescrever, apagar, publicar ou expor dado.
-- Deixa rastro mínimo quando a decisão precisa sobreviver à sessão.
+- usa o contexto local quando ele é relevante
+- não carrega pasta inteira por garantia
+- recomenda próximo passo concreto
+- explica risco quando a ação pode sobrescrever, apagar, publicar ou expor dado
+- deixa rastro mínimo quando a decisão precisa sobreviver à sessão

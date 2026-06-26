@@ -1,5 +1,10 @@
 # Fluxo de roteamento do aprendizado — onde cada coisa mora (padrão do CORTEX)
 
+Uso: sob demanda
+Escopo: sistema
+Gatilho: gravar aprendizado, memória, decisão, léxico ou referência nova
+Não usar para: executar tarefa do usuário ou substituir summary de projeto
+
 > Criado 22/06/2026 porque o roteamento estava na intuição e ficava inconsistente (hooks longos no
 > índice fino, memória às vezes em `memory/` às vezes em `references/` sem critério). Este doc é a
 > REGRA que eu e os subagentes seguimos pra todo aprendizado novo. Carrega sob demanda (não todo turno).
@@ -8,11 +13,11 @@
 
 | Lugar | O que mora | Carrega quando |
 |---|---|---|
-| `~/.claude/CLAUDE.md` (global) | O CÉREBRO: quem é o {{USUARIO}}go (curto), como trabalhar, PONTEIROS | TODO turno (fino de propósito) |
+| `~/.claude/CLAUDE.md` (global) | O CÉREBRO: quem é o operador (curto), como trabalhar, PONTEIROS | TODO turno (fino de propósito) |
 | `~/.claude/projects/c--Projetos/memory/` + `MEMORY.md` | AUTO-MEMÓRIA: regras de feedback, preferências, voz, estado. 1 fato por arquivo. `MEMORY.md` = índice | `MEMORY.md` TODO turno; os arquivos sob demanda |
 | `{{CAMINHO_MEMORIA}}\references/` | Conhecimento PESADO: guias de nicho, frameworks, doutrinas, este doc | sob demanda (link explícito) |
 | `{{CAMINHO_MEMORIA}}\decisions/log.md` | Decisões datadas + porquê (append-only, episódico) | sob demanda |
-| `{{CAMINHO_MEMORIA}}\context/` | Sobre o {{USUARIO}}go/operação/prioridades (pesado) | sob demanda |
+| `{{CAMINHO_MEMORIA}}\context/` | Sobre o operador, operação e prioridades (pesado) | sob demanda |
 | `{{CAMINHO_MEMORIA}}\projects/` | Ficha de cada cliente/projeto, isolada | sob demanda |
 | pasta do PROJETO (`clientes/x/`, `estudio/site/`) | STATUS.md do projeto (onde paramos) | quando abre o projeto |
 
@@ -32,6 +37,14 @@ Pergunte, nesta ordem:
    `memoria/references/` + 1 linha de ponteiro no lugar que o invoca (CLAUDE.md ou MEMORY.md).
 5. **É SOBRE UM PROJETO/CLIENTE específico?** → ficha em `memoria/projects/` ou CLAUDE.md do cliente.
 6. **É ESTADO de projeto (onde paramos)?** → STATUS.md na pasta do projeto (gerado automático).
+
+### Sub-regra para linguagem do operador
+
+Se o aprendizado for sobre como o operador nomeia superfícies, problemas, estados ou pedidos:
+
+- vai para `references/lexico-operacional-cortex.md` quando ajudar mais de uma frente, skill, agente ou superfície
+- vai para glossário local de skill quando for detalhe contextual daquela skill
+- vai para memória curta quando for preferência verbal sem valor sistêmico
 
 ## A LEI DO ÍNDICE FINO (a que eu violei e estou consertando)
 

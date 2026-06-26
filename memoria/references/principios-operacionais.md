@@ -1,5 +1,10 @@
 # Princípios operacionais — comportamentos nomeados do CORTEX
 
+Uso: sob demanda
+Escopo: sistema
+Gatilho: calibrar comportamento operacional, loop, auditoria e esforço
+Não usar para: regra local de projeto ou instrução detalhada de uma skill
+
 Índice de princípios que devem estar no sangue do sistema. Cada um tem nome curto, gatilho e regra de parada. Conteúdo pesado mora aqui; CLAUDE.md e MEMORY.md só apontam.
 
 ---

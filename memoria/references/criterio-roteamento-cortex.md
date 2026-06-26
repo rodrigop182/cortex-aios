@@ -1,11 +1,27 @@
-# Critério de roteamento: vivo do {{USUARIO}}go vs. CORTEX distribuível
+# Critério de roteamento: vivo do operador vs. CORTEX distribuível
+
+Uso: sob demanda
+Escopo: sistema
+Gatilho: decidir se regra, melhoria ou linguagem sobem para o CORTEX distribuível
+Não usar para: estado de projeto, memória episódica ou detalhe de cliente
 
 Toda regra, comportamento ou melhoria que entra no sistema precisa ser roteada antes de gravar.
-A pergunta-mãe: **isso serve só ao {{USUARIO}}go, ou serve a qualquer agente CORTEX?**
+A pergunta-mãe: **isso serve só ao operador, ou serve a qualquer agente CORTEX?**
+
+## Filtro de generalização: valor da mudança pesa mais que onde a dor apareceu
+
+Antes de classificar um pedido como local, passar por este filtro:
+
+1. Isso resolve só o caso narrado, ou reduz erro recorrente de qualquer agente?
+2. Isso melhora entendimento do operador em várias superfícies?
+3. Isso é linguagem natural reutilizável?
+4. Isso vale para o CORTEX distribuível sem dado pessoal?
+
+Se uma resposta for `sim`, o padrão é registrar primeiro no nível sistêmico.
 
 ---
 
-## Vai SÓ pro vivo do {{USUARIO}}go (`{{CAMINHO_CORTEX}}\` + `memory/`)
+## Vai SÓ pro vivo do operador (`{{CAMINHO_CORTEX}}\` + `memory/`)
 
 Critério: tem dado pessoal, depende do contexto dele, ou é preferência sua que não generaliza.
 
@@ -14,7 +30,7 @@ Critério: tem dado pessoal, depende do contexto dele, ou é preferência sua qu
 - Fluxo de trabalho particular: como ele lida com Leo, João, o estúdio
 - Voz/tom dele: minúsculas, sem acentos no coloquial, abreviações
 - Memória de projeto: estado de frentes ativas, decisões passadas, clientes
-- Regra que o {{USUARIO}}go cobrou explicitamente como "só pra mim"
+- Regra que o operador cobrou explicitamente como "só pra mim"
 
 → Grava em `memory/`, `CLAUDE.md` do projeto, ou ficha do cliente. Não toca o template.
 
@@ -26,7 +42,7 @@ Critério: **qualquer pessoa com um CORTEX se beneficiaria disso**, independente
 
 Perguntas de filtro (basta 1 ser "sim"):
 1. Um agente CORTEX de dev, escritor ou gestor usaria essa regra do mesmo jeito?
-2. Ela melhora a qualidade do raciocínio/entrega do agente, não só do {{USUARIO}}go?
+2. Ela melhora a qualidade do raciocínio/entrega do agente, não só do operador?
 3. Resolve um problema universal de AIOS (loop de aprendizado, elevação de resultado, root cause)?
 4. Seria uma das primeiras coisas que qualquer novo usuário precisaria saber?
 
@@ -46,12 +62,12 @@ Exemplos que passam no filtro:
 **Regra que nasceu num nicho mas generaliza:** porta pro template com linguagem genérica.
 Ex: "tá fraco + print = diagnóstico com léxico técnico" nasceu em CSS de landing, mas o método
 (nomear defeito com termo da área + descartar v1 + referência de elite) serve pra qualquer entregável.
-→ Template recebe o método genérico; o vivo do {{USUARIO}}go mantém a versão com detalhe de CSS/design.
+→ Template recebe o método genérico; o vivo do operador mantém a versão com detalhe de CSS/design.
 
-**Regra comportamental sobre o {{USUARIO}}go especificamente:** fica no vivo.
+**Regra comportamental sobre o operador especificamente:** fica no vivo.
 Ex: "ele é perfeccionista, empurrar com prazo + entregável" é sobre ELE, não sobre todo operador.
 
-**Dúvida real:** perguntar ao {{USUARIO}}go antes de portar. Não assumir universal.
+**Dúvida real:** perguntar ao operador antes de portar. Não assumir universal.
 
 ---
 

@@ -61,6 +61,7 @@ auto_sync espelha ~/.claude→memoria/dot-claude e faz push · registrar_sessao 
 - **Escopadas por pasta:** `memoria/.claude/skills/*` (ex: onboard, audit, plan, grill-me,
   level-up, ingerir, novo-cliente) — só carregam ao trabalhar sob `memoria/`.
 - Regra de description enxuta: `references/compressao-description-skill.md`.
+- Regra geral de `.md` orientado a agente: `references/padrao-markdown-agentes.md`.
 
 ---
 
