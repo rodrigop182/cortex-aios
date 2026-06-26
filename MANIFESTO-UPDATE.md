@@ -1,4 +1,4 @@
-# Manifesto de atualização — CORTEX OS
+# Manifesto de atualização - CORTEX OS
 
 Define a fronteira **PRODUTO** (atualizável pela skill `/atualizar`) vs **DADO DO USUÁRIO**
 (preservado, nunca tocado). O script `atualizar.py` lê este arquivo como fonte única da verdade.
@@ -12,9 +12,15 @@ Caminhos relativos à raiz do CORTEX instalado. Globs permitidos.
 
 ```
 VERSION
+AGENTS.md
 README.md
+MAPA-DO-PACOTE.md
 INSTALAR.md
 INSTALAR-AGENTE.md
+INSTALAR-SEM-IA.md
+CONFIGURAR-SEM-IA.md
+ATUALIZAR-SEM-IA.md
+ATUALIZAR-COM-CODEX.md
 COMECE-AQUI.txt
 SEGURANCA.md
 lite/MODO-LITE.md
@@ -22,6 +28,7 @@ lite/CLAUDE-LITE.md
 MANIFESTO-UPDATE.md
 CHANGELOG.md
 TROUBLESHOOTING.md
+vitrine/**
 instalar.ps1
 instalar.sh
 atualizar.ps1
@@ -32,11 +39,9 @@ _claude_global/settings.LEIA-ME.md
 _claude_global/hooks/**
 _claude_global/agents/**
 _claude_global/skills/**
-memoria/references/3ms-framework.md
 memoria/references/auto-melhoria-skills.md
 memoria/references/como-o-sistema-aprende.md
 memoria/references/grafo-de-skills.md
-memoria/references/karpathy-4-principios.md
 memoria/references/otimizacoes-processo.md
 memoria/references/principios-aios.md
 memoria/references/protocolo-execucao.md
@@ -47,6 +52,7 @@ memoria/references/ciclo-de-contexto.md
 memoria/references/skills-catalogo/**
 memoria/regras-base.md
 memoria/intake.md
+memoria/AGENTS.md
 memoria/README.md
 memoria/connections.md
 memoria/projects/README.md

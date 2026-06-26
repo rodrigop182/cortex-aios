@@ -17,7 +17,7 @@ Um hook do Claude Code roda um comando de shell — ele **não raciocina**. Ent�
 - **Hook `SessionEnd`** (configurado no settings.json) chama `scripts/registrar_sessao.py`, que
   só anexa uma linha em `memory/_sessions-pendentes.log`: data + caminho do transcript da sessão
   que acabou. É o rastro.
-- **Hook `PreCompact`** (o "Pre-Compaction Flush", padrão roubado do OpenClaw/Hermes) chama
+- **Hook `PreCompact`** chama
   `hooks/precompact_flush.py`, que anexa no MESMO log uma linha marcada
   `FLUSH-PRECOMPACT (auto|manual)`. Isso fecha a brecha do contexto que compacta NO MEIO de uma
   sessão longa (o SessionEnd só dispara ao fechar a janela; sem o flush, o aprendizado daquele

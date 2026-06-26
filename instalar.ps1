@@ -1,5 +1,5 @@
 # =============================================================================
-# CORTEX OS — instalador (Windows PowerShell)
+# CORTEX OS - instalador (Windows PowerShell)
 # Uso: .\instalar.ps1 [-Lite] [-Hooks] [-Destino "C:\caminho\da\memoria"]
 # =============================================================================
 

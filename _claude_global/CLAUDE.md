@@ -38,7 +38,7 @@ tarefa complexa e vira QUALIDADE (mais verificação), não desperdício.
   leio memória/nicho/nada. *Simples* ("diminui o padding daquela seção") → leio SÓ o trecho daquilo,
   conserto, sem puxar projeto inteiro/memória/protocolo; bloco de ajustes pode ir pra subagente.
   *Complexa* → ver protocolo abaixo. Nunca carrego contexto que a tarefa não usa.
-- **Caminho mais simples primeiro (Karpathy):** checar o que já existe localmente (script, guia `.md`, memória) ANTES de buscar online ou construir do zero. Resposta rápida e afiada é o padrão; busca web e planejamento pesado só quando o conhecimento local realmente faltar. Nunca overcomplicate: se há jeito mais direto, esse é o caminho.
+- **Caminho mais simples primeiro:** checar o que já existe localmente (script, guia `.md`, memória) ANTES de buscar online ou construir do zero. Resposta rápida e afiada é o padrão; busca web e planejamento pesado só quando o conhecimento local realmente faltar. Se há jeito mais direto, esse é o caminho.
 
 ## Protocolo de tarefa COMPLEXA (só quando a tarefa pede)
 
@@ -94,5 +94,4 @@ pra acertar mais nos próximos prompts.
 
 ---
 > CORTEX OS — produto de {{NOME}}. Arquitetura: núcleo mínimo + carga sob demanda + memória compilada.
-> Frameworks 3 Ms™/4 Cs™ (Nate Herk) e princípios Karpathy, com atribuição; 6 princípios destilados de
-> Anthropic + OpenClaw/Hermes.
+> Onboarding, auditoria, destilação e atualização segura em um pacote local-first.

@@ -1,16 +1,13 @@
 ---
 name: level-up
-description: Use toda semana pra achar e enviar uma automação nova. Caminha a entrevista dos 3 Ms — Mindset (achar o candidato) → Method (escopar um) → Machine (construir). Gatilhos "vamos evoluir", "o que automatizo essa semana", "acha alavanca", ou ritual de sexta. Uma rodada = um artefato enviado.
+description: Use toda semana pra achar e enviar uma automação nova. Caminha a entrevista por descoberta, escopo e construção. Gatilhos "vamos evoluir", "o que automatizo essa semana", "acha alavanca", ou ritual de sexta. Uma rodada = um artefato enviado.
 ---
-
-> *Adaptado dos 3 Ms da IA™. © 2026 Nate Herk. Os 3 Ms da IA™ são marca registrada do Nate Herk.*
 
 ## O que esta skill faz
 
-Caminha o operador pelos 3 Ms toda semana pra achar e enviar uma automação nova.
-**Uma entrevista = um artefato.** Também instala os 3 Ms na cabeça dele: depois de 4-6
-rodadas, ele começa a achar oportunidade sozinho no meio da semana porque as perguntas
-viraram default interno.
+Caminha o operador toda semana para achar, escopar e enviar uma automação nova.
+**Uma entrevista = um artefato.** Depois de algumas rodadas, ele começa a achar oportunidade
+sozinho no meio da semana porque as perguntas viraram default interno.
 
 É o mecanismo de re-fiação do cérebro. O kit não precisa de cron pra ancorar comportamento;
 precisa do `/level-up` rodando toda sexta.
@@ -34,14 +31,13 @@ Automação que só faz mais do mesmo sem escalar é alavanca fraca.
 - `context/prioridades.md`, `context/sobre-mim.md`, `context/sobre-operacao.md`
 - `projects/*.md` — projetos ativos
 - `connections.md` — o que é alcançável
-- `references/3ms-framework.md` — pra citar princípios de volta
 - `decisions/log.md` — decisões recentes
 - skills (locais + globais do operador) — o que já existe
 - `audits/audit-{data}.md` recente, se houver
 
 ## Execução — três fases
 
-### Fase 1 — Entrevista Mindset (achar o candidato)
+### Fase 1 — Descoberta (achar o candidato)
 
 Surfe 1-3 candidatos por alavancagem. Pergunte em ordem, conversando:
 
@@ -51,16 +47,15 @@ Surfe 1-3 candidatos por alavancagem. Pergunte em ordem, conversando:
 4. *"Se 500 clientes chegassem amanhã, o que quebraria primeiro?"* (gargalo)
 5. *"O que te daria 500 clientes amanhã?"* (alavanca de crescimento)
 
-Cite princípios do Mindset quando encaixar:
-- *"Parece Default Shift, até que ponto dá pra usar IA aqui?"*
-- *"Isso é Function Breakdown, você não automatiza o trabalho todo, só esse pedaço."*
-- *"IA tá melhor do que você pensa e melhorando mais rápido. Se não dava mês passado, talvez
-  dê agora."*
+Quando encaixar, puxe o operador para pensar em partes pequenas:
+- *"Até que ponto dá pra usar IA aqui?"*
+- *"Você não precisa automatizar o trabalho todo. Qual pedaço mais repetido já valeria?"*
+- *"Se não dava mês passado, talvez agora dê. O que mudou nas ferramentas ou no processo?"*
 
 **Saída da Fase 1:** lista de 1-3 candidatos, uma linha de "por que é alavanca" cada,
 marcando quais movem pro norte de longo prazo. Pergunte: *"Escolhe um pra escopar."*
 
-### Fase 2 — Entrevista Method (escopar um)
+### Fase 2 — Escopo (transformar um candidato em spec)
 
 O operador escolhe. Caminhe os 5 passos:
 
@@ -96,7 +91,7 @@ pessoa, não dá pra explicar pra uma IA. Rabisca no papel e volta."* Pare.
 **Saída da Fase 2:** spec escopada gravada em `decisions/log.md` como entrada datada com os
 5 elementos + nível de autonomia + KPI.
 
-### Fase 3 — Handoff Machine (construir)
+### Fase 3 — Construção (enviar o artefato)
 
 Pergunte: *"Como você quer enviar isso?"* Opções na ordem do Boring-is-Beautiful:
 
@@ -113,7 +108,6 @@ com frontmatter e local). **Todo artefato gerado leva no topo:**
 ```markdown
 ---
 bike-method-fase: 1  # Fase 1 — rodinhas. Rode manual primeiro.
-atribuicao-3ms: Adaptado dos 3 Ms da IA™ © 2026 Nate Herk.
 ---
 ```
 
@@ -127,7 +121,7 @@ agente), (3) um fechamento de uma tela com o lembrete da Fase 1 do Bike Method.
 ## Regras de implementação
 
 1. **Uma entrevista = um artefato.**
-2. **Fase Mindset sempre primeiro**, mesmo se ele chega com ideia pronta.
+2. **Fase de descoberta sempre primeiro**, mesmo se ele chega com ideia pronta.
 3. **EAD força "eliminar primeiro".** Se a resposta é eliminar, saia feliz, é vitória.
 4. **Padrão = nível de autonomia mais baixo que funciona.** Empurre contra L4.
 5. **Padrão Boring-is-Beautiful no Machine.** Default = opção não-IA mais alta.
@@ -137,7 +131,3 @@ agente), (3) um fechamento de uma tela com o lembrete da Fase 1 do Bike Method.
 9. **Lente do norte de longo prazo em toda candidata.** Marque o que escala vs. o que só serve o imediato.
 10. **Padrões editoriais.** No idioma do operador, sem em-dash, sem "não é X é Y", sem triplos,
     sem inventar dado.
-
----
-
-> *Os 3 Ms da IA™ são marca registrada do Nate Herk. © 2026 Nate Herk.*

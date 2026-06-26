@@ -3,9 +3,8 @@
 """
 nudge_destilacao.py — chamado pelo hook SessionStart do Claude Code.
 
-Fecha o loop de aprendizado sem depender do `claude` CLI headless. O padrão
-do Hermes era um nudge automático que dispara a destilação a cada N sessões;
-aqui, em vez de um subagente headless, o nudge vira CONTEXTO injetado no
+Fecha o loop de aprendizado sem depender do `claude` CLI headless. Em vez de
+um subagente headless, o nudge vira CONTEXTO injetado no
 início da sessão: se há sessões acumuladas na fila de pendentes, o Claude é
 avisado DE PRIMEIRA e sugere destilar.
 

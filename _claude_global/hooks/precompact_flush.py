@@ -3,8 +3,7 @@
 """
 precompact_flush.py — chamado pelo hook PreCompact do Claude Code.
 
-O "Pre-Compaction Flush" (padrão do OpenClaw/Hermes): quando o contexto
-vai ser compactado NO MEIO de uma sessão longa, o aprendizado daquele trecho
+Quando o contexto vai ser compactado NO MEIO de uma sessão longa, o aprendizado daquele trecho
 sumiria sem deixar rastro. O hook SessionEnd só dispara ao FECHAR a janela; a
 compactação acontece antes. Esta é a brecha que este flush fecha.
 

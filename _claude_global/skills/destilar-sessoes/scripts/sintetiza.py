@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-sintetiza.py — converte sessoes enxutas em artigos de conceito (padrao Karpathy).
+sintetiza.py — converte sessoes enxutas em artigos de conceito.
 
 Le os .txt de _catchup/enxutos/, agrupa em lotes, chama o Claude SDK
 pra extrair conhecimento por CONCEITO (nao por sessao), salva artigos em

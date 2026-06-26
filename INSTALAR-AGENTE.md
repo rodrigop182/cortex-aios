@@ -1,4 +1,4 @@
-# INSTALAR-AGENTE.md — roteiro de instalação do CORTEX OS
+# INSTALAR-AGENTE.md - roteiro de instalação do CORTEX OS
 
 > **Para o Claude Code (o agente).** Você está instalando o CORTEX OS no computador do seu
 > usuário, que provavelmente NÃO é programador. Siga estes passos À RISCA, em ordem, conversando
@@ -18,7 +18,7 @@ Este pacote (a pasta onde este arquivo está) tem duas partes:
 Objetivo final: o usuário abre UMA pasta no VSCode (a pasta CORTEX) e tem cérebro + skills
 funcionando, e roda `/onboard`.
 
-## Passo 0 — Detectar o ambiente
+## Passo 0 - Detectar o ambiente
 
 1. Descubra o sistema operacional (Windows / macOS / Linux).
 2. Defina os caminhos e mostre-os ao usuário:
@@ -28,34 +28,34 @@ funcionando, e roda `/onboard`.
    - **Pasta do pacote:** onde este `INSTALAR-AGENTE.md` está (você acabou de descompactar).
 3. Diga em uma linha o que vai fazer e avise que vai pedir permissão pra alguns comandos.
 
-## Passo 1 — Backup (rede de segurança, OBRIGATÓRIO)
+## Passo 1 - Backup (rede de segurança, OBRIGATÓRIO)
 
 Crie `~/.claude/_backup-cortex-<data-hora>/`. Se JÁ existirem, **copie** (não mova) pra lá, antes
 de tocar em qualquer coisa: `CLAUDE.md`, `settings.json`, e as pastas `skills/`, `agents/`,
-`hooks/`. Se o usuário não tinha nada disso, ótimo, siga. **Nunca pule este passo** — é o que
+`hooks/`. Se o usuário não tinha nada disso, ótimo, siga. **Nunca pule este passo**, é o que
 deixa tudo reversível.
 
-## Passo 2 — Cérebro global (CLAUDE.md)
+## Passo 2 - Cérebro global (CLAUDE.md)
 
 - **Modo:** instale sempre o FULL. Se o usuário disser que tem plano básico ou janela de contexto curta, veja `lite/MODO-LITE.md` para a alternativa.
 - Copie `_claude_global/CLAUDE.md` para `~/.claude/CLAUDE.md`.
   O antigo já está no backup do Passo 1.
 - **NÃO preencha os `{{...}}` agora.** O `/onboard` faz isso depois. Eles devem continuar
-  literais neste momento — é o sinal de "ainda não configurado".
+  literais neste momento, é o sinal de "ainda não configurado".
 
-## Passo 3 — Skills e agents globais
+## Passo 3 - Skills e agents globais
 
 - Copie todo o conteúdo de `_claude_global/skills/` para `~/.claude/skills/`. **Mescle:** não
   apague skills que o usuário já tenha; as que colidirem de nome já foram pro backup.
 - Copie `_claude_global/agents/` para `~/.claude/agents/` do mesmo jeito.
 - Pule arquivos dentro de `__pycache__` e com extensão `.pyc`.
 
-## Passo 4 — Memória na pasta de trabalho (FLAT) — o passo que mais quebra
+## Passo 4 - Memória na pasta de trabalho (FLAT), o passo que mais quebra
 
 Copie TODO o conteúdo de `memoria/` para a pasta CORTEX, **FLAT na raiz** (o conteúdo de
 `memoria/` vai direto em `C:\CORTEX`, e NÃO em `C:\CORTEX\memoria`).
 
-- ⚠️ **O erro clássico é esquecer os arquivos ocultos**, em especial `.claude/skills/` — sem
+- ⚠️ **O erro clássico é esquecer os arquivos ocultos**, em especial `.claude/skills/`. Sem
   eles, o `/onboard` e as outras skills do motor somem.
   - **Mac/Linux:** `cp -r memoria/. <CORTEX>/` (o `/.` no fim leva os ocultos).
   - **Windows:** `Copy-Item memoria\* -Destination <CORTEX> -Recurse -Force` PODE pular ocultos.
@@ -65,18 +65,18 @@ Copie TODO o conteúdo de `memoria/` para a pasta CORTEX, **FLAT na raiz** (o co
   `.claude/skills/` com `onboard`, `regras`, `como-funciona`, `audit`... Se não tiver, repita
   a cópia dos ocultos antes de seguir.
 
-## Passo 5 — Aviso "abra esta pasta"
+## Passo 5 - Aviso "abra esta pasta"
 
 Crie `<CORTEX>/_ABRA-ESTA-PASTA-NO-VSCODE.md` com um texto curto: que o usuário deve abrir SEMPRE
 essa pasta no VSCode, porque o Claude Code indexa memória e skills POR PASTA (abriu outra, o
 CORTEX não o reconhece).
 
-## Passo 6 — Hooks + settings.json (o loop automático)
+## Passo 6 - Hooks + settings.json (o loop automático)
 
-Os hooks fazem o aprendizado fechar sozinho. Eles precisam de caminhos reais — e é aqui que a
+Os hooks fazem o aprendizado fechar sozinho. Eles precisam de caminhos reais, e é aqui que a
 instalação manual costumava travar. Você resolve isso porque SABE os caminhos. Faça:
 
-1. Copie `_claude_global/hooks/*` para `~/.claude/hooks/` — **mas NÃO copie a pasta
+1. Copie `_claude_global/hooks/*` para `~/.claude/hooks/`, **mas NÃO copie a pasta
    `hooks/{{CAMINHO_MEMORIA}}/`** (são seeds de log que viajam junto; o lugar deles é a pasta de
    memória resolvida, não `~/.claude/hooks/`). Copie só os `.py`. Se já tiver copiado tudo, apague
    a pasta `~/.claude/hooks/{{CAMINHO_MEMORIA}}/` depois.
@@ -114,7 +114,7 @@ instalação manual costumava travar. Você resolve isso porque SABE os caminhos
    pendente, que o resto funciona, e que por enquanto ele roda `/fecha-sessao` à mão. Os hooks são
    um bônus, não um bloqueio.
 
-## Passo 7 — Verificar (antes de declarar pronto)
+## Passo 7 - Verificar (antes de declarar pronto)
 
 - `~/.claude/CLAUDE.md` existe e tem conteúdo. (Os `{{NOME}}` e cia. ainda literais: correto.)
 - `~/.claude/skills/` tem as skills globais; a pasta CORTEX tem `.claude/skills/` com o `/onboard`.
@@ -122,7 +122,7 @@ instalação manual costumava travar. Você resolve isso porque SABE os caminhos
   `{{CAMINHO_...}}` (fora do `CLAUDE.md`, onde é esperado), conserte antes de seguir.
 - Liste pro usuário, em 3-4 linhas, o que foi instalado e onde.
 
-## Passo 8 — Dizer ao usuário como começar (CRÍTICO)
+## Passo 8 - Dizer ao usuário como começar (CRÍTICO)
 
 As skills do CORTEX (`/onboard`, `/regras`...) moram NA PASTA CORTEX. Então, em ordem:
 

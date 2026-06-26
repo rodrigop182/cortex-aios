@@ -1,4 +1,4 @@
-# CORTEX OS — nunca versionar segredo nem dado pessoal do usuário
+# CORTEX OS - nunca versionar segredo nem dado pessoal do usuário
 
 # Segredos (REGRA ESTRITA: nunca entram no repo, ficam só no local)
 .env

@@ -540,6 +540,8 @@ def main():
             if args.cortex_dir:
                 _deploy_e_relatar(novo / "memoria", Path(args.cortex_dir).resolve(),
                                   ".claude", "pasta CORTEX (skills do motor)", True, v_inst)
+                _deploy_e_relatar(novo / "memoria", Path(args.cortex_dir).resolve(),
+                                  "AGENTS.md", "pasta CORTEX (Codex)", True, v_inst)
         print("\nRode sem --dry-run (com --yes) pra aplicar.")
         return 0
 
@@ -602,6 +604,8 @@ def main():
         if args.cortex_dir:
             _deploy_e_relatar(novo / "memoria", Path(args.cortex_dir).resolve(),
                               ".claude", "pasta CORTEX (skills do motor)", False, v_inst)
+            _deploy_e_relatar(novo / "memoria", Path(args.cortex_dir).resolve(),
+                              "AGENTS.md", "pasta CORTEX (Codex)", False, v_inst)
         print("\nDeploy concluido. Se houver AJUSTE MANUAL acima, resolva os placeholders "
               "marcados (o agente do /atualizar faz isso) e de /clear pra recarregar.")
 

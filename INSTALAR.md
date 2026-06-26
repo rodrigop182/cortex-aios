@@ -1,10 +1,16 @@
-# CORTEX OS — instalação
+# CORTEX OS - instalação
 
 Seu cérebro de IA pessoal. Lembra quem você é, como você trabalha, e aprende a cada sessão pra
 não te reexplicar nada duas vezes. Roda no Claude Code (e adaptável a outros agentes de CLI).
 
-Tem dois caminhos: o **fácil** (o próprio Claude Code instala pra você) e o **manual** (você
-copia os arquivos à mão). Recomendamos o fácil.
+Tem três caminhos:
+
+- **guiado pelo agente:** o próprio Claude Code instala pra você;
+- **sem IA:** você roda `instalar.ps1` ou `instalar.sh`;
+- **manual de emergência:** você copia os arquivos à mão.
+
+Para a rota sem IA, veja [INSTALAR-SEM-IA.md](INSTALAR-SEM-IA.md). Para preencher o perfil sem
+rodar `/onboard`, veja [CONFIGURAR-SEM-IA.md](CONFIGURAR-SEM-IA.md).
 
 ---
 
@@ -32,7 +38,7 @@ manual**, caso você prefira fazer à mão ou o caminho fácil não rolar.
 
 ---
 
-## 0. Pré-requisito (instalação manual)
+## 0. Pré-requisito
 
 - **Claude Code** instalado (ou outro agente que leia `~/.claude/CLAUDE.md` e skills em
   `SKILL.md`). Python 3 pra os hooks (opcional, mas recomendado: é o que fecha o loop de
@@ -42,15 +48,30 @@ manual**, caso você prefira fazer à mão ou o caminho fácil não rolar.
   memória e as skills te seguirem: o Claude Code indexa as duas **por pasta**. Abriu outra pasta,
   o CORTEX não te conhece e as skills somem.
 
+## 0.1. Rota sem IA por instalador
+
+Essa é a rota recomendada para quem quer instalar sozinho:
+
+- Windows: extraia o zip e rode `.\instalar.ps1` no PowerShell.
+- Mac/Linux/Git Bash: extraia o zip e rode `bash instalar.sh`.
+
+O instalador copia a memória para a pasta CORTEX, instala o cérebro global, cria backup antes de
+sobrescrever e deixa um aviso na pasta que você deve abrir no VSCode.
+
+Na primeira instalação, rode sem hooks. Os hooks são avançados e podem ser ativados depois com
+`-Hooks` ou `--hooks`.
+
+Guia completo: [INSTALAR-SEM-IA.md](INSTALAR-SEM-IA.md).
+
 ## 1. Copie os arquivos pros lugares certos
 
 O pacote tem duas partes: o **global** (vai pro seu `~/.claude/`) e a **memória** (vai FLAT pra
-sua pasta CORTEX — a que você abre sempre). Recomendado usar o instalador (`instalar.sh` /
+sua pasta CORTEX, a que você abre sempre). Recomendado usar o instalador (`instalar.sh` /
 `instalar.ps1`), que faz tudo isto e ainda cria o aviso `_ABRA-ESTA-PASTA-NO-VSCODE.md`. Manual:
 
 ```bash
 # 1a. A memória + as skills do motor vão FLAT pra sua pasta CORTEX (a que você abre sempre).
-#     O "/." no fim leva também os ocultos (.claude/skills) — sem ele, as skills ficam de fora:
+#     O "/." no fim leva também os ocultos (.claude/skills). Sem ele, as skills ficam de fora:
 cp -r memoria/.   ~/CORTEX/
 
 # 1b. O cérebro global (modo FULL):
@@ -60,7 +81,7 @@ cp _claude_global/CLAUDE.md   ~/.claude/CLAUDE.md
 cp -r _claude_global/skills/*   ~/.claude/skills/
 cp -r _claude_global/agents/*   ~/.claude/agents/
 
-# 1d. Hooks (o loop que fecha sozinho) — opcional mas recomendado:
+# 1d. Hooks, o loop que fecha sozinho, opcional mas recomendado:
 cp -r _claude_global/hooks/*   ~/.claude/hooks/
 ```
 
@@ -96,7 +117,7 @@ marcando o lugar exato):
 - `hooks/poda_por_evidencia.py`
 - `skills/fecha-sessao/scripts/registrar_sessao.py`
 
-(`sync_push.py` e `sync_pull.py` NÃO entram aqui — eles usam `{{REPO_SYNC}}`, não
+(`sync_push.py` e `sync_pull.py` NÃO entram aqui: eles usam `{{REPO_SYNC}}`, não
 `{{CAMINHO_MEMORIA}}`; veja a seção `{{REPO_SYNC}}` abaixo.)
 
 Sem isso, o loop de aprendizado (captura de regra na hora, fila de sessões, monitoramento de
@@ -145,12 +166,13 @@ porque você abre o editor sempre na mesma pasta CORTEX.
 >
 > Se ainda listar algum arquivo, ajuste antes do `/onboard`, senão o hook falha em silêncio.
 > Se o instalador encontrou skills/hooks seus com o mesmo nome, ele guardou os originais em
-> `~/.claude/_backup-cortex-<data>/` antes de sobrescrever — confira lá se algo seu sumiu.
+> `~/.claude/_backup-cortex-<data>/` antes de sobrescrever. Confira lá se algo seu sumiu.
 
 ## 3. Rode o onboarding
 
-Abra o VSCode **SEMPRE na sua pasta do CORTEX** (ex: `C:\CORTEX` no Windows, `~/cortex` no Mac/Linux — use o nome que você escolheu na instalação) —
-é a pasta-cérebro, tem o aviso `_ABRA-ESTA-PASTA-NO-VSCODE.md` dentro. Com o Claude Code aberto
+Abra o VSCode **SEMPRE na sua pasta do CORTEX** (ex: `C:\CORTEX` no Windows, `~/cortex` no Mac/Linux,
+use o nome que você escolheu na instalação). É a pasta-cérebro, tem o aviso
+`_ABRA-ESTA-PASTA-NO-VSCODE.md` dentro. Com o Claude Code aberto
 nela, diga:
 
 ```
@@ -168,19 +190,22 @@ Se ele responder te conhecendo, está funcionando.
 
 ## 4. Primeiros passos
 
-- `/como-funciona` — a visão geral do sistema, a qualquer momento.
-- `/regras` — veja e ajuste as regras que ele segue. Desligue o que não te servir.
-- `/audit` — daqui a uns dias, tire a nota do seu setup.
-- `/level-up` — toda semana, ache 1 tarefa pra automatizar.
+- `/como-funciona`: a visão geral do sistema, a qualquer momento.
+- `/regras`: veja e ajuste as regras que ele segue. Desligue o que não te servir.
+- `/audit`: daqui a uns dias, tire a nota do seu setup.
+- `/level-up`: toda semana, ache 1 tarefa pra automatizar.
 
 ---
 
 ## O que tem dentro
 
+Para uma visão de produto, instalação, update e dado do usuário, veja também
+[MAPA-DO-PACOTE.md](MAPA-DO-PACOTE.md).
+
 ```
 CORTEX OS/
 ├── INSTALAR.md            (este arquivo)
-├── lite/                  (modo LITE — cérebro mínimo pra plano básico)
+├── lite/                  (modo LITE, cérebro mínimo pra plano básico)
 ├── _claude_global/        (vai pro ~/.claude)
 │   ├── CLAUDE.md          (cérebro FULL)
 │   ├── settings.json      (hooks; veja settings.LEIA-ME.md)
@@ -192,13 +217,13 @@ CORTEX OS/
 │                           captura_regra, captura_feedback,
 │                           registra_uso_memoria, poda_por_evidencia,
 │                           precompact_flush, sync_push, sync_pull)
-└── memoria/               (conteúdo vai FLAT pra C:\CORTEX — a pasta que você abre sempre)
+└── memoria/               (conteúdo vai FLAT pra C:\CORTEX, a pasta que você abre sempre)
     ├── _ABRA-ESTA-PASTA-NO-VSCODE.md  (o aviso na raiz)
     ├── README.md          (como a memória funciona)
     ├── intake.md          (as 7 perguntas)
     ├── regras-base.md     (referência das regras)
     ├── connections.md     (o que o sistema alcança)
-    ├── context/           (sobre você — /onboard preenche)
+    ├── context/           (sobre você, /onboard preenche)
     ├── references/        (frameworks, voz, nichos, doutrinas)
     ├── projects/          (clientes/projetos isolados)
     ├── decisions/log.md   (decisões e porquês)
@@ -208,13 +233,13 @@ CORTEX OS/
 
 ## As skills primordiais (o que faz o CORTEX andar sozinho)
 
-- **skill-creator** (oficial Anthropic) — ensina o CORTEX a criar skills novas. É o que mantém
+- **skill-creator** (oficial Anthropic): ensina o CORTEX a criar skills novas. É o que mantém
   o sistema crescendo com você.
-- **onboard / como-funciona / regras** — se configura, se explica, se governa.
-- **audit / level-up** — se avalia e se evolui (1 automação por semana).
-- **fecha-sessao + hooks** — o loop de aprendizado que fecha sozinho: destila o dia em regras
+- **onboard / como-funciona / regras**: se configura, se explica, se governa.
+- **audit / level-up**: se avalia e se evolui (1 automação por semana).
+- **fecha-sessao + hooks**: o loop de aprendizado que fecha sozinho, destila o dia em regras
   sem você pedir.
-- **plan / grill-me / handoff** — planejar, pressionar, dar continuidade.
+- **plan / grill-me / handoff**: planejar, pressionar, dar continuidade.
 
 ## Rodando em outra IA (Gemini, GLM, Cursor, modelo local)
 
@@ -236,6 +261,5 @@ Claude Code é a automação por hooks. Em outra plataforma, você roda o mesmo 
 
 ---
 > CORTEX OS. Arquitetura: cérebro fino + memória em dois níveis + loop de aprendizado que fecha
-> sozinho. Frameworks 3 Ms™/4 Cs™ (Nate Herk) e princípios de execução (Karpathy), com
-> atribuição. Onboarding inspirado no estado da arte (OpenClaw + Hermes Agent). skill-creator é
-> da Anthropic (licença incluída).
+> sozinho. Onboarding, auditoria, destilação e atualização segura em um pacote local-first.
+> skill-creator é da Anthropic (licença incluída).

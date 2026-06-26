@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# CORTEX OS — instalador (Mac/Linux/Git-Bash)
+# CORTEX OS - instalador (Mac/Linux/Git-Bash)
 # Uso: bash instalar.sh [--lite] [--hooks] [--destino /caminho/da/memoria]
 # =============================================================================
 
@@ -122,7 +122,7 @@ CORTEX_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # -----------------------------------------------------------------------------
 echo ""
 echo "============================================"
-echo " CORTEX OS — instalação"
+echo " CORTEX OS - instalação"
 echo "============================================"
 echo " Modo     : $MODO"
 echo -e " Pasta    : $PASTA_MEMORIA  ${AMARELO}(abra SEMPRE esta pasta no VSCode)${RESET}"

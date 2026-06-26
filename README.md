@@ -1,6 +1,18 @@
 # CORTEX OS
 
-Seu contexto de trabalho para IA: chega pronto, acerta o prompt, fica mais barato a cada dia.
+Seu sistema operacional de contexto para IA agentica: memória estruturada, método de execução,
+destilação de sessões e atualização segura em cima do agente que você já usa.
+
+Comece pela experiência curta:
+
+- [vitrine/index.html](vitrine/index.html): abra a vitrine estática do produto.
+- [DEMO-5-MIN.md](DEMO-5-MIN.md): veja o CORTEX deixando de responder genérico e passando a operar com contexto.
+- [ADAPTADORES.md](ADAPTADORES.md): entenda o que funciona em Claude Code, Codex, Cursor, Cline, Windsurf e similares.
+- [INSTALAR-SEM-IA.md](INSTALAR-SEM-IA.md): instale sozinho, sem pedir para um agente mexer por você.
+- [CONFIGURAR-SEM-IA.md](CONFIGURAR-SEM-IA.md): preencha o perfil manualmente, se não quiser rodar `/onboard`.
+- [ATUALIZAR-SEM-IA.md](ATUALIZAR-SEM-IA.md): atualize sem agente, sempre com dry-run.
+- [ATUALIZAR-COM-CODEX.md](ATUALIZAR-COM-CODEX.md): use Codex para atualizar preservando seus dados.
+- [MAPA-DO-PACOTE.md](MAPA-DO-PACOTE.md): veja o papel de cada pasta antes de instalar ou reorganizar.
 
 ---
 
@@ -12,7 +24,10 @@ Cole no seu Claude Code:
 /atualizar --github-repo rodrigop182/cortex-aios --github-token SEU_TOKEN
 ```
 
-O comando baixa a versão mais recente deste repo e atualiza só a camada de produto — sua memória, voz e contexto ficam intocados.
+O comando baixa a versão mais recente deste repo e atualiza só a camada de produto. Sua memória, voz e contexto ficam intocados.
+
+Sem Claude Code, use [ATUALIZAR-SEM-IA.md](ATUALIZAR-SEM-IA.md). Com Codex, use
+[ATUALIZAR-COM-CODEX.md](ATUALIZAR-COM-CODEX.md).
 
 **Como criar o token:**
 
@@ -27,9 +42,9 @@ O comando baixa a versão mais recente deste repo e atualiza só a camada de pro
 
 ## O que é
 
-CORTEX OS é uma camada de contexto e memória pessoal para o Claude Code, feita de markdown curado
-que você controla. Ele diz pra IA quem você é, como você trabalha, qual é a sua voz, seu nicho e
-as regras que ela deve seguir, antes de qualquer tarefa.
+CORTEX OS é uma camada de contexto e memória pessoal para agentes de IA que trabalham dentro de
+terminal, VSCode, IDE ou desktop app com acesso a arquivos. Ele diz pra IA quem você é, como você
+trabalha, qual é a sua voz, seu nicho e as regras que ela deve seguir, antes de qualquer tarefa.
 
 O resultado prático é "one prompt one shot": a IA já chega contextualizada, não precisa ser
 reexplicada a cada conversa, e acerta a tarefa de primeira com mais frequência.
@@ -39,13 +54,14 @@ reexplicada a cada conversa, e acerta a tarefa de primeira com mais frequência.
 - Carrega seu perfil, regras e governança em todo turno (cérebro fino, lido sempre)
 - Guarda o detalhe em arquivos separados, lidos só quando a tarefa pede
 - Destila cada sessão em regras persistentes, pra não repetir o mesmo ajuste duas vezes
+- Mede tendência de 1-shot quando a métrica está ativa
 - Entrevista você no onboarding pra preencher o contexto com dados reais, não placeholders
 
-### O que o CORTEX não é
+### Limites do CORTEX
 
-- Não é vector database nem busca semântica
-- Não é chatbot, não tem interface própria
-- Não é memória automática bruta de histórico técnico de sessões
+- Vector database e busca semântica ficam fora do escopo
+- Chatbot com interface própria fica fora do escopo
+- Histórico técnico bruto de sessões fica fora do escopo
 - O CORTEX em si é markdown local, sem servidor nem telemetria próprios. (O Claude Code, que ele
   roda em cima, envia o que você digita à Anthropic pra funcionar. Detalhe em PRIVACIDADE.md.)
 
@@ -57,7 +73,7 @@ A IA esquece quem você é a cada conversa.
 
 Você abre uma sessão nova, reexplica o tom de voz, o nicho, o cliente, as preferências de
 formatação. A resposta vem genérica. Você ajusta. Ela erra de novo na próxima sessão. O custo
-disso não é só tempo: é o token gasto no contexto que deveria ser zero.
+disso aparece em tempo e em token gasto no contexto que deveria ser zero.
 
 O CORTEX resolve isso tornando seu contexto um arquivo instalável. Uma vez configurado, ele
 carrega automaticamente junto com o Claude Code. A IA sabe seu nome, como você gosta de trabalhar,
@@ -91,6 +107,12 @@ mais preciso e a IA precisa de menos tentativas pra acertar.
 
 ## Instalação
 
+Você pode instalar de três formas:
+
+- com o próprio agente, seguindo [INSTALAR-AGENTE.md](INSTALAR-AGENTE.md);
+- sem IA, seguindo [INSTALAR-SEM-IA.md](INSTALAR-SEM-IA.md);
+- manualmente, seguindo [INSTALAR.md](INSTALAR.md).
+
 ### Mac/Linux/Git-Bash
 
 ```bash
@@ -114,7 +136,7 @@ cd cortex-os
 ```
 
 Depois de instalar, abra o VSCode **SEMPRE na pasta CORTEX** (`C:\CORTEX` no Windows, `~/CORTEX`
-no Mac/Linux) — abrir sempre a mesma pasta é o que faz a memória e as skills te seguirem. Com o
+no Mac/Linux). Abrir sempre a mesma pasta é o que faz a memória e as skills te seguirem. Com o
 Claude Code aberto nela, rode:
 
 ```text
@@ -128,6 +150,11 @@ no que eu devo focar essa semana?
 ```
 
 Se a resposta vier te conhecendo, o sistema está funcionando.
+
+Se você não quiser usar `/onboard`, preencha os arquivos de contexto pelo guia
+[CONFIGURAR-SEM-IA.md](CONFIGURAR-SEM-IA.md).
+
+Para usar no Codex, abra a pasta CORTEX instalada. Ela traz `AGENTS.md` na raiz depois da instalação.
 
 Para detalhes completos de instalação (estrutura de pastas, ajuste de hooks, ajuste de caminhos),
 veja [INSTALAR.md](INSTALAR.md). Travou em algo? [TROUBLESHOOTING.md](TROUBLESHOOTING.md). O que
@@ -160,7 +187,7 @@ O "local-first" é do CORTEX, não da stack inteira. Ver
 Pontos principais:
 
 - **Local-first:** tudo em arquivos que você abre e le. Nao ha caixa-preta.
-- **Tag `<private>`:** qualquer trecho marcado assim não é destilado nem versionado.
+- **Tag `<private>`:** qualquer trecho marcado assim fica fora da destilação e do versionamento.
 - **Reversível:** qualquer regra ou memória, você desliga ou apaga via `/regras` ou editando o
   arquivo diretamente.
 - **Hook de segurança:** o `guarda_seguranca.py` (instalado com `--hooks`) bloqueia comandos
@@ -174,7 +201,7 @@ mundo recebe.
 
 Detalhes em [SEGURANCA.md](SEGURANCA.md).
 
-Existe um modo LITE (cérebro mínimo pra plano básico) na pasta `lite/` — veja `lite/MODO-LITE.md`.
+Existe um modo LITE (cérebro mínimo pra plano básico) na pasta `lite/`; veja `lite/MODO-LITE.md`.
 
 ---
 
@@ -194,21 +221,10 @@ Partes com licenças próprias (ver [NOTICE.md](NOTICE.md) pra atribuições com
 
 ## Disclaimer
 
-- **Não afiliado à Anthropic.** O CORTEX OS é um projeto independente, não é afiliado,
+- **Sem afiliação à Anthropic.** O CORTEX OS é um projeto independente, sem afiliação,
   patrocinado nem endossado pela Anthropic. "Claude" e "Claude Code" são marcas da Anthropic.
-- **Frameworks de terceiros** (3 Ms/4 Cs de Nate Herk, princípios de Karpathy) pertencem a seus
-  autores; ver [NOTICE.md](NOTICE.md).
 - **Fornecido "como está", sem garantia.** Use por sua conta e risco (ver [LICENSE](LICENSE)).
-- **Não é conselho profissional.** O CORTEX aconselha sobre trabalho, mas não substitui conselho
+- **Sem conselho profissional.** O CORTEX aconselha sobre trabalho, mas não substitui conselho
   financeiro, contábil, jurídico ou fiscal de um profissional.
 - **Saída gerada por IA pode errar.** A IA pode inventar fato, número ou citação. Confira antes
   de publicar, enviar a cliente ou tomar decisão com base nela.
-
----
-
-## Creditos e inspirações
-
-- **Frameworks 3 Ms e 4 Cs:** Nate Herk (com atribuição).
-- **4 princípios de execucao:** Andrej Karpathy, traduzidos e aplicados ao contexto de design e
-  produção de conteudo.
-- **Arquitetura de onboarding:** inspirada no estado da arte de 2026 (OpenClaw + Hermes Agent).

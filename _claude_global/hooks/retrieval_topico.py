@@ -70,8 +70,8 @@ MAPA = {
         "fan-out", "haiku ou sonnet"]},
     "principios-aios.md": {"modo": "inteiro", "keywords": [
         "principios do aios", "6 principios", "regua do sistema", "audit do cortex"]},
-    "3ms-framework.md": {"modo": "inteiro", "keywords": [
-        "3 ms", "tres ms", "mindset method machine", "level-up"]},
+    "protocolo-execucao.md": {"modo": "inteiro", "keywords": [
+        "level-up", "automacao semanal", "automatizar rotina", "alavanca de automacao"]},
 }
 
 

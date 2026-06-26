@@ -59,5 +59,4 @@ PESO da tarefa. Conhecimento geral respondo direto, sem puxar este contexto.
 
 ---
 > CORTEX OS LITE — produto de {{NOME}}. Arquitetura: cérebro fino + memória sob demanda + loop
-> de aprendizado MANUAL (`/fecha-sessao`; a captura automática é do modo FULL). Frameworks
-> 3 Ms™/4 Cs™ (Nate Herk) e princípios Karpathy, com atribuição.
+> de aprendizado MANUAL (`/fecha-sessao`; a captura automática é do modo FULL).

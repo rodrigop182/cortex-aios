@@ -194,10 +194,10 @@ Com a intake completa, gere/atualize. Backup dos originais em `archives/intake-{
    Estes arquivos são lidos sob demanda pelo operador; `{{IDIOMA}}` literal nesses textos gera
    confusão no Dia 1.
 
-### Passo 4: Verificação (estilo "doctor")
+### Passo 4: Verificação
 
-Antes de fechar, rode um check rápido e mostre o resultado (inspirado no `doctor`/`status` do
-OpenClaw, que confirma que o setup funciona em vez de só dizer "pronto"):
+Antes de fechar, rode um check rápido e mostre o resultado. O objetivo é confirmar que o setup
+funciona em vez de só dizer "pronto":
 
 ```
 🔍 Checagem do setup:
@@ -250,6 +250,3 @@ te prende no que não escala? E até que ponto dá pra usar IA nessa tarefa?"*
 6. **Não gerar skills extras.** Novas saem do `/level-up`.
 7. **Sem escrever `.env`.** Conexões e chaves vêm depois, não no Dia 1.
 8. **Padrões editoriais** no idioma do operador, sem em-dash, sem "não é X é Y", sem inventar.
-
-> *Frameworks 3 Ms™/4 Cs™ © Nate Herk, usados com atribuição. Onboarding progressivo +
-> verificação inspirados em OpenClaw e Hermes Agent (estado da arte 2026).*

@@ -1,41 +1,81 @@
 =====================================================
-  CORTEX OS  -  COMECE POR AQUI  (leva 1 minuto)
+  CORTEX OS  |  COMECE POR AQUI  |  1 MINUTO
 =====================================================
 
-Voce recebeu o CORTEX: um cerebro de IA que faz o seu Claude Code lembrar
-quem voce e e como voce trabalha, pra nao te reexplicar tudo a cada conversa.
+Você recebeu o CORTEX OS: um sistema de contexto para fazer seu agente de IA
+trabalhar com memória externa, regras claras e aprendizado entre sessões.
 
-VOCE NAO PRECISA INSTALAR NA MAO. O seu proprio Claude Code instala pra voce.
+Você pode instalar de dois jeitos:
+
+- com o próprio agente, se quiser o caminho mais guiado;
+- sem IA, rodando o instalador do seu sistema.
 
 
-PASSO A PASSO
--------------
+CAMINHO A - COM O AGENTE
+------------------------
 
-1. Deixe o arquivo CORTEX-OS.zip na sua pasta de DOWNLOADS.
-   (nao precisa abrir nem descompactar)
+1. Deixe o arquivo CORTEX-OS.zip na sua pasta de Downloads.
+   Não precisa abrir nem descompactar.
 
-2. Abra o Claude Code (no VSCode), em qualquer pasta.
+2. Abra o Claude Code no VSCode, em qualquer pasta.
 
-3. Copie e cole a mensagem abaixo no Claude Code, e mande:
+3. Copie e cole a mensagem abaixo no Claude Code:
 
    ----------------------------------------------------------------
-   Instale o CORTEX OS pra mim. O arquivo CORTEX-OS.zip esta na minha
-   pasta de Downloads (se nao estiver, me pergunte onde esta).
-   Descompacte num lugar temporario, abra o INSTALAR-AGENTE.md de
-   dentro dele e siga a risca, com seguranca (faca backup antes de
-   sobrescrever qualquer coisa minha) e me guiando em portugues a
-   cada passo. No fim, me diga exatamente o que fazer pra comecar.
+   Instale o CORTEX OS pra mim. O arquivo CORTEX-OS.zip está na minha
+   pasta de Downloads. Se não estiver, me pergunte onde está.
+   Descompacte em um lugar temporário, abra o INSTALAR-AGENTE.md de
+   dentro dele e siga o roteiro com segurança. Faça backup antes de
+   sobrescrever qualquer coisa minha e me guie em português a cada
+   passo. No fim, me diga exatamente o que fazer para começar.
    ----------------------------------------------------------------
 
-4. Aprove as permissoes que ele pedir. Ele copia tudo pros lugares
-   certos, ajusta o que precisa, e te diz o proximo passo
-   (abrir a pasta do CORTEX e rodar  /onboard ).
+4. Aprove as permissões que ele pedir. Ele copia os arquivos para os
+   lugares certos, ajusta o que precisa e te diz o próximo passo:
+   abrir a pasta do CORTEX e rodar /onboard.
 
 
-E SE EU PREFERIR INSTALAR NA MAO?
----------------------------------
-Veja o arquivo INSTALAR.md (tem o passo a passo manual).
-Se algo der errado, veja o TROUBLESHOOTING.md.
+CAMINHO B - SEM IA
+------------------
+
+Se preferir instalar sozinho:
+
+1. Extraia o CORTEX-OS.zip.
+2. Abra a pasta extraída.
+3. Siga INSTALAR-SEM-IA.md.
+
+No Windows, o caminho principal é rodar:
+
+   Set-ExecutionPolicy -Scope Process Bypass -Force
+   .\instalar.ps1
+
+No Mac/Linux/Git Bash:
+
+   bash instalar.sh
 
 
-Qualquer duvida, fale com quem te passou o CORTEX.
+O QUE DEVE ACONTECER DEPOIS
+---------------------------
+
+- Você abre sempre a mesma pasta CORTEX no VSCode.
+- Você roda /onboard para preencher seu contexto real.
+- Você testa com uma pergunta simples sobre seu foco da semana.
+- Se a resposta já vier contextualizada, o sistema está funcionando.
+
+
+QUER VER O VALOR ANTES?
+-----------------------
+
+Abra vitrine/index.html para ver a promessa do produto.
+Abra DEMO-5-MIN.md para rodar a demo curta.
+Abra ADAPTADORES.md para entender o que funciona no seu runtime.
+Abra MAPA-DO-PACOTE.md para entender o papel de cada pasta.
+
+
+INSTALAÇÃO E CONFIGURAÇÃO MANUAL
+--------------------------------
+
+Se preferir instalar sem IA, veja INSTALAR-SEM-IA.md.
+Se preferir configurar o perfil sem /onboard, veja CONFIGURAR-SEM-IA.md.
+Se quiser detalhes técnicos, veja INSTALAR.md.
+Se algo travar, veja TROUBLESHOOTING.md.

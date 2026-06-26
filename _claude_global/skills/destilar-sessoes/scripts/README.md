@@ -25,7 +25,7 @@ Nao requer configuracao de projetos ou caminhos de memoria.
 
 **O que faz:** Le os `.txt` de `_catchup/enxutos/`, agrupa em lotes por projeto/tema,
 chama o Haiku pra extrair REGRAS abstratas por conceito e salva artigos em `<wiki>/`.
-Tambem regenera o `index.md` do wiki. Padrao Karpathy: conhecimento por conceito, nao por sessao.
+Tambem regenera o `index.md` do wiki. O conhecimento fica por conceito, nao por sessao.
 
 **Uso:**
 ```

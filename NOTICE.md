@@ -1,19 +1,8 @@
 # NOTICE — atribuições de terceiros
 
 O CORTEX OS é licenciado sob MIT (ver `LICENSE`). Este arquivo reúne, num lugar só, o
-crédito a frameworks, ideias e software de terceiros que o CORTEX referencia ou integra.
-A licença MIT do CORTEX cobre o conteúdo original do autor, não os itens abaixo.
-
-## Frameworks e marcas de terceiros (referenciados, com crédito)
-
-- **3 Ms da IA™ e 4 Cs™** — marcas e frameworks de **Nate Herk**. Usados aqui apenas como
-  referência didática, com atribuição. Não há afiliação nem endosso.
-- **Princípios de execução (pensar antes / simplicidade / cirúrgico / meta-com-verify)** —
-  destilados de ideias publicadas por **Andrej Karpathy**, traduzidos e adaptados ao contexto
-  de design/vídeo. Crédito ao autor original.
-- **Princípios de AIOS (lastro)** — destilados de material público da **Anthropic** e dos
-  projetos **OpenClaw** e **Hermes**. Crédito aos autores originais; o texto no CORTEX é uma
-  síntese própria, não cópia.
+crédito a software de terceiros que o CORTEX integra ou aponta. A licença MIT do CORTEX cobre o
+conteúdo original do autor, não os itens abaixo.
 
 ## Software de terceiros (integrado ou apontado)
 
@@ -27,5 +16,4 @@ A licença MIT do CORTEX cobre o conteúdo original do autor, não os itens abai
 ## Marcas
 
 "Claude" e "Claude Code" são marcas da **Anthropic**. "CORTEX OS" não é afiliado, patrocinado
-nem endossado pela Anthropic, por Nate Herk, nem por nenhum dos projetos acima. Toda marca
-pertence a seus respectivos donos.
+nem endossado pela Anthropic. Toda marca pertence a seus respectivos donos.

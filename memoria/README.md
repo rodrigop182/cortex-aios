@@ -56,8 +56,8 @@ isso carrega?" e mande pro destino certo, não despeje tudo no índice.
 ## Os frameworks
 
 - **6 princípios de AIOS** (a régua) — `references/principios-aios.md`. Base do `/audit`.
-- **3 Ms** (Mindset/Method/Machine) — `references/3ms-framework.md`. Usado no `/level-up`.
-- **4 princípios de execução** (Karpathy) — `references/karpathy-4-principios.md`.
+- **Protocolos de execução** — `references/protocolo-execucao.md`, `references/regras-completas.md`
+  e `references/tiers-de-modelo.md`.
 
 ## Estrutura
 
@@ -75,6 +75,5 @@ memoria/                   (a memória; o cérebro mora em ~/.claude/CLAUDE.md)
 
 ## Crédito
 
-Arquitetura AIOS (cérebro fino + memória em dois níveis + loop que fecha sozinho). Frameworks
-3 Ms™ e a linhagem dos 4 Cs™ são marcas do Nate Herk, usados com atribuição. Régua dos 6
-princípios destilada de práticas da Anthropic + OpenClaw/Hermes.
+Arquitetura CORTEX OS: cérebro fino, memória em dois níveis, capacidades sob demanda e loop de
+aprendizado auditável.

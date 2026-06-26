@@ -1,5 +1,5 @@
 # =============================================================================
-# CORTEX OS — atualizador (Windows PowerShell)
+# CORTEX OS - atualizador (Windows PowerShell)
 # Troca SO a camada de produto; preserva o dado do usuario (memoria, voz, nicho).
 # Uso:
 #   .\atualizar.ps1 -Novo "C:\caminho\do\CORTEX-novo-descompactado" [-Instalado "C:\CORTEX"] [-Aplicar]

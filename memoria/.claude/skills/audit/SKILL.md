@@ -5,8 +5,7 @@ description: Use quando o operador pedir uma auditoria do AIOS, pra dar nota ao 
 
 ## O que esta skill faz
 
-Roda a **Auditoria pelos 6 princípios de AIOS** (régua com lastro — Anthropic + OpenClaw/Hermes,
-ver `references/principios-aios.md`; substituiu os 4 Cs do Nate Herk, que eram mnemônico fraco).
+Roda a **Auditoria pelos 6 princípios de AIOS** (ver `references/principios-aios.md`).
 Lê (nunca escreve) o manual de operação, memória, skills, agentes, MCPs, decisões, referências e
 hooks. Dá nota a cada princípio. Mostra forças e os 3 maiores buracos por alavancagem, com próximos
 passos.

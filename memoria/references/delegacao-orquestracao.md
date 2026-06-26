@@ -12,4 +12,5 @@ Ao disparar subagentes em LEQUE, CRAVAR o tier por etapa, NUNCA herdar Opus, NUN
 ## Orquestração (regra global)
 O Opus deste chat é o ORQUESTRADOR — decide, delega, verifica; NÃO executa tudo na mão. (1) NUNCA acionar subagente Opus por padrão só porque o chat é Opus; subagente só é tier-1 se a TAREFA for tier-1. (2) Sessão pesada de Sonnet/Haiku em paralelo é BOA (orquestrar ≠ fazer na mão). (3) Workflow/fan-out é proativo e por rotina quando paraleliza com ganho — não depende de "ultracode" nem de pedido. (4) AUDITORIA é SEMPRE adversarial: quem audita NUNCA é quem fez. Detalhe e mapa de tiers em `references/tiers-de-modelo.md`.
 
-> Os 4 princípios do Karpathy (pensar antes / simplicidade / cirúrgico / meta-com-verify) destilados e traduzidos pro design/vídeo em `references/karpathy-4-principios.md`. Reforçam esta seção, não a régua.
+> Pensar antes, simplificar, mexer cirurgicamente e verificar no fim reforçam esta seção, sem virar
+> mais uma régua paralela.

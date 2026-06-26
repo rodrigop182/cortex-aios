@@ -8,6 +8,34 @@ Antes de atualizar, leia a seção da versão pra qual você está indo.
 
 ---
 
+## [1.8.1] - 2026-06-26
+
+Melhorias de distribuição, instalação sem IA, configuração manual e suporte a Codex.
+
+### Adicionado
+
+- `INSTALAR-SEM-IA.md`: rota de instalação sem depender de agente.
+- `CONFIGURAR-SEM-IA.md`: preenchimento manual do perfil quando o usuário não quer rodar `/onboard`.
+- `ATUALIZAR-SEM-IA.md`: atualização manual com dry-run.
+- `ATUALIZAR-COM-CODEX.md`: roteiro para Codex aplicar update preservando dados.
+- `AGENTS.md` e `memoria/AGENTS.md`: porta de entrada para Codex na pasta instalada.
+
+### Atualizado
+
+- `COMECE-AQUI.txt`, `README.md`, `INSTALAR.md`, `MAPA-DO-PACOTE.md` e `ADAPTADORES.md` agora deixam
+  explícitas as rotas com agente, sem IA e com Codex.
+- `MANIFESTO-UPDATE.md` inclui os novos documentos como camada de produto atualizável.
+- `atualizar.py` agora copia `memoria/AGENTS.md` para a pasta CORTEX viva quando roda com
+  `--cortex-dir`, além das skills locais.
+
+### Migração
+
+- De 1.8.0 para 1.8.1, o `/atualizar` preserva dados e adiciona os novos guias de instalação,
+  configuração e Codex. Depois do update, confira se `AGENTS.md` existe na pasta CORTEX viva quando
+  usar Codex.
+
+---
+
 ## [1.8.0] — 2026-06-25
 
 Dashboard de workflows, scripts de destilação e melhorias de retomada de sessão.

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# CORTEX OS — atualizador (macOS / Linux)
+# CORTEX OS - atualizador (macOS / Linux)
 # Troca SO a camada de produto; preserva o dado do usuario (memoria, voz, nicho).
 # Uso:
 #   ./atualizar.sh --novo /caminho/do/CORTEX-novo [--instalado ~/CORTEX] [--aplicar]
