@@ -8,6 +8,23 @@ Antes de atualizar, leia a seção da versão pra qual você está indo.
 
 ---
 
+## [1.8.4] - 2026-06-26
+
+Fonte unica de skills pessoais no Codex.
+
+### Corrigido
+
+- Codex agora documenta `~/.agents/skills` como raiz ativa de skills pessoais.
+- `~/.codex/skills` fica reservado para `.system` e material interno do runtime, evitando duplicata de skill no seletor.
+- `paridade-multiagente-cortex.md` ganhou checagem barata de duplicatas por nome quando uma skill Codex for alterada.
+- `auto-melhoria-skills.md` passou a exigir essa checagem quando uma skill existe no Codex.
+
+### Migracao
+
+- Se houver skills pessoais antigas em `~/.codex/skills`, arquive fora de `skills/` e mantenha a versao ativa em `~/.agents/skills`.
+
+---
+
 ## [1.8.3] - 2026-06-26
 
 Paridade multiagente, retomada sem chute, handoff curto e catch-up com contexto de handoff.

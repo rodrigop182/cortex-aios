@@ -24,6 +24,7 @@ Bootstrap do Codex na pasta CORTEX instalada. Conteúdo pesado mora em `referenc
 - Roteamento de regra vs. sistema: `references/criterio-roteamento-cortex.md`
 - Regra nova só fica pronta quando governa: `references/criterio-explicitacao-peso-retroativo-cortex.md`
 - Paridade multiagente: `references/paridade-multiagente-cortex.md`
+- Skills Codex: pessoais em `~/.agents/skills`; `~/.codex/skills` reservado para `.system`.
 - Auto-melhoria de skills: `references/auto-melhoria-skills.md`
 - Torneiras de token: `references/controle-torneiras-token.md`, quando existir
 

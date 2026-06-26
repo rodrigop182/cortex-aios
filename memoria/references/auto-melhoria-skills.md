@@ -65,6 +65,7 @@ Pergunta-roteador, toda vez que for gravar um aprendizado:
 2. Se o operador citou a skill, tratei isso como sinal de melhoria ou descartei com motivo claro?
 3. Mudança cirúrgica (regra nova / seção Aprendizados / ajuste de gatilho), não reescrita?
 4. Espelhei no backup e nas versões de outros agentes quando existirem?
-5. Se mexi em gatilho, passei pelo teste da `skill-description-eficiente.md` (ainda dispara, não
+5. Se a skill existe no Codex, confirmei que nao sobrou duplicata pessoal em `~/.codex/skills`?
+6. Se mexi em gatilho, passei pelo teste da `skill-description-eficiente.md` (ainda dispara, não
    colide com a irmã)?
-6. Se era refatoração grande / apagar / fundir, parei e levei como proposta pro operador?
+7. Se era refatoração grande / apagar / fundir, parei e levei como proposta pro operador?
