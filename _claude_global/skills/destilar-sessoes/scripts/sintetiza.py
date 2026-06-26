@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-sintetiza.py — converte sessoes enxutas em artigos de conceito.
+sintetiza.py — converte sessoes enxutas em artigos de conceito (padrao Karpathy).
 
 Le os .txt de _catchup/enxutos/, agrupa em lotes, chama o Claude SDK
 pra extrair conhecimento por CONCEITO (nao por sessao), salva artigos em
@@ -14,7 +14,7 @@ Uso:
   python sintetiza.py [--enxutos DIR] [--wiki DIR] [--dry-run]
 
   --enxutos  pasta com os .txt do extrai.py (default: ./_catchup/enxutos)
-  --wiki     pasta de saida dos artigos (OBRIGATORIO ou passar como arg)
+  --wiki     pasta de saida dos artigos (default: <cwd>/memoria/wiki)
   --dry-run  mostra o que faria sem gravar nada
 
 Custo estimado: ~1-3k tokens por lote de sessoes (Haiku lendo texto ja enxuto).
@@ -24,20 +24,20 @@ from pathlib import Path
 import anthropic
 
 DEFAULT_ENXUTOS  = os.path.join(os.getcwd(), "_catchup", "enxutos")
-INDEX_PATH       = None  # definido por args.wiki
-TEMPLATE_FILA    = None  # sem caderno de template no kit do amigo
+DEFAULT_WIKI     = os.path.join(os.getcwd(), "memoria", "wiki")
+TEMPLATE_FILA    = None
 LOTE_BYTES      = 50_000   # ~50KB por lote = cabido no contexto do Haiku
 MAX_FILE_BYTES  = 40_000   # trunca arquivo individual acima disso antes de lote
 MAX_ARTIGO_LINHAS = 40     # artigo curto: 1 conceito, sem encheção
 
 # Conceitos que o CORTEX rastreia — o extrator classifica cada achado num desses
 CONCEITOS = [
-    "como-trabalhar-com-operador",   # jeito de conduzir, tom, autonomia
-    "design-regras-duras",           # regras visuais inegociaveis
-    "execucao-e-delegacao",          # planejar, subagente, tier, custo
-    "ferramentas-e-armadilhas",      # SVG, Chrome headless, PowerShell, etc
-    "projetos-clientes",             # estado de clientes/projetos
-    "cortex-e-sistema",              # melhorias no proprio CORTEX, skills, hooks
+    "como-trabalhar-com-operador",  # jeito de conduzir, tom, autonomia
+    "design-regras-duras",          # regras visuais inegociaveis
+    "execucao-e-delegacao",         # planejar, subagente, tier, custo
+    "ferramentas-e-armadilhas",     # SVG, Chrome headless, PowerShell, etc
+    "projetos-clientes",            # estado de clientes/projetos
+    "cortex-e-sistema",             # melhorias no proprio CORTEX, skills, hooks
 ]
 
 PROMPT_DEDUP = """Você é um editor sênior de conhecimento do CORTEX do operador.
@@ -81,14 +81,21 @@ PROMPT_EXTRATOR = """Você é um extrator de conhecimento do CORTEX do operador.
 
 Leia as sessoes abaixo e extraia SO o que vale pro futuro.
 
+COMO O OPERADOR FALA (reconhecer sinais na voz dele):
+Pode abreviar, escrever em minúsculas, ditar por voz e emendar ideias na mesma mensagem. Use esses sinais para separar correção, aprovação e exploração.
+
 Sinais de CORREÇÃO EXPLÍCITA (gravar regra):
 - "uê"/"ué" + descrição do erro
 - "pq vc fez X" / "como assim" / "como é que"
 - "comportamento mt estranho" / "isso é regra crítica"
+- "po" no final de correção
+- CAPS em frase curta (urgência/frustração)
+- "ta de morando mt" (frustração com lentidão)
 - Repetição da mesma correção em 2+ turnos
 
 Sinais de APROVAÇÃO (confirmar que acertou):
-- Aprovação monossilábica + emenda com próximo pedido
+- "sim" monossilábico + emenda com próximo pedido
+- "MUITO BOM" em caps
 - Ausência de objeção + próximo pedido direto = aprovação tácita
 
 Sinais de EXPLORAÇÃO (quer pensar junto, NÃO executar ainda):
@@ -97,7 +104,7 @@ Sinais de EXPLORAÇÃO (quer pensar junto, NÃO executar ainda):
 - "sei lá" como marcador de incerteza
 
 CRITÉRIO DE ENTRADA (todos devem passar):
-1. RECORRÊNCIA: apareceu 2+ vezes nas sessões OU foi correção explícita
+1. RECORRÊNCIA: apareceu 2+ vezes nas sessões OU foi correção explícita na voz dele (ver acima)
 2. ACIONÁVEL: gera comportamento diferente numa sessão futura — se não muda nada, não entra
 3. DURÁVEL: ainda será verdade daqui a 3 meses — estado temporário de projeto não entra
 
@@ -138,6 +145,11 @@ FORMATO de saída (JSON puro, sem markdown):
 
 Se nada passar no critério: {{"achados": []}}
 
+HANDOFFS ATIVOS (usar apenas como contexto de exclusão):
+{handoffs}
+
+Se algo abaixo é só estado de projeto, pendência, próximo passo ou resumo já preservado em handoff, NÃO grave como wiki/memória. Só extraia regra durável se ela também aparecer nas sessões com força própria.
+
 SESSOES:
 {sessoes}
 """
@@ -149,10 +161,16 @@ def ler_truncado(path):
         raw = raw[:MAX_FILE_BYTES]
     return raw.decode("utf-8", errors="replace")
 
+def carregar_handoff_context(enxutos_dir):
+    path = os.path.join(enxutos_dir, "_handoff-context.txt")
+    if not os.path.exists(path):
+        return "Nenhum handoff ativo carregado."
+    return ler_truncado(path)[:8000]
+
 # Projetos/temas rastreados — ordem importa: primeiro match vence
 PROJETOS = [
-    ("cortex",  ["cortex", "catch-up", "catchup", "destilacao", "fecha-sessao", "handoff", "skill"]),
-    ("geral",   []),  # fallback — o operador vai ter projetos diferentes
+    ("cortex", ["cortex", "catch-up", "catchup", "destilacao", "fecha-sessao", "handoff", "skill"]),
+    ("geral", []),  # fallback; cada operador pode ter projetos diferentes
 ]
 
 def classificar_projeto(conteudo):
@@ -276,7 +294,7 @@ def atualizar_artigo(existente, novos_achados, dry_run=False):
     return resultado.strip() + "\n", max(delta, 0)
 
 def enfileirar_template(achados, dry_run=False):
-    """Enfileira achados cortex-geral num caderno de melhorias — sem destino no kit generico."""
+    """No kit generico, nao ha fila de template local para escrever."""
     if TEMPLATE_FILA is None:
         return 0
     import datetime as _dt
@@ -306,13 +324,11 @@ FREQ_THRESHOLD = 3   # palavra aparece em 3+ sessoes do lote = candidata a ruido
 
 def detectar_keywords_ruido(enxutos_dir):
     """
-    Varre os enxutos e gera lista de candidatas a ruido — requer RETRIEVAL_MAPA_PATH
-    e RETRIEVAL_RUIDO_PATH configurados. No kit generico esses caminhos sao None,
-    entao a funcao retorna cedo sem fazer nada.
+    Varre os enxutos e gera lista de candidatas a ruido quando os caminhos de retrieval existem.
+    No kit generico esses caminhos sao None, entao a funcao retorna sem escrever nada.
     """
     if RETRIEVAL_MAPA_PATH is None or RETRIEVAL_RUIDO_PATH is None:
         return
-
     import re as _re, collections, unicodedata as _ud
 
     def sem_acento(s):
@@ -334,6 +350,7 @@ def detectar_keywords_ruido(enxutos_dir):
     if not files:
         return
 
+    # conta em quantas sessoes cada palavra aparece (document frequency)
     doc_freq = collections.Counter()
     for f in files:
         txt = sem_acento(Path(f).read_text(encoding="utf-8", errors="replace").lower())
@@ -342,9 +359,11 @@ def detectar_keywords_ruido(enxutos_dir):
         for p in palavras:
             doc_freq[p] += 1
 
+    # extrai keywords do MAPA do retrieval_topico.py via regex simples
     try:
         src = Path(RETRIEVAL_MAPA_PATH).read_text(encoding="utf-8")
         kws_no_mapa = set(_re.findall(r'"([^"]{3,})"', src))
+        # filtra so as que parecem keywords (minusculas, sem caminho/extensao)
         kws_no_mapa = {k for k in kws_no_mapa if not any(c in k for c in r'/\.')}
     except Exception:
         kws_no_mapa = set()
@@ -353,13 +372,14 @@ def detectar_keywords_ruido(enxutos_dir):
     candidatas = []
     for kw in kws_no_mapa:
         kw_norm = sem_acento(kw.lower())
+        # verifica se alguma palavra da keyword aparece com alta frequencia
         palavras_kw = [p for p in kw_norm.split() if len(p) >= 3 and p not in stopwords]
         if not palavras_kw:
             continue
         freq_max = max(doc_freq.get(p, 0) for p in palavras_kw)
         if freq_max >= FREQ_THRESHOLD and n_sessoes > 0:
             pct = int(100 * freq_max / n_sessoes)
-            if pct >= 50:
+            if pct >= 50:  # aparece em 50%+ das sessoes = ruido provavel
                 candidatas.append((pct, freq_max, kw))
 
     if not candidatas:
@@ -393,6 +413,7 @@ def gerar_index(wiki_dir):
               "_Ler só o índice na sessão; seguir links sob demanda._\n\n"]
     for a in artigos:
         slug = os.path.splitext(os.path.basename(a))[0]
+        # conta regras (linhas que começam com -)
         conteudo = open(a, encoding="utf-8").read()
         n = len([l for l in conteudo.splitlines() if l.strip().startswith("-")])
         linhas.append(f"- [{slug}]({slug}.md) — {n} regra(s)\n")
@@ -401,18 +422,16 @@ def gerar_index(wiki_dir):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--enxutos", default=DEFAULT_ENXUTOS)
-    ap.add_argument("--wiki", required=True,
-                    help="Pasta de saida dos artigos wiki (ex: ~/meu-projeto/memoria/wiki)")
+    ap.add_argument("--wiki", default=DEFAULT_WIKI)
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
-
-    index_path = os.path.join(args.wiki, "index.md")
 
     if not os.path.isdir(args.enxutos):
         print(f"Pasta de enxutos nao encontrada: {args.enxutos}")
         sys.exit(1)
 
     os.makedirs(args.wiki, exist_ok=True)
+    handoff_context = carregar_handoff_context(args.enxutos)
 
     # acumulador por conceito
     por_conceito = {c: [] for c in CONCEITOS}
@@ -420,13 +439,15 @@ def main():
 
     for proj, lote_files in lotes(args.enxutos):
         total_lotes += 1
+        # concat dos txts do lote
         sessoes_txt = ""
         for fp in lote_files:
             sessoes_txt += ler_truncado(fp) + "\n\n---\n\n"
 
         prompt = PROMPT_EXTRATOR.format(
             conceitos="\n".join(f"  - {c}" for c in CONCEITOS),
-            sessoes=sessoes_txt[:45000]
+            handoffs=handoff_context,
+            sessoes=sessoes_txt[:45000]  # cap de segurança
         )
 
         print(f"Lote {total_lotes} [{proj}]: {len(lote_files)} sessoes, {len(sessoes_txt)//1024}KB -> Haiku...")
@@ -461,21 +482,25 @@ def main():
             print(f"  {conceito}: +{n} regra(s)")
             total_adicionados += n
 
-    # detecta keywords de ruido (no-op no kit generico)
-    detectar_keywords_ruido(args.enxutos)
+    # detecta keywords de ruido no retrieval (barato, zero modelo), mas dry-run nao escreve nada
+    if not args.dry_run:
+        detectar_keywords_ruido(args.enxutos)
 
     # regenera index
     if not args.dry_run:
         index = gerar_index(args.wiki)
+        index_path = os.path.join(args.wiki, "index.md")
         with open(index_path, "w", encoding="utf-8") as f:
             f.write(index)
         print(f"\nindex.md regenerado ({len(index)} chars, ~{len(index)//4} tokens)")
 
     # limpa enxutos processados (preserva marcador e manifest)
     if not args.dry_run and total_lotes > 0:
+        import shutil as _shutil
         removidos = 0
         for f in glob.glob(os.path.join(args.enxutos, "*.txt")):
-            if os.path.basename(f).startswith("_"):
+            basename = os.path.basename(f)
+            if basename.startswith("_"):
                 continue  # preserva _manifest.txt, _ultimo-processado.txt
             os.remove(f)
             removidos += 1

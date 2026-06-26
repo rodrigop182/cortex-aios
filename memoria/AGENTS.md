@@ -22,6 +22,9 @@ Bootstrap do Codex na pasta CORTEX instalada. Conteúdo pesado mora em `referenc
 - Markdown para agente: `references/padrao-markdown-agentes.md`
 - Léxico operacional: `references/lexico-operacional-cortex.md`
 - Roteamento de regra vs. sistema: `references/criterio-roteamento-cortex.md`
+- Regra nova só fica pronta quando governa: `references/criterio-explicitacao-peso-retroativo-cortex.md`
+- Paridade multiagente: `references/paridade-multiagente-cortex.md`
+- Auto-melhoria de skills: `references/auto-melhoria-skills.md`
 - Torneiras de token: `references/controle-torneiras-token.md`, quando existir
 
 ## Arquivos principais
@@ -45,6 +48,7 @@ Se o contexto essencial estiver vazio, fazer só as perguntas mínimas antes de 
 No Codex, tratar automações como rotina manual:
 - registrar decisão importante em `decisions/log.md`
 - promover correção recorrente para regra ou referência
+- portar melhoria de sistema para Claude Code + Codex quando fizer sentido; Cursor/Cline recebem o que for portátil em markdown/script
 - seguir o guia de atualização do pacote quando mexer no produto
 
 ## Segurança

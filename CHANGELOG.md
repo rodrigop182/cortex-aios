@@ -8,6 +8,33 @@ Antes de atualizar, leia a seção da versão pra qual você está indo.
 
 ---
 
+## [1.8.3] - 2026-06-26
+
+Paridade multiagente, retomada sem chute, handoff curto e catch-up com contexto de handoff.
+
+### Adicionado
+
+- `memoria/references/paridade-multiagente-cortex.md`: regra compartilhada para portar melhorias entre Claude Code, Codex e superficies portateis.
+- `memoria/references/criterio-explicitacao-peso-retroativo-cortex.md`: criterio para regra nova so contar como pronta quando governa.
+- `destilar-sessoes/scripts/mede_1shot.py` no pacote distribuivel.
+
+### Atualizado
+
+- `CLAUDE.md` e `memoria/AGENTS.md` agora apontam para paridade multiagente e criterio de explicitacao.
+- `CLAUDE.md` e `memoria/AGENTS.md` agora apontam para auto-melhoria de skills: citacao de skill em friccao vira sinal de ajuste.
+- `handoff` reforca um arquivo por assunto continuado, briefing curto e retomada barata.
+- `continuar-sessao` nao chuta mais o handoff "mais recente" quando falta pista; lista frentes abertas e limpa handoff concluido so com confianca alta.
+- `destilar-sessoes` agora cruza handoffs ativos por `_handoff-context.txt` para evitar memoria/wiki duplicada.
+- `extrai.py` processa sessoes Claude + rollouts Codex e gera contexto de handoff.
+- `sintetiza.py --dry-run` nao escreve mais `_retrieval-ruido.md`.
+
+### Migração
+
+- De 1.8.2 para 1.8.3, o update preserva dados e substitui só a camada de produto.
+- Depois de atualizar, confira se `references/paridade-multiagente-cortex.md`, `references/criterio-explicitacao-peso-retroativo-cortex.md` e a skill `continuar-sessao` nova existem.
+
+---
+
 ## [1.8.2] - 2026-06-26
 
 Compressão de contexto, léxico operacional e escrita Markdown orientada a agente.

@@ -1,14 +1,15 @@
 ---
 name: destilar-sessoes
-description: "Mutirao RETROATIVO de VARIOS DIAS: varre transcripts de uma janela (default 7) e destila o backlog que ficou pra tras. Usar em \"faz um catch-up\", \"destila as sessoes\", \"processa o que ficou pra tras\", \"ve o que aprendeu desses dias\", \"atualiza a memoria com o acumulo\", ou com muitas sessoes pendentes na fila. NAO e por-sessao desta conversa (fecha-sessao), nem briefing da proxima janela (handoff)."
+description: "Mutirao RETROATIVO de VARIOS DIAS: varre transcripts de uma janela (default 7) e destila o backlog que ficou pra tras. Usar em \"faz um catch-up\", \"destila as sessoes\", \"processa o que ficou pra tras\", \"ve o que aprendeu desses dias\", \"atualiza a memoria com o acumulo\", ou com muitas sessoes em _sessions-pendentes.log. NAO e por-sessao desta conversa (fecha-sessao), nem briefing da proxima janela (handoff)."
+
 ---
 
-# Catch-up de aprendizado — mutirao retroativo do que passou batido
+# Destilar sessoes — mutirao retroativo do que passou batido
 
-Na pratica quase ninguem encerra toda sessao com o ritual `fecha-sessao`. Entao o aprendizado de
-dias inteiros fica parado na fila e o sistema nao aprende. Esta skill faz o **catch-up em lote**:
-varre os transcripts de uma janela de dias, destila o que importa e atualiza a memoria — de uma
-vez, manualmente, de tempos em tempos.
+O operador quase nunca encerra com o ritual `fecha-sessao`. Entao o aprendizado de dias inteiros
+fica parado na fila e o sistema nao aprende. Esta skill faz o **catch-up em lote**: varre os
+transcripts de uma janela de dias, destila o que importa e atualiza a memoria — de uma vez,
+manualmente, de tempos em tempos.
 
 Distincao das skills irmas (pra nao colidir):
 - `fecha-sessao` = UMA sessao, no encerramento, leve. Esta = MUITAS sessoes acumuladas, em mutirao.
@@ -16,33 +17,42 @@ Distincao das skills irmas (pra nao colidir):
 
 ## Principio-guia (criterio acima de burocracia)
 
-A skill tem que ter BOM CRITERIO: decidir sozinha o que vale processar e o que vale gravar, sem
-encher o sistema de ruido. Na duvida entre gravar e nao gravar, **nao grava** — regra fraca lida
-todo turno dilui o sinal (cerebro fino e indice, nao deposito). O mesmo gate de relevancia
-ALTA/MEDIA/BAIXA do `fecha-sessao` vale aqui, por sessao.
+"Nem sempre sei o que e melhor, mas sei o que preciso resolver." A skill tem que ter BOM
+CRITERIO: decidir sozinha o que vale processar e o que vale gravar, sem encher o sistema de
+ruido. Na duvida entre gravar e nao gravar, **nao grava** — regra fraca lida todo turno dilui o
+sinal (cerebro fino e indice, nao deposito). Casa com `criterio-relevancia-destilacao` e
+`fecha-sessao` (o gate de relevancia ALTA/MEDIA/BAIXA vale aqui tambem, por sessao).
 
 ## Como roteia os tiers (ler `memoria/references/tiers-de-modelo.md`)
 
 - **Pre-filtro** (rodar script): mecanico, **tier-3**. Sao os scripts Python, sem modelo.
 - **Extracao por lote**: **tier leve** (tier-2; pode cair pra tier-3 se o lote for pequeno e o
-  tier-3 nao for um modelo de janela curta ja estourada). Subagentes em paralelo. So LEEM e PROPOEM.
+  tier-3 nao for Haiku com 200K estourado). Subagentes em paralelo. So LEEM e PROPOEM.
 - **Consolidacao**: **tier-2**. Um subagente dedupa e cruza com a memoria existente. So PROPOE.
-- **Curadoria e gravacao**: **tier-1, NUNCA subagente.** Mexer em memoria pede o contexto da
-  relacao com o operador. Os subagentes nao escrevem memoria — so o tier-1 (voce/o principal).
+- **Curadoria e gravacao**: automatica via sintetiza.py. Criterio afinado: recorrencia + acionavel + duravel + reconhecimento da voz do operador. Teto de 35 regras por artigo; poda automatica de stale e redundante.
 
-Comecar pelo tier mais baixo que resolve; subir so se a tarefa exigir. Nao passar `effort` pra um
-modelo de tier-3 que nao o suporte.
+Comecar pelo tier mais baixo que resolve; subir so se a tarefa exigir. Nao passar `effort` pra
+Haiku (tier-3 mapeado a Haiku nao aceita).
+
+Ao disparar cada subagente, CRAVAR o `model` do tier no Agent (tier-2 = `model: sonnet`,
+tier-3 = `model: haiku`). NUNCA deixar no default: subagente sem `model` HERDA o Opus e o lote
+mecanico sai caro/lento. O `subagent_type: executor-mecanico` ja vem em Sonnet pronto.
 
 ## Regras inegociaveis
 
-- **Dado sensivel NUNCA entra.** Dado financeiro (renda, valores, gastos, preco, saldo), credencial,
-  segredo: os extratores omitem ou parafraseiam SEM numero; a curadoria nao grava nada disso. Bloco
-  `<private>...</private>` e zona morta: tratar como inexistente.
-- **Curadoria fica no tier-1.** Subagente le e propoe; quem decide e grava e voce.
+- **Resumo obrigatorio ao final.** Ao terminar o catch-up, entregar ao operador um resumo de 3-8 bullets do que o CORTEX absorveu: quais conceitos foram atualizados, quais regras novas entraram, quais foram podadas. Sem resumo = skill incompleta.
+- **Suporte a sessoes do Codex.** O extrai.py deve processar tambem os rollouts em `~/.codex/sessions/AAAA/MM/DD/rollout-*.jsonl` (formato OpenAI: `type: response_item`, `payload.role`, `payload.content[].type: input_text/output_text`).
+- **Cruzar com handoffs ativos.** O extrai.py tambem gera `_handoff-context.txt` a partir de `~/.claude/skills/handoff/handoff-session/`. O sintetiza.py usa esse arquivo so como contexto de exclusao: estado de projeto e proximo passo que ja estao em handoff nao viram wiki/memoria duplicada.
+- **Dado financeiro NUNCA entra.** Renda, valores, gastos, preco de proposta, saldo, "quebrado":
+  os extratores omitem ou parafraseiam SEM numero; a curadoria nao grava nada disso. Bloco
+  `<private>...</private>` e zona morta: tratar como inexistente. (memorias
+  `dado-financeiro-e-tag-private`, `seguranca-wework`.)
+- **Curadoria**: automatica (sintetiza.py via Haiku). O operador pode revisar _lote-diario.log, mas nao e obrigado; o criterio duro ja filtra.
 - **Manutencao invisivel.** Isto e backstage. Nao narrar sync/log/frontmatter no chat; relatar o
-  catch-up em 1 linha discreta no fim.
+  catch-up em 1 linha discreta no fim. (memoria `manutencao-memoria-invisivel`.)
 - **Dedup e poda.** Nao criar memoria que ja existe — preferir ATUALIZAR. Contradicao: a versao
-  RECENTE/mais madura vence a antiga.
+  RECENTE/mais madura vence a antiga (a curva de maturidade existe pra isso). (memorias
+  `criterio-relevancia-destilacao`, `evitar-retrabalho-correcao-repetida`.)
 - **Transcript so via script/subagente, nunca no contexto principal.** Despejar transcript bruto
   aqui incha a janela. Por isso o pre-filtro e a extracao acontecem fora.
 
@@ -51,49 +61,37 @@ modelo de tier-3 que nao o suporte.
 ### 1. Localizar sessoes da janela (tier-3, script)
 Decidir a janela com o operador se ele nao disser (default razoavel: 7 dias, ou "desde o ultimo
 catch-up"). Duas fontes, complementares:
-- A fila `memoria/memory/_sessions-pendentes.log` (o que o hook registrou).
-- Os transcripts recentes do Claude Code, em `~/.claude/projects/<seu-projeto>/*.jsonl`, filtrados
-  por data — o script faz isso (pega o que a fila perdeu).
+- A fila `memoria/memory/_sessions-pendentes.log` ou equivalente (o que o hook registrou).
+- Os transcripts recentes em `~/.claude/projects/<projeto>/*.jsonl`, filtrados por
+  data — o script faz isso (pega o que a fila perdeu).
+- Os rollouts recentes do Codex em `~/.codex/sessions/**/rollout-*.jsonl`.
+- Os handoffs ativos em `~/.claude/skills/handoff/handoff-session/*.md`, usados so para evitar duplicata.
 
-### 2. Pre-filtrar (tier-3, script)
+### 2. Pre-filtrar + Sintetizar (2 scripts, zero subagente no Opus)
+
+Pipeline Karpathy — custo estimado ~1-3k tokens por lote de sessoes:
+
 ```bash
-cd <pasta de trabalho temp, ex: <PASTA_RAIZ>/_catchup>
-python <skill>/scripts/extrai.py --src ~/.claude/projects/<seu-projeto> --days 7   # ou --since AAAA-MM-DD
-python <skill>/scripts/grupos.py                                                    # auto: ~60 KB por lote
+cd C:/Projetos/_catchup
+python ~/.claude/skills/destilar-sessoes/scripts/extrai.py --src ~/.claude/projects/<projeto> --days 7
+python ~/.claude/skills/destilar-sessoes/scripts/mede_1shot.py
+python ~/.claude/skills/destilar-sessoes/scripts/sintetiza.py --wiki <CORTEX>/memoria/wiki
 ```
-`extrai.py` cospe um .txt enxuto por sessao util (so voz humana + texto do assistant, ordenado
-no tempo), pula sessao sem fala humana real e respeita a janela. `grupos.py` agrupa em lotes
-cronologicos balanceados (a saida `grupos.json` lista os arquivos de cada lote). Conferir o
-print: numero de sessoes uteis e de lotes faz sentido?
 
-### 3. Extrair em paralelo (tier leve, subagentes)
-Para cada lote em `grupos.json`, disparar UM subagente extrator (em paralelo, mesmo turno). A
-ordem de servico de cada um = o conteudo de `references/extrator-brief.md` + a lista de arquivos
-daquele lote. Cada subagente devolve o markdown estruturado (voz verbatim, correcoes/iteracoes,
-fatos, preferencias, maturidade). Eles so LEEM e PROPOEM.
+**extrai.py** — determinístico, zero modelo. Cospe .txt enxuto por sessao em `_catchup/enxutos/`.
+**mede_1shot.py** — chama Haiku e anexa linhas de 1-shot em `memoria/metricas/1shot-log.csv`.
+**sintetiza.py** — chama `claude -p` com Haiku por lote (~50KB). Extrai achados por CONCEITO
+(nao por sessao), merge em `C:/Projetos/memoria/wiki/<conceito>.md`, regenera `wiki/index.md`.
 
-### 4. Consolidar (tier-2, um subagente)
-Quando todos voltarem, disparar UM subagente consolidador com `references/consolidador-brief.md`
-+ os N blocos de achados + a memoria JA existente (MEMORY.md e arquivos relevantes). Ele dedupa,
-resolve contradicao a favor do recente, cruza com a memoria (marca JA EXISTE / NOVO / CONTRADIZ)
-e gera um `SINTESE.md` enxuto. So PROPOE.
+Conceitos rastreados (definidos no sintetiza.py):
+- como-trabalhar-com-operador, design-regras-duras, execucao-e-delegacao
+- ferramentas-e-armadilhas, projetos-clientes, cortex-e-sistema
 
-### 5. Curar e gravar (tier-1, VOCE — nunca subagente)
-Ler o `SINTESE.md` e decidir, com criterio:
-- Aplicar o gate de relevancia por candidato (ALTA grava, BAIXA descarta).
-- **Procedural** (jeito de FAZER que uma skill cobre) -> consertar a SKILL, nao gravar memoria
-  solta (ver `memoria/references/auto-melhoria-skills.md`).
-- **Semantico** -> memoria. Se ja existe, ATUALIZAR (reforca, "voltou em DATA"); se nova, arquivo
-  curto + ponteiro no `MEMORY.md`.
-- Contradicao: gravar a versao recente, aposentar/ajustar a antiga.
-- **Veredito de eficacia (FASE 5, mec 2):** se uma regra EXISTENTE foi posta a prova nos dias
-  processados — falhou (o operador corrigiu de novo o que ela ja mandava) ou guiou o acerto —
-  registre 1 linha em `memory/_eficacia-regras.log` (`slug.md  reforcar|eficaz  motivo`), so quando
-  a ligacao for clara. Protege regra eficaz da poda e alimenta o /audit. Mesmo protocolo da fecha-sessao.
-- Conferir de novo: zero dado sensivel, nada de `<private>`.
-- **Esvaziar a fila** `_sessions-pendentes.log` ao fim (marcar processado).
-- Limpar a pasta de trabalho temp (transcripts enxutos sao descartaveis).
-- Relatar em **1 linha** o que entrou. Backstage, nao protagonista.
+CRITERIO DURO embutido: so grava se apareceu 2+ vezes OU foi correcao explicita.
+1x isolado -> ignorado pelo script (vai pro handoff se for importante).
+
+### 3. Limpar (automatico)
+Apagar `_catchup/enxutos/` apos rodar — descartaveis, wiki ja absorveu o conteudo.
 
 ## Economia (regra mestra)
 Catch-up nao e reprocessar tudo palavra a palavra. O pre-filtro e a extracao paralela existem
@@ -105,5 +103,6 @@ Esta skill e o catch-up MANUAL. Em paralelo, fora do escopo dela, ha a ideia de 
 leve rodando ao longo dos dias** que faz o mesmo continuamente — extrai e enfileira candidatos
 conforme as sessoes acontecem, sem esperar o mutirao. Ele REUSARIA os scripts e os briefs daqui
 (`extrai.py`, `extrator-brief.md`), enfileirando achados pra fila de curadoria; a etapa 5
-(curadoria/gravacao) continua manual no tier-1, com gate humano — captura nunca escreve memoria
-direto. Quando for construir, partir destes mesmos artefatos.
+(curadoria/gravacao) continua manual no Opus/usuario principal, com gate humano — captura nunca
+escreve memoria direto. Quando for construir, partir destes mesmos artefatos. Lastro:
+`cortex-3-loops-auto-desenvolvimento` (M3/M4 a fazer).

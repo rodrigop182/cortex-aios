@@ -23,13 +23,21 @@ Pergunta-roteador, toda vez que for gravar um aprendizado:
 1. **A skill agiu errado e o operador corrigiu.** Disparou no momento errado, pulou um passo, gerou
    formato que foi rejeitado, citou skill irmã que não existe mais. Conserta na hora ou anota pra
    consertar (não deixa a próxima janela repetir).
-2. **Mesma correção procedural 2-3x** (regra do 2-3 do evitar-retrabalho): se o mesmo ajuste manual
+2. **O operador citou uma skill no meio da crítica.** Se ele fala o nome de uma skill enquanto
+   explica uma fricção, trate como sinal de melhoria da skill, mesmo sem a frase "melhora a skill".
+   Primeiro tente entender sozinho qual regra, gatilho, limite ou exemplo precisa entrar; pergunte
+   só se houver risco de mudar o contrato da skill.
+3. **Durante a sessão, o CORTEX percebeu fricção recorrente.** Se o operador não cita a skill, mas
+   o problema nasce claramente de um procedimento coberto por uma skill existente, deixe na fila de
+   melhoria ou aplique o ajuste cirúrgico na hora. O ideal é o sistema aprender sem exigir que o
+   operador nomeie a ferramenta.
+4. **Mesma correção procedural 2-3x** (regra do 2-3 do evitar-retrabalho): se o mesmo ajuste manual
    foi feito por cima do output de uma skill duas/três vezes, a skill está incompleta. Embute o
    ajuste nela.
-3. **Na destilação** (`fecha-sessao` / `aprender-do-dia`): ao varrer o transcript, se o aprendizado
+5. **Na destilação** (`fecha-sessao` / `aprender-do-dia`): ao varrer o transcript, se o aprendizado
    da sessão é sobre COMO uma skill se comportou, o destino é a skill, não uma regra nova de
    feedback. A destilação passa a perguntar isso antes de gravar.
-4. **Na faxina do grafo** (`/audit`): colisão de gatilho, link faltante, description desatualizada
+6. **Na faxina do grafo** (`/audit`): colisão de gatilho, link faltante, description desatualizada
    viram propostas de melhoria (ver `grafo-de-skills.md`).
 
 ## Como melhorar a skill (cirúrgico, sem reescrever)
@@ -54,8 +62,9 @@ Pergunta-roteador, toda vez que for gravar um aprendizado:
 ## Verificação
 
 1. O aprendizado é procedural? Então foi pra DENTRO da skill, não pro MEMORY.md como feedback solto?
-2. Mudança cirúrgica (regra nova / seção Aprendizados / ajuste de gatilho), não reescrita?
-3. Espelhei no backup configurado?
-4. Se mexi em gatilho, passei pelo teste da `skill-description-eficiente.md` (ainda dispara, não
+2. Se o operador citou a skill, tratei isso como sinal de melhoria ou descartei com motivo claro?
+3. Mudança cirúrgica (regra nova / seção Aprendizados / ajuste de gatilho), não reescrita?
+4. Espelhei no backup e nas versões de outros agentes quando existirem?
+5. Se mexi em gatilho, passei pelo teste da `skill-description-eficiente.md` (ainda dispara, não
    colide com a irmã)?
-5. Se era refatoração grande / apagar / fundir, parei e levei como proposta pro operador?
+6. Se era refatoração grande / apagar / fundir, parei e levei como proposta pro operador?

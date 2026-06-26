@@ -11,6 +11,9 @@ fechar a janela e abrir uma nova, mas zerar perde tudo. Esta skill resolve as du
 quando vale trocar** e **gravar um briefing** pra a janela nova começar onde esta parou, sem
 reler a conversa toda.
 
+**Padrao de qualidade:** handoff bom e curto e curado. Se a janela nova precisar reescavar meio
+projeto so para "se situar", o handoff falhou.
+
 Handoff serve a **dois casos**, não só um:
 
 1. **Trocar de janela (contexto saturado).** A conversa ficou grande/confusa; você fecha e reabre
@@ -55,15 +58,19 @@ Grave um arquivo .md em `handoff-session/` dentro desta skill. Esse arquivo é e
 próxima instância de você ler**, não pro operador. Então escreva como instrução de trabalho,
 direto ao ponto, sem floreio.
 
-**UM arquivo por sessão — atualizar, nunca recriar.** O briefing é vivo: existe UM .md por
-sessão e ele é mantido fresco ao longo dela (em marcos naturais) e consolidado quando o operador
-pede "faz um handoff". Se já existe o .md DESTA sessão, NÃO crie outro: reabra o mesmo, atualize
-só as seções que mudaram, mantenha o resto. Pedir handoff = "consolida agora", não "recomeça do
-zero" — economiza trabalho e evita lixo duplicado.
+**UM arquivo por ASSUNTO continuado, atualizar, nunca recriar.** O briefing é vivo e pertence ao
+assunto/projeto, não ao calendário de sessões. Se a janela nova continua o mesmo assunto, continue
+o mesmo .md: reabra, atualize só as seções que mudaram, remova o que já foi concluído e mantenha o
+resto. Handoff novo nasce só quando o assunto/projeto é outro ou quando a fatia paralela tem foco
+diferente. Pedir handoff = "consolida agora", não "recomeça do zero".
 
 Nome do arquivo: `handoff-AAAA-MM-DD-<assunto-curto>.md` (data atual real + slug do assunto). UM
-por sessão/assunto: na mesma sessão, reusar esse nome e sobrescrever o conteúdo, não criar
-variantes por horário. Arquivo novo só pra OUTRA sessão ou recorte de fatia paralela (Parte 3).
+por assunto: reusar esse nome e sobrescrever o conteúdo, não criar variantes por horário. Arquivo
+novo só pra outro assunto/projeto ou recorte de fatia paralela (Parte 3).
+
+**Ordem quando ha destilacao envolvida:** destile primeiro, espere terminar se for algo leve o
+suficiente para esta janela, e faça o handoff por último. Quando avisar que o operador pode abrir
+janela limpa, nada deve voltar a tocar o handoff nem pingar a conversa.
 
 ### Estrutura do briefing
 
@@ -107,6 +114,9 @@ evitar-retrabalho, não só o handoff.)
 - **Foco primeiro.** Se o operador disse pra que serve a próxima sessão, trate isso como o norte
   do documento e adapte tudo a ele. Sem saber o foco, não dá pra escrever um bom handoff — se ele
   não disser, pergunte em uma linha.
+- **Curto por default.** Alvo normal: algo que a próxima janela leia em menos de 1 minuto. Priorize
+  foco, onde paramos, próxima ação, decisões travadas, armadilhas e arquivos-chave. Se uma seção
+  não muda a retomada, corte. Handoff não é arquivo histórico.
 - **Ponteiro, não cópia.** Não duplique no briefing o que já existe em outro artefato (outro .md,
   issue, PRD, código). Aponte o caminho/link. Handoff que repete conteúdo incha e fica caro de
   reler — exatamente o que essa skill existe pra evitar.
@@ -114,6 +124,9 @@ evitar-retrabalho, não só o handoff.)
   precisar referenciar, diga "a credencial X" sem o valor.
 - **Só markdown, agente nenhum amarrado.** O briefing é um .md puro: serve tanto pra outra janela
   do Claude quanto pra outro agente — útil se quiser review adversarial entre agentes diferentes.
+- **Retomada barata.** O briefing deve permitir continuar lendo o próprio handoff + 1 ou 2
+  arquivos-alvo. Se ele exige reler conversa, listar pasta inteira ou abrir vários artefatos antes
+  de agir, reescreva mais enxuto.
 
 ### Limpeza
 

@@ -40,6 +40,8 @@ tarefa complexa e vira QUALIDADE (mais verificação), não desperdício.
   *Complexa* → ver protocolo abaixo. Nunca carrego contexto que a tarefa não usa.
 - **Caminho mais simples primeiro:** checar o que já existe localmente (script, guia `.md`, memória) ANTES de buscar online ou construir do zero. Resposta rápida e afiada é o padrão; busca web e planejamento pesado só quando o conhecimento local realmente faltar. Se há jeito mais direto, esse é o caminho.
 - **Markdown para agente:** bootstrap aponta, índice navega, referência resolve em bloco curto. Padrão: `references/padrao-markdown-agentes.md`.
+- **Paridade multiagente:** melhoria de sistema declara alvo e porta para Claude Code + Codex quando fizer sentido. Cursor/Cline recebem o que for portátil em markdown, script neutro e referência compartilhada. Detalhe: `references/paridade-multiagente-cortex.md`.
+- **Auto-melhoria de skills:** se o operador cita uma skill ao explicar uma fricção, trate como sinal de melhoria da própria skill. Ajuste cirúrgico no SKILL.md ou fila explícita. Detalhe: `references/auto-melhoria-skills.md`.
 
 ## Protocolo de tarefa COMPLEXA (só quando a tarefa pede)
 
@@ -82,6 +84,10 @@ Skill nova só sob demanda: repetiu 3x eu ofereço virar skill.
 **Ciclo de contexto:** janela não é infinita. `/clear` ao trocar de tarefa; `/handoff` + `/continuar-sessao`
 pra atravessar sessões sem perder o fio; a compactação automática cuida do resto. Ofereço no momento
 certo, não deixo a janela saturar à toa. Detalhe e roteiro: `references/ciclo-de-contexto.md`.
+
+**Regra nova só fica pronta quando governa:** explicitar, dar peso, reconciliar retroativo e portar entre agentes quando for CORTEX. Detalhes: `references/criterio-explicitacao-peso-retroativo-cortex.md` e `references/paridade-multiagente-cortex.md`.
+
+**Auto-melhoria de skills:** `references/auto-melhoria-skills.md`. Citar skill durante crítica/fricção é sinal de que a ferramenta pode precisar ser ajustada ou enfileirada para ajuste.
 
 ## Cérebro fino (permanente, não removível)
 
