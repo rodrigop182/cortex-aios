@@ -8,6 +8,34 @@ Antes de atualizar, leia a seção da versão pra qual você está indo.
 
 ---
 
+## [1.8.5] - 2026-06-27
+
+Resolver de contexto, update mais conservador e pacote distribuivel saneado.
+
+### Adicionado
+
+- `memoria/scripts/cortex-context-resolver.py`: resolve consultas para slices pequenos de contexto.
+- `memoria/scripts/cortex-context-eval.py`: smoke test local do resolver.
+- `memoria/scripts/cortex-build-md-manifest.py`: gera manifest de markdowns sem conteudo bruto.
+- `memoria/scripts/cortex-train-resolver-from-sessions.py`: gera candidatos revisaveis de aliases/evals a partir de sessoes, sem gravar indices automaticamente.
+- Indices seed em `memoria/indexes/` para o resolver funcionar no template limpo.
+- Referencias operacionais novas para context engineering, acesso a contexto, gatilhos, retroatividade, entregaveis pesados e guardrails de autoevolucao.
+
+### Atualizado
+
+- Update preserva arquivos de usuario por padrao e so remove produto com permissao explicita.
+- Retrieval de topico passa a injetar ponteiro curto, reduzindo contexto automatico.
+- Hooks de memoria ficam mais silenciosos no boot e registram uso de texto/codigo do CORTEX.
+- `.gitignore` protege outputs de treino, manifest gerado, zips e entregaveis pesados.
+
+### Corrigido
+
+- Saneamento do template contra residuos pessoais/caminhos antigos.
+- Script de treino nao grava caminho absoluto de sessao no output.
+- Docs alterados foram revisados contra mojibake.
+
+---
+
 ## [1.8.4] - 2026-06-26
 
 Fonte unica de skills pessoais no Codex.
