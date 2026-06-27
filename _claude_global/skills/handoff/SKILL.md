@@ -165,15 +165,12 @@ Como fazer:
 
 ## Como a janela NOVA usa isso (gatilho explícito)
 
-**Aviso automático (hook SessionStart):** toda sessão nova, o hook `scripts/detectar_handoff.py`
-(registrado no `settings.json`) verifica `handoff-session/` e, se houver briefing, injeta no
-contexto um aviso "HANDOFF DISPONIVEL: ..." apontando o .md mais recente. É só um aviso — ele
-NÃO manda retomar. Serve pra saber de primeira que o handoff existe e ir direto ao arquivo certo
-quando o operador pedir, sem tropecar em `_sessions-pendentes.log` (isso é da `fecha-sessao`,
-outra coisa).
+**Sem aviso automatico no boot:** `SessionStart` nao injeta lista nem aviso de handoff por padrao.
+Quando o operador pedir retomada, consulte `handoff-session/` diretamente e escolha pelo assunto
+citado, nao por palpite de recencia. Isso evita contexto velho em sessao nova.
 
 Regra de decisão: **conversa nova começa limpa por padrão. Só retoma o handoff se o operador
-pedir.** Existir um .md em `handoff-session/` (ou o aviso do hook) NÃO significa retomar
+pedir.** Existir um .md em `handoff-session/` NÃO significa retomar
 automaticamente — senão toda sessão nova empurraria a tarefa antiga, mesmo quando ele quer
 começar outra coisa.
 

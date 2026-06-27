@@ -44,17 +44,13 @@ o matcher e se o script tem placeholder próprio além do `{{CAMINHO_CLAUDE}}`.
 
 **SessionStart:**
 
-- `detectar_handoff.py` — detecta briefing de handoff pendente (pertence à skill handoff).
-  Placeholder: nenhum além do `{{CAMINHO_CLAUDE}}`.
 - `nudge_destilacao.py` — verifica se há sessões pendentes de destilação e injeta aviso
   discreto. Placeholder: **`{{CAMINHO_MEMORIA}}`**.
-- `nudge_referencias.py` — varre a pasta de referências e avisa se há arquivos não ingeridos.
-  Placeholder: **`{{PASTA_REFERENCIAS}}`** (caminho da pasta de referências). Se não usa
-  ingestão de referências, remova esta entrada do settings.
-- `guarda_tamanho_memoria.py` — mede o tamanho do MEMORY.md e injeta aviso se estiver perto
-  do teto de carregamento (~24.4 KB). Placeholder: **`{{CAMINHO_MEMORIA}}`**.
 - `sync_pull.py` — puxa o que outra máquina enviou via git pull. Placeholder:
   **`{{REPO_SYNC}}`**. Opcional: só se usa mais de um dispositivo.
+
+Hooks como handoff, referências e tamanho de memória ficam fora do boot por padrão. Rode sob
+demanda ou com `--emit` quando precisar auditar, sem gastar contexto em toda sessão.
 
 **PreCompact — matcher `auto`:**
 
@@ -112,5 +108,5 @@ Deve ser trocado em todos os arquivos abaixo:
 (`sync_push.py`/`sync_pull.py` usam `{{REPO_SYNC}}`, não `{{CAMINHO_MEMORIA}}` — veja abaixo.)
 
 **`{{PASTA_REFERENCIAS}}`** — pasta onde você joga material de referência pra ingerir. Exemplo:
-`C:\CORTEX\referencias`. Deve ser trocado em: `hooks/nudge_referencias.py`.
-Se não usa ingestão de referências, remova a entrada de `nudge_referencias.py` do settings.
+`C:\CORTEX\referencias`. Deve ser trocado em: `hooks/nudge_referencias.py`, caso voce
+ative auditoria de referencias sob demanda.

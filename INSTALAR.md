@@ -125,13 +125,12 @@ tamanho da memória e log de feedback) quebra em silêncio.
 
 ### `{{PASTA_REFERENCIAS}}`
 
-Usado pelo `hooks/nudge_referencias.py` (hook SessionStart que avisa quando há arquivos novos
-na pasta de referências aguardando ingestão). Troque pelo caminho absoluto da pasta onde você
+Usado pelo `hooks/nudge_referencias.py` quando voce ativar auditoria/ingestao de referencias sob
+demanda. Troque pelo caminho absoluto da pasta onde você
 joga material de referência pra ingerir, por exemplo: `C:\CORTEX\referencias`.
 
 **Se você não usa ingestão de referências** (skill `ingerir-referencia`), pode simplesmente
-remover do `settings.json` a entrada que chama `nudge_referencias.py`. O restante do sistema
-funciona normalmente sem ela.
+ignorar este placeholder. O restante do sistema funciona normalmente sem ela.
 
 ### `{{REPO_SYNC}}`
 

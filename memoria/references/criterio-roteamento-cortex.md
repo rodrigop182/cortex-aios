@@ -27,7 +27,7 @@ Critério: tem dado pessoal, depende do contexto dele, ou é preferência sua qu
 
 - Dado pessoal: nome, clientes, projetos, caminhos reais (`{{CAMINHO_CORTEX}}\...`)
 - Preferência de nicho: regras específicas de landing, CSS, identidade V3 (`#FF4002`)
-- Fluxo de trabalho particular: como ele lida com Leo, João, o estúdio
+- Fluxo de trabalho particular: como ele lida com parceiros, clientes e equipe
 - Voz/tom dele: minúsculas, sem acentos no coloquial, abreviações
 - Memória de projeto: estado de frentes ativas, decisões passadas, clientes
 - Regra que o operador cobrou explicitamente como "só pra mim"

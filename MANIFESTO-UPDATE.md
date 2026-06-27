@@ -54,8 +54,17 @@ memoria/references/ARQUITETURA.md
 memoria/references/criterio-roteamento-cortex.md
 memoria/references/fluxo-roteamento-aprendizado.md
 memoria/references/controle-torneiras-token.md
+memoria/references/context-engineering-cortex.md
+memoria/references/criterio-acesso-contexto-cortex.md
+memoria/references/guardrails-autoevolucao-cortex.md
 memoria/references/lexico-operacional-cortex.md
 memoria/references/padrao-markdown-agentes.md
+memoria/references/paridade-multiagente-cortex.md
+memoria/references/politica-entregaveis-visiveis-repo-intacto.md
+memoria/references/politica-update-organizacao-nao-destrutiva-cortex.md
+memoria/references/estrategia-retrieval-md-cortex.md
+memoria/references/protocolo-agrupamento-regras-cortex.md
+memoria/references/protocolo-auto-melhoria-continua-cortex.md
 memoria/references/skills-catalogo/**
 memoria/regras-base.md
 memoria/intake.md
@@ -63,6 +72,14 @@ memoria/AGENTS.md
 memoria/README.md
 memoria/connections.md
 memoria/projects/README.md
+```
+
+## REMOVER_PRODUTO (opcional; só com confirmação explícita)
+
+Lista de arquivos de produto que uma versão nova autoriza remover quando, e somente quando, o
+operador rodar o script com permissão explícita de remoção. Deixe vazio por padrão.
+
+```
 ```
 
 ## DADO DO USUÁRIO (nunca tocar; preservar exatamente como está)
@@ -76,7 +93,7 @@ memoria/references/nicho-*.md
 memoria/references/nichos/**
 memoria/decisions/log.md
 memoria/memory/**
-memoria/projects/*.md
+memoria/projects/**
 memoria/archives/**
 **/handoff-session/handoff-*.md
 **/_sessions-pendentes.log
@@ -106,14 +123,21 @@ conteúdo), e todo trecho `<private>...</private>` é zona morta: não sincroniz
 
 ## Regras do update (o script obedece)
 
+0. **Organizacao nova e aditiva:** a taxonomia nova vale como default para instalacao limpa. Em
+   instalacao existente, update nao move, renomeia, apaga ou esconde pasta livre do usuario. Pasta
+   desconhecida e dado do usuario por padrao.
+0. **Migracao fisica e fluxo separado:** reorganizar arquivos existentes exige mapa antigo -> novo,
+   dry-run, backup, manifesto de movimentacao e confirmacao explicita. Sem mapa, o script preserva.
 1. **Backup primeiro:** copiar a raiz instalada inteira pra `_backup-update-<versao-antiga>-<data>/`
    antes de tocar em qualquer coisa. Sem backup, não atualiza.
 2. **Só substitui PRODUTO:** para cada caminho de PRODUTO presente no zip novo, sobrescreve o
-   instalado. Arquivo de produto que sumiu na versão nova é removido do instalado (limpeza).
+   instalado. Arquivo que existia no instalado e não veio na versão nova é preservado por padrão.
+   Remoção só acontece se o caminho estiver em `REMOVER_PRODUTO` e o operador habilitar a remoção
+   explicitamente no script.
 3. **Nunca toca DADO:** nenhum caminho de DADO é lido, copiado ou apagado. Se o zip novo trouxer
    um arquivo de DADO (ex: `nicho-exemplo.md`), ele é IGNORADO (não sobrescreve o do usuário).
 4. **Conflito de produto editado à mão:** se um arquivo de PRODUTO foi alterado pelo usuário
-   (difere do esperado da versão antiga), o script avisa e guarda a versão dele no backup, mas
-   aplica a nova mesmo assim (produto é do CORTEX). O backup garante reversão.
+   (difere do esperado da versão antiga), o script avisa, guarda a versão dele no backup e manda a
+   versão nova para merge manual por padrão. Sobrescrita direta só com permissão explícita.
 5. **VERSION manda:** ao fim, o `VERSION` do instalado vira o do zip novo. Se a versão do zip for
    menor ou igual à instalada, o script avisa e pede confirmação (downgrade/reinstalação).

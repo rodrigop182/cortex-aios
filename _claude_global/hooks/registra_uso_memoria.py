@@ -21,7 +21,21 @@ import sys, json, os, datetime, pathlib
 # O instalador resolve esse placeholder. E a MESMA pasta do MEMORY.md / captura_regra.
 MEMORY_DIR = pathlib.Path(r"{{CAMINHO_MEMORIA}}")
 _LOG_PATH = MEMORY_DIR / "_uso-memoria.log"
+_CORTEX_LOG_PATH = MEMORY_DIR / "_uso-cortex.log"
+CORTEX_ROOT = pathlib.Path(r"{{PASTA_CORTEX}}")
+if str(CORTEX_ROOT).startswith("{{"):
+    CORTEX_ROOT = pathlib.Path.cwd()
 _MAX_LINHAS = 4000  # ~meses de uso; poda quando passar de 2x
+_MAX_CORTEX_LINHAS = 6000
+_TEXT_EXTS = {
+    ".md", ".txt", ".csv", ".tsv", ".json", ".jsonl", ".yaml", ".yml", ".toml",
+    ".py", ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".html", ".css",
+    ".ps1", ".bat", ".cmd", ".sh", ".sql",
+}
+_IGNORAR_PARTES = {
+    ".git", "__pycache__", "node_modules", "dist", "build", ".next", ".vite",
+    "_backup", "_backups", "archives", ".historico", "temp", "tmp",
+}
 
 
 def _eh_memoria_individual(fp):
@@ -44,6 +58,25 @@ def _eh_memoria_individual(fp):
     return nome
 
 
+def _eh_cortex_texto(fp):
+    """Retorna caminho relativo se fp e texto/codigo dentro da raiz CORTEX."""
+    try:
+        p = pathlib.Path(fp).resolve()
+        root = CORTEX_ROOT.resolve()
+    except Exception:
+        return None
+    if p.suffix.lower() not in _TEXT_EXTS:
+        return None
+    parts = {part.lower() for part in p.parts}
+    if parts & _IGNORAR_PARTES:
+        return None
+    try:
+        rel = p.relative_to(root)
+    except Exception:
+        return None
+    return rel.as_posix()
+
+
 def _gravar(slug):
     try:
         ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -51,6 +84,17 @@ def _gravar(slug):
         with open(_LOG_PATH, "a", encoding="utf-8") as f:
             f.write(f"{ts}\t{slug}\n")
         _podar_se_preciso()
+    except Exception:
+        pass
+
+
+def _gravar_cortex(relpath):
+    try:
+        ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        os.makedirs(str(MEMORY_DIR), exist_ok=True)
+        with open(_CORTEX_LOG_PATH, "a", encoding="utf-8") as f:
+            f.write(f"{ts}\t{relpath}\n")
+        _podar_log(_CORTEX_LOG_PATH, _MAX_CORTEX_LINHAS)
     except Exception:
         pass
 
@@ -72,6 +116,20 @@ def _podar_se_preciso():
         pass
 
 
+def _podar_log(path, max_linhas):
+    try:
+        if not path.exists():
+            return
+        linhas = path.read_text(encoding="utf-8").splitlines()
+        if len(linhas) <= 2 * max_linhas:
+            return
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        tmp.write_text("\n".join(linhas[-max_linhas:]) + "\n", encoding="utf-8")
+        os.replace(str(tmp), str(path))
+    except Exception:
+        pass
+
+
 def main():
     raw = sys.stdin.read()
     if not raw.strip():
@@ -88,6 +146,9 @@ def main():
     slug = _eh_memoria_individual(fp)
     if slug:
         _gravar(slug)
+    rel = _eh_cortex_texto(fp)
+    if rel:
+        _gravar_cortex(rel)
     # NUNCA injeta additionalContext: instrumentacao e 100% silenciosa (backstage).
 
 

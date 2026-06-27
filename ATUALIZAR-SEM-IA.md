@@ -5,6 +5,9 @@ agente fazer por você.
 
 O update troca só a camada de produto e preserva seus dados.
 
+Update nao reorganiza sua pasta viva. Se voce ja criou pastas livres dentro do CORTEX, elas
+continuam onde estao. A organizacao nova vale como recomendacao para o que voce criar daqui pra frente.
+
 ## O que fica preservado
 
 - `context/`;
@@ -14,6 +17,7 @@ O update troca só a camada de produto e preserva seus dados.
 - sua voz;
 - seus nichos;
 - handoffs;
+- pastas livres que voce criou;
 - qualquer arquivo sensível.
 
 ## Antes de começar
@@ -32,6 +36,9 @@ atualização de produto é mais segura quando você aponta também a pasta-font
 
 Se você não guardou a pasta-fonte antiga, peça ajuda com `ATUALIZAR-COM-CODEX.md` para conferir a
 melhor rota antes de aplicar.
+
+Nao use a pasta viva (`C:\CORTEX` ou `~/CORTEX`) como `Instalado` se ela nao for a pasta-fonte do
+pacote antigo. Essa pasta viva guarda seu trabalho. Quando houver duvida, pare no dry-run.
 
 ## Windows
 

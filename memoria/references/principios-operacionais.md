@@ -104,7 +104,7 @@ Não usar para: regra local de projeto ou instrução detalhada de uma skill
 ## Referências cruzadas
 
 - `modo-elevacao.md` — elevação de resultado fraco (3 níveis micro/meso/macro)
-- `criterio-roteamento-cortex.md` — regra vs. skill, universal vs. Rodrigo
+- `criterio-roteamento-cortex.md` — regra vs. skill, universal vs. operador
 - `tiers-de-modelo.md` — régua dos 3 tiers de subagente
 - `delegacao-orquestracao.md` — quando e como delegar
 - `criterio-esforco-cortex.md` — calibração de esforço com duas portas

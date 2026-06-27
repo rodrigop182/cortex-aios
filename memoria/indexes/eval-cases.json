@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "update-usuario-antigo",
+      "query": "como atualizo sem quebrar usuario antigo?",
+      "expect_domain": "update-template",
+      "expect_rules": ["update-preservar-usuario-antigo"],
+      "expect_slices": ["update-politica::regra-central"],
+      "forbid_domains": ["repo-intacto-entregaveis"]
+    },
+    {
+      "id": "update-modo-legado",
+      "query": "update sem reorganizar pasta customizada de usuario existente",
+      "expect_domain": "update-template",
+      "expect_rules": ["update-modo-legado-preserva-customizacao"],
+      "expect_slices": ["update-politica::modo-legado"],
+      "forbid_domains": ["memoria-contexto"]
+    },
+    {
+      "id": "contexto-minimo",
+      "query": "context engineering boot minimo e rg antes de ler arquivo grande",
+      "expect_domain": "memoria-contexto",
+      "expect_rules": ["acesso-contexto-menor-suficiente"],
+      "expect_slices": ["acesso-contexto::escada"],
+      "forbid_domains": ["update-template"]
+    },
+    {
+      "id": "backstage-sem-spam",
+      "query": "manutencao de regras sem poluir chat e sem spam no chat",
+      "expect_domain": "backstage-governanca",
+      "expect_rules": ["backstage-nao-polui-chat"],
+      "expect_slices": ["backstage::regra"],
+      "max_slices": 1,
+      "max_text_chars": 1200,
+      "forbid_domains": ["update-template"]
+    },
+    {
+      "id": "repo-entregavel-pesado",
+      "query": "onde guardar zip render print e arquivo pesado sem sujar o repo?",
+      "expect_domain": "repo-intacto-entregaveis",
+      "expect_rules": ["repo-intacto-entregaveis"],
+      "expect_slices": ["repo-intacto::regra-central"],
+      "forbid_domains": ["memoria-contexto"]
+    },
+    {
+      "id": "seguranca-confirmacao",
+      "query": "mudanca no cortex com token credencial ou apagar memoria precisa confirmacao?",
+      "expect_domain": "autoevolucao-seguranca",
+      "expect_rules": ["autoevolucao-confirmacao-sensivel"],
+      "expect_slices": ["guardrails::confirmacao"],
+      "forbid_domains": ["repo-intacto-entregaveis"]
+    }
+  ]
+}

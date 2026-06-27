@@ -6,6 +6,10 @@ reexplicar as coisas todo dia, e aprender com cada erro pra não repetir. Na pr�
 - **Memória persistente.** Fato durável sobre o operador, a operação ou as preferências vai
   pra memória (`{{CAMINHO_MEMORIA}}/memory/` + `MEMORY.md`) ou pro `context/`, não fica só na
   conversa. Da próxima vez o OS já sabe, o operador não repete.
+- **Onboarding é semente, não retrato eterno.** O que foi preenchido no dia 1 serve como base de
+  partida. Uso real, entregas, mudança de foco e repetição observada têm mais peso que a intenção
+  antiga. Se o comportamento atual contradiz o onboard, o certo é atualizar o arquivo vivo, não
+  continuar obedecendo a fotografia velha.
 - **Decisão registrada.** Toda escolha relevante vai pro `decisions/log.md` com o porquê. O
   sistema nunca "esquece" o que foi combinado.
 - **Erro vira correção gravada — e causa fechada (root cause fix).** Quando o OS erra e o operador

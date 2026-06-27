@@ -2,13 +2,13 @@
 # CORTEX OS - atualizador (Windows PowerShell)
 # Troca SO a camada de produto; preserva o dado do usuario (memoria, voz, nicho).
 # Uso:
-#   .\atualizar.ps1 -Novo "C:\caminho\do\CORTEX-novo-descompactado" [-Instalado "C:\CORTEX"] [-Aplicar]
+#   .\atualizar.ps1 -Novo "C:\caminho\do\CORTEX-novo-descompactado" -Instalado "C:\caminho\do\CORTEX-fonte-antigo" [-Aplicar]
 # Sem -Aplicar = dry-run (so mostra o plano). Confira e rode de novo com -Aplicar.
 # =============================================================================
 
 param(
     [Parameter(Mandatory = $true)][string]$Novo,
-    [string]$Instalado = "",
+    [Parameter(Mandatory = $true)][string]$Instalado,
     [switch]$Aplicar
 )
 
@@ -24,13 +24,9 @@ if (-not (Test-Path $Motor)) {
     exit 1
 }
 
-# Se nao informaram o instalado, tenta a pasta de trabalho padrao do CORTEX
-if ($Instalado -eq "") {
-    $Instalado = "C:\CORTEX"
-    Info "Instalado nao informado; assumindo: $Instalado"
-}
 if (-not (Test-Path $Instalado)) {
-    Erro "Pasta instalada nao encontrada: $Instalado. Use -Instalado pra apontar a raiz."
+    Erro "Pasta-fonte antiga nao encontrada: $Instalado."
+    Erro "Use -Instalado para apontar a pasta do pacote antigo, nao a pasta viva de trabalho."
     exit 1
 }
 

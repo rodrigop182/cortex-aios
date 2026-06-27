@@ -5,7 +5,7 @@ mede_1shot.py - extrai metricas de 1-shot a partir dos transcripts enxutos.
 
 Le os .txt gerados por extrai.py em _catchup/enxutos, chama Haiku para
 identificar tarefas de producao e anexa linhas em:
-  C:/Projetos/memoria/metricas/1shot-log.csv
+  <PASTA_CORTEX>/memoria/metricas/1shot-log.csv
 
 Regra de seguranca: se estiver em duvida, omite a linha. A metrica aceita ruido,
 mas nao aceita inventar tarefa.
@@ -21,7 +21,7 @@ from pathlib import Path
 
 
 DEFAULT_ENXUTOS = os.path.join(os.getcwd(), "_catchup", "enxutos")
-DEFAULT_LOG = r"C:/Projetos/memoria/metricas/1shot-log.csv"
+DEFAULT_LOG = r"{{PASTA_CORTEX}}/memoria/metricas/1shot-log.csv"
 LOTE_BYTES = 45_000
 MAX_FILE_BYTES = 30_000
 FIELDNAMES = ["data", "sessao", "tarefa", "nicho", "iteracoes", "oneshot", "obs"]

@@ -1,6 +1,6 @@
 ---
 name: salvar-referencia
-description: "Salva material que o operador jogou pra aprender (PDF, link, imagem, vídeo, áudio, YouTube, site) e destila pro lugar certo. Aciona por INTENÇÃO explícita: 'salva essa ref', 'aprende com isso', 'guarda esse material', 'processa essa pasta', ou quando hook nudge_referencias avisar arquivo novo. NAO aciona quando operador só MENCIONA referência em conversa — exige que ele esteja MANDANDO algo pra guardar. NAO caça ref na web nem destila sessão de trabalho (fecha-sessao)."
+description: "Salva material que o operador jogou pra aprender (PDF, link, imagem, vídeo, áudio, YouTube, site) e destila pro lugar certo. Aciona por INTENÇÃO explícita: 'salva essa ref', 'aprende com isso', 'guarda esse material', 'processa essa pasta', ou quando auditoria apontar arquivo novo. NAO aciona quando operador só MENCIONA referência em conversa — exige que ele esteja MANDANDO algo pra guardar. NAO caça ref na web nem destila sessão de trabalho (fecha-sessao)."
 ---
 
 # Ingerir referência
@@ -12,7 +12,7 @@ do chat principal (manutenção de memória é backstage, nunca o protagonista d
 
 ## Quando roda
 
-- Hook `nudge_referencias.py` avisou que há arquivo novo na pasta (fonte principal).
+- Manutencao/auditoria identificou arquivo novo na pasta de referencias.
 - O operador cola um LINK ou arquivo de referência no chat (processa na hora, sem esperar o hook).
 - Ele pede direto: "ingere essa referência", "processa a pasta de referências".
 

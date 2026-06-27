@@ -1,12 +1,12 @@
 # FASE 5 — Loop de qualidade da memória (medir, reforçar, podar)
 
-> Desenhado e implementado em 2026-06-23 (rumo HÍBRIDO escolhido pelo {{USUARIO}}go). Saiu de um workflow
+> Desenhado e implementado em 2026-06-23 (rumo HÍBRIDO escolhido pelo operador). Saiu de um workflow
 > de 3 designs + 3 críticas adversariais. É o mecanismo que sustenta "nunca explicar 2x" de verdade:
 > sem ele o CORTEX só ACUMULA regras (a "torneira aberta") e nunca sabe se uma regra funciona.
 
 ## O reframe (o achado que mudou o rumo)
 
-Medir eficácia 100% automático **não funciona**. O feedback do {{USUARIO}}go é genérico ("agora sim",
+Medir eficácia 100% automático **não funciona**. O feedback do operador é genérico ("agora sim",
 "de novo o mesmo erro") — ele nunca cita o slug da regra. Cruzar `_feedback.log` × regra por janela
 de tempo dilui o sinal e vira ruído (3 críticos independentes reprovaram). Conclusão:
 
@@ -56,6 +56,6 @@ Daí a arquitetura **híbrida**: automático mede uso e poda o morto; a eficáci
 ## Estado e o que falta
 
 Implementado (híbrido) e testado em sandbox. O loop de PODA fecha automático e seguro; o de EFICÁCIA
-depende da destilação que o {{USUARIO}}go já roda. **Maturação:** a poda por falta-de-uso só fica confiável
+depende da destilação que o operador já roda. **Maturação:** a poda por falta-de-uso só fica confiável
 após ~30 dias de instrumentação real (`_uso-memoria.log` nasceu em 23/06). Até lá, presença-no-índice
 e status `resolvido` são as travas ativas. Lastro conceitual: [[cortex-3-loops-auto-desenvolvimento]] (M3/M4).

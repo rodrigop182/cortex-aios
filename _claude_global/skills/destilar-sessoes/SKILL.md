@@ -72,7 +72,7 @@ catch-up"). Duas fontes, complementares:
 Pipeline Karpathy — custo estimado ~1-3k tokens por lote de sessoes:
 
 ```bash
-cd C:/Projetos/_catchup
+cd <PASTA_CORTEX>/_catchup
 python ~/.claude/skills/destilar-sessoes/scripts/extrai.py --src ~/.claude/projects/<projeto> --days 7
 python ~/.claude/skills/destilar-sessoes/scripts/mede_1shot.py
 python ~/.claude/skills/destilar-sessoes/scripts/sintetiza.py --wiki <CORTEX>/memoria/wiki
@@ -81,7 +81,7 @@ python ~/.claude/skills/destilar-sessoes/scripts/sintetiza.py --wiki <CORTEX>/me
 **extrai.py** — determinístico, zero modelo. Cospe .txt enxuto por sessao em `_catchup/enxutos/`.
 **mede_1shot.py** — chama Haiku e anexa linhas de 1-shot em `memoria/metricas/1shot-log.csv`.
 **sintetiza.py** — chama `claude -p` com Haiku por lote (~50KB). Extrai achados por CONCEITO
-(nao por sessao), merge em `C:/Projetos/memoria/wiki/<conceito>.md`, regenera `wiki/index.md`.
+(nao por sessao), merge em `<PASTA_CORTEX>/memoria/wiki/<conceito>.md`, regenera `wiki/index.md`.
 
 Conceitos rastreados (definidos no sintetiza.py):
 - como-trabalhar-com-operador, design-regras-duras, execucao-e-delegacao

@@ -93,10 +93,9 @@ instalação manual costumava travar. Você resolve isso porque SABE os caminhos
      projeto, dentro de `~/.claude/projects/<pasta-do-projeto>/memory`.
      **Resolva TODAS as ocorrências** (`grep -rl "{{CAMINHO_MEMORIA}}"`), senão o loop de
      aprendizado (captura de regra + fila de sessões + medidor de uso/poda) quebra silencioso.
-   - `{{PASTA_REFERENCIAS}}` (aparece em `nudge_referencias.py`) → a pasta onde o operador joga
+   - `{{PASTA_REFERENCIAS}}` (aparece em `nudge_referencias.py`, se ativar auditoria sob demanda) → a pasta onde o operador joga
      material de referência para ingerir (ex: `C:\CORTEX\referencias` ou `~/cortex/referencias`).
-     **Opcional:** se o operador não usa ingestão de referências, pode remover a entrada do
-     `nudge_referencias.py` do `settings.json` e ignorar este placeholder.
+     **Opcional:** se o operador não usa ingestão de referências, ignore este placeholder.
    - `{{PASTA_CORTEX}}` (aparece em `retrieval_topico.py`) → a **pasta CORTEX** de trabalho (onde
      o conteúdo de `memoria/` foi copiado FLAT, ex: `C:\CORTEX` ou `~/CORTEX`). O hook lê
      `{{PASTA_CORTEX}}/references` para injetar guia/regra por tópico. **NÃO confundir** com

@@ -86,7 +86,7 @@ Resposta:
 Promover uma regra para peso maior quando qualquer item abaixo for verdadeiro:
 
 - eu disse "isso ja existia, mas nao estava explicito";
-- o Rodrigo corrigiu a mesma coisa 2x;
+- o operador corrigiu a mesma coisa 2x;
 - a regra ficou escondida em arquivo pesado e nao disparou no fluxo real;
 - o erro reapareceu em outra superficie;
 - a regra mudou decisao, nao so redacao;

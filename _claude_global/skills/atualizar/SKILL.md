@@ -21,7 +21,8 @@ A fronteira produto vs dado mora no `MANIFESTO-UPDATE.md` (fonte unica da verdad
 ## Fluxo (mostrar antes de aplicar, sempre)
 
 1. **Dry-run primeiro** (nunca pular): roda o script com `--dry-run` e MOSTRA o plano ao usuario:
-   o que vai escrever, o que vai remover, e a confirmacao de que o dado fica intocado.
+   o que vai criar, o que ficou pendente de merge manual, o que seria removido so por lista explicita,
+   e a confirmacao de que o dado fica intocado.
 
    ```
    python <skill>/scripts/atualizar.py --instalado "<raiz-instalada>" --novo "<raiz-nova>" --dry-run
@@ -66,7 +67,10 @@ ele listar e oriente o usuario a dar `/clear` (o `CLAUDE.md` novo so pega na pro
 - **Dado do usuario intocado:** memoria (`memoria/memory/**`), voz, nicho, contexto, decisoes,
   projetos preenchidos, handoffs. O script nem le esses caminhos pra escrever.
 - **Produto trocado pela versao nova:** skills, `CLAUDE.md`, `lite/CLAUDE-LITE.md`, settings, hooks,
-  refs genericas, docs. Arquivo de produto que sumiu na versao nova e removido (limpeza).
+  refs genericas, docs. Arquivo de produto que sumiu na versao nova e preservado por padrao.
+  Remocao so acontece se o caminho estiver em `REMOVER_PRODUTO` e o operador usar flag explicita.
+  Arquivo existente diferente fica preservado e a versao nova vai para `_update-pendente/`, salvo
+  quando houver permissao explicita de sobrescrita.
 - **Backup sempre:** da pra reverter restaurando da pasta `_backup-update-*`.
 - **Versao:** o `VERSION` instalado passa a ser o da versao nova. Downgrade pede `--yes`.
 

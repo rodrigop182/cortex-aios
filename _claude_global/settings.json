@@ -60,19 +60,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python {{CAMINHO_CLAUDE}}/skills/handoff/scripts/detectar_handoff.py"
-          },
-          {
-            "type": "command",
             "command": "python {{CAMINHO_CLAUDE}}/hooks/nudge_destilacao.py"
-          },
-          {
-            "type": "command",
-            "command": "python {{CAMINHO_CLAUDE}}/hooks/nudge_referencias.py"
-          },
-          {
-            "type": "command",
-            "command": "python {{CAMINHO_CLAUDE}}/hooks/guarda_tamanho_memoria.py"
           },
           {
             "type": "command",

@@ -39,6 +39,8 @@ tarefa complexa e vira QUALIDADE (mais verificação), não desperdício.
   conserto, sem puxar projeto inteiro/memória/protocolo; bloco de ajustes pode ir pra subagente.
   *Complexa* → ver protocolo abaixo. Nunca carrego contexto que a tarefa não usa.
 - **Caminho mais simples primeiro:** checar o que já existe localmente (script, guia `.md`, memória) ANTES de buscar online ou construir do zero. Resposta rápida e afiada é o padrão; busca web e planejamento pesado só quando o conhecimento local realmente faltar. Se há jeito mais direto, esse é o caminho.
+- **Acesso ao CORTEX:** a raiz CORTEX (`C:\CORTEX` ou pasta escolhida no setup) é biblioteca agregadora roteável. Abro só o menor contexto que muda a próxima ação; busco texto/código antes de ler arquivo grande. Detalhe: `references/criterio-acesso-contexto-cortex.md`.
+- **Escopo indexável:** texto e código por padrão; mídia/arquivo pesado só quando você apontar ou a tarefa exigir ferramenta específica.
 - **Markdown para agente:** bootstrap aponta, índice navega, referência resolve em bloco curto. Padrão: `references/padrao-markdown-agentes.md`.
 - **Paridade multiagente:** melhoria de sistema declara alvo e porta para Claude Code + Codex quando fizer sentido. Cursor/Cline recebem o que for portátil em markdown, script neutro e referência compartilhada. Detalhe: `references/paridade-multiagente-cortex.md`.
 - **Skills Codex, fonte unica:** skill pessoal do Codex mora em `~/.agents/skills`. `~/.codex/skills` fica reservado para `.system`; duplicata pessoal ali deve ser arquivada fora de `skills`.
@@ -82,9 +84,9 @@ As 15 regras detalhadas: `references/regras-completas.md` (geridas por `/regras`
 - **Salvar referência:** quando jogar um link, arquivo ou texto pedindo pra guardar no sistema, o CORTEX ingere e indexa sem precisar de skill separada. Diga "guarda isso" ou "salva como referência".
 Skill nova só sob demanda: repetiu 3x eu ofereço virar skill.
 
-**Ciclo de contexto:** janela não é infinita. `/clear` ao trocar de tarefa; `/handoff` + `/continuar-sessao`
-pra atravessar sessões sem perder o fio; a compactação automática cuida do resto. Ofereço no momento
-certo, não deixo a janela saturar à toa. Detalhe e roteiro: `references/ciclo-de-contexto.md`.
+**Ciclo de contexto:** janela não é infinita. Área útil padrão = 250k tokens por janela. `/clear` ao trocar de tarefa; `/handoff` + `/continuar-sessao`
+pra atravessar sessões sem perder o fio. AutoCompact fica desligado por padrão; quando pesar,
+alerta cedo, handoff curto e janela limpa. Detalhe e roteiro: `references/ciclo-de-contexto.md`.
 
 **Regra nova só fica pronta quando governa:** explicitar, dar peso, reconciliar retroativo e portar entre agentes quando for CORTEX. Detalhes: `references/criterio-explicitacao-peso-retroativo-cortex.md` e `references/paridade-multiagente-cortex.md`.
 

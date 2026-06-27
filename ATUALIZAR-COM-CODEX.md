@@ -39,6 +39,7 @@ Faça nesta ordem:
 3. Compare a versão nova com a antiga e explique TUDO que a antiga não tinha e a nova passa a ter.
 4. Resuma o que será escrito, removido e preservado.
 5. Mostre separadamente: (a) produto novo, (b) produto alterado, (c) dado preservado.
+5b. Mostre pastas customizadas ou desconhecidas como PRESERVADAS. Nao reorganize minha pasta viva.
 6. Só aplique se eu confirmar.
 7. Depois confira VERSION, context/, memory/ e projects/.
 ```

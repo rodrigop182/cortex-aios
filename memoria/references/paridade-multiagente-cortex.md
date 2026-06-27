@@ -14,32 +14,32 @@ Feito nao e "funciona na janela atual". Feito e: a mudanca declara alvo, foi apl
 | Alvo | Onde governa | Quando atualizar |
 | --- | --- | --- |
 | Compartilhado | `memoria/`, `memoria/references/`, `memoria/decisions/`, scripts neutros, handoffs | regra, criterio, decisao ou automacao que qualquer agente deve encontrar |
-| Claude Code | `CLAUDE.md`, `C:\Users\rodri\.claude\`, hooks, agents, skills | orquestracao, memoria dinamica, hook, skill madura, decisao estrategica |
-| Codex | `AGENTS.md`, `C:\Users\rodri\.codex\AGENTS.md`, `C:\Users\rodri\.agents\skills\`, plugins/config Codex | execucao, codigo, analise, landing, scripts, uso em Codex CLI |
+| Claude Code | `CLAUDE.md`, `%USERPROFILE%\.claude\`, hooks, agents, skills | orquestracao, memoria dinamica, hook, skill madura, decisao estrategica |
+| Codex | `AGENTS.md`, `%USERPROFILE%\.codex\AGENTS.md`, `%USERPROFILE%\.agents\skills\`, plugins/config Codex | execucao, codigo, analise, landing, scripts, uso em Codex CLI |
 | Cursor/Cline | markdown portatil, scripts neutros, referencias em `memoria/` | quando a regra nao depende de hook/skill proprietaria |
 | Nao portar | decisao registrada com motivo | quando a capacidade so existe em uma superficie |
 
 ## Fonte unica de skills no Codex
 
-No Codex, skill pessoal ativa mora em `C:\Users\rodri\.agents\skills\`.
+No Codex, skill pessoal ativa mora em `%USERPROFILE%\.agents\skills\`.
 
-`C:\Users\rodri\.codex\skills\` fica reservado para `.system` e material interno do runtime. Nao
+`%USERPROFILE%\.codex\skills\` fica reservado para `.system` e material interno do runtime. Nao
 copiar skill pessoal para as duas raizes. Se uma skill com o mesmo `name` existir nas duas, o Codex
 mostra duplicado e pode carregar a versao velha.
 
 Quando mexer em skill usada por Codex:
 
-1. atualizar `C:\Users\rodri\.agents\skills\<skill>\`;
+1. atualizar `%USERPROFILE%\.agents\skills\<skill>\`;
 2. atualizar o espelho distribuivel ou de memoria quando existir;
-3. checar duplicata por nome em `C:\Users\rodri\.codex\skills\`;
+3. checar duplicata por nome em `%USERPROFILE%\.codex\skills\`;
 4. se houver duplicata pessoal, arquivar fora de `skills\`, por exemplo em
-   `C:\Users\rodri\.codex\_arquivadas\skills-duplicadas-<data>\`.
+   `%USERPROFILE%\.codex\_arquivadas\skills-duplicadas-<data>\`.
 
 Checagem barata:
 
 ```powershell
-$codex = Get-ChildItem -Directory C:\Users\rodri\.codex\skills -ErrorAction SilentlyContinue | Where-Object Name -ne '.system'
-$agents = Get-ChildItem -Directory C:\Users\rodri\.agents\skills -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name
+$codex = Get-ChildItem -Directory "$env:USERPROFILE\.codex\skills" -ErrorAction SilentlyContinue | Where-Object Name -ne '.system'
+$agents = Get-ChildItem -Directory "$env:USERPROFILE\.agents\skills" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name
 $codex | Where-Object { $_.Name -in $agents } | Select-Object Name,FullName
 ```
 

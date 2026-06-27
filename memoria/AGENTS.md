@@ -7,6 +7,7 @@ Bootstrap do Codex na pasta CORTEX instalada. Conteúdo pesado mora em `referenc
 - PT-BR, direto, ação primeiro.
 - Nunca inventar número, cliente, estatística, prova ou depoimento.
 - Faltou dado: usar `[PREENCHER: x]`.
+- Terminal quiet: trabalhar em lote, evitar despejar codigo/log/diff longo e fechar com resumo curto.
 - Ler só os arquivos necessários.
 - Preservar dados do usuário, credenciais e qualquer trecho em `<private>...</private>`.
 
@@ -26,7 +27,15 @@ Bootstrap do Codex na pasta CORTEX instalada. Conteúdo pesado mora em `referenc
 - Paridade multiagente: `references/paridade-multiagente-cortex.md`
 - Skills Codex: pessoais em `~/.agents/skills`; `~/.codex/skills` reservado para `.system`.
 - Auto-melhoria de skills: `references/auto-melhoria-skills.md`
+- Auto-melhoria continua por atrito: `references/protocolo-auto-melhoria-continua-cortex.md`
 - Torneiras de token: `references/controle-torneiras-token.md`, quando existir
+- Contexto, memória e compactação: área útil padrão = 250k tokens por janela; detalhe em `references/politica-contexto-memoria-compactacao.md`
+- Context-engineering: `references/context-engineering-cortex.md`
+- Acesso ao CORTEX: raiz CORTEX é biblioteca agregadora roteável; abrir só o menor contexto que muda a próxima ação. Detalhe: `references/criterio-acesso-contexto-cortex.md`
+- Escopo indexável: texto e código por padrão; mídia/arquivo pesado só quando o usuário apontar ou a tarefa exigir ferramenta específica.
+- Autoevolução com guarda: `references/guardrails-autoevolucao-cortex.md`
+- Retroatividade operacional: mudança nova em regra, caminho, nome, logo, asset, automação ou template precisa declarar o que acontece com o que já existe. Detalhe: `references/retroatividade-operacional-cortex.md`
+- Gatilhos operacionais: task manual é fallback; sensor read-only deve acionar por fala natural quando seguro. Detalhe: `references/gatilhos-operacionais-cortex.md`
 
 ## Arquivos principais
 

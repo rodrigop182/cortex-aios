@@ -1,6 +1,6 @@
 # Auto-manutenção da memória — como o CORTEX cresce sem estourar
 
-> Desenho de arquitetura nascido da pergunta do {{USUARIO}}go (23/06): "a própria premissa do
+> Desenho de arquitetura nascido da pergunta do operador (23/06): "a própria premissa do
 > CORTEX faz ele crescer naturalmente, tem que ter um jeito de manter abaixo do limite".
 > É o paradoxo central do produto. Este arquivo é o desenho da FASE 5 (a executar com
 > gate humano, não no improviso). Casa com [[cortex-3-loops-auto-desenvolvimento]] (M3/M4),
@@ -8,17 +8,15 @@
 
 ## STATUS — CONSTRUÍDA em 2026-06-23 (vivo + template)
 Os 3 mecanismos existem e foram auditados (subagente adversarial). A consolidação do índice já rodou
-(MEMORY.md 23.2→18.4KB). Hooks: `guarda_tamanho_memoria.py` (detector de família, LIMIAR=22),
+(MEMORY.md 23.2→18.4KB; alvo atual 12-16KB). Hooks: `guarda_tamanho_memoria.py` (medidor sob demanda/`--emit`, alerta 18KB, teto 20KB),
 `registra_uso_memoria.py` (instrumentação, PostToolUse:Read), `poda_por_evidencia.py` (sob demanda,
 gate). FALTA, no tempo: (a) a instrumentação coletar ~30 dias antes da 1ª poda confiável (trava
 conservadora ativa); (b) ligar a `poda_por_evidencia` ao gatilho AUTOMÁTICO (vigia de inatividade /
 catch-up) — hoje é só sob demanda. Decisões em `decisions/log.md` (2026-06-23 FASE 5).
 
 ## O paradoxo
-"Aprende todo dia + nunca esquece" + índice fino lido todo turno (teto ~24.4KB de
-carregamento do Claude Code) = o índice estoura e VOLTA a esquecer (trunca silencioso).
-A promessa se autossabota sem um mecanismo de auto-manutenção. Avisar (guarda de tamanho)
-não basta: a entrada é constante, então o equilíbrio tem que ser ESTRUTURAL, não manual.
+"Aprende todo dia + nunca esquece" + índice fino lido todo turno = o índice estoura e VOLTA a esquecer (trunca silencioso).
+A promessa se autossabota sem um mecanismo de auto-manutenção. Medir tamanho não basta: a entrada é constante, então o equilíbrio tem que ser ESTRUTURAL, não manual.
 
 ## Por que NÃO é "apagar pra caber"
 Apagar pra caber faz o sistema perder regra viva sem o operador ver — fere o princípio
@@ -53,7 +51,7 @@ resposta, carregada sob demanda, evitou um retrabalho). Sem medir uso, poda é c
 1. Instrumentar USO (sem isso, nada de poda confiável). Hook/registro leve de "regra X
    foi tocada nesta sessão".
 2. Consolidação assistida: detector de família inchada → propõe fusão → eu executo com
-   julgamento → 1 linha pro {{USUARIO}}go.
+   julgamento → 1 linha pro operador.
 3. Poda por evidência: regra sem uso há X + log + gate → move pra archives.
 4. Só quando 1-3 provarem que não comem regra viva: subir o nível de automação.
 

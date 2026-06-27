@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Hook UserPromptSubmit: retrieval por topico.
+"""Hook UserPromptSubmit: retrieval por topico em modo ponteiro.
 
 A memoria do CORTEX depende do modelo LEMBRAR de abrir o guia/regra certo entre
 dezenas de arquivos. Quando ele esquece, entrega abaixo do piso de qualidade.
 
-Este hook detecta o TEMA do prompt por um mapa keyword->arquivo curado e INJETA o
-CONTEUDO relevante (nao so o caminho) via stdout, antes do Claude responder. Pra
-guia de nicho, injeta a parte acionavel (do '## Regras extras' ao fim); pra regra
-de sistema, injeta o arquivo todo (cortado num teto).
+Este hook detecta o TEMA do prompt por um mapa keyword->arquivo curado e injeta
+somente o caminho + resumo curto. O modelo le o arquivo se precisar.
 
 Disciplina anti-dumbzone:
-- cap de TETO_ARQUIVOS por turno (2): so os matches mais fortes (keyword mais longa) entram;
+- cap de TETO_ARQUIVOS por turno (1): so o match mais forte entra;
 - match por palavra inteira, sem acento (o operador digita com acento);
 - nao injeta nada se nenhuma keyword casar.
 
@@ -32,10 +30,13 @@ except Exception:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 # resolvido na instalacao. Ex: C:\CORTEX  ou  /home/voce/CORTEX (a pasta de trabalho).
-REF = os.path.join(r"{{PASTA_CORTEX}}", "references")
+CORTEX_BASE = r"{{PASTA_CORTEX}}"
+if CORTEX_BASE.startswith("{{"):
+    CORTEX_BASE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "memoria"))
+REF = os.path.join(CORTEX_BASE, "references")
 
-TETO_ARQUIVOS = 2          # no maximo 2 arquivos injetados por turno
-MAX_CHARS_ARQUIVO = 14000  # teto de seguranca pra arquivo grande
+TETO_ARQUIVOS = 1          # no maximo 1 ponteiro por turno
+MAX_CHARS_ARQUIVO = 6000   # fallback para resumo curto
 
 # Mapa curado tema -> arquivo. Cada entrada:
 #   "arquivo.md": {modo, keywords}
@@ -70,6 +71,33 @@ MAPA = {
         "fan-out", "haiku ou sonnet"]},
     "principios-aios.md": {"modo": "inteiro", "keywords": [
         "principios do aios", "6 principios", "regua do sistema", "audit do cortex"]},
+    "politica-contexto-memoria-compactacao.md": {"modo": "inteiro", "keywords": [
+        "contexto pesado", "memoria grande", "tamanho da memoria", "link sem gatilho",
+        "gatilho nao funcionou", "complexo pra acionar", "complexo para acionar",
+        "dificil de acionar", "jeito que eu falo", "jeito que o usuario fala",
+        "compactando automatico", "compactacao automatica", "auto compact",
+        "auto compactacao", "perder contexto", "alucinar por contexto"]},
+    "guardrails-autoevolucao-cortex.md": {"modo": "inteiro", "keywords": [
+        "vibecoding do cortex", "auto evolucao do cortex", "melhorar o cortex sozinho",
+        "mudanca no cortex", "risco do cortex", "editar memoria sozinho",
+        "spam no terminal", "codigo spammando", "terminal quiet"]},
+    "protocolo-auto-melhoria-continua-cortex.md": {"modo": "inteiro", "keywords": [
+        "ja pedi isso varias vezes", "melhorar a cada dia", "cada dia de uso",
+        "menos atrito na proxima sessao", "proximas sessoes ter menos atrito",
+        "nao quero falar de cortex todo dia", "perder horas falando do cortex",
+        "atrito que o usuario gera", "melhorar sozinho baseado nas interacoes",
+        "como pedir para melhorar o cortex", "quando eu falar puxe"]},
+    "context-engineering-cortex.md": {"modo": "inteiro", "keywords": [
+        "context engineering", "context-engineering", "engenharia de contexto",
+        "regras globais", "regra global", "prioridade n1", "prioridade numero 1",
+        "indice global", "md global como indice", "como carregar contexto"]},
+    "criterio-acesso-contexto-cortex.md": {"modo": "inteiro", "keywords": [
+        "quando acessar contexto", "custo de token pra abrir arquivo",
+        "custo de token para abrir arquivo", "custo de token pra abrir contexto",
+        "custo de token para abrir contexto", "pasta cortex como biblioteca",
+        "cortex como biblioteca", "biblioteca roteavel", "biblioteca roteável",
+        "mandei @arquivo", "arquivo apontado com @", "menor contexto que muda",
+        "texto e codigo por padrao", "midia pesada sob demanda"]},
     "protocolo-execucao.md": {"modo": "inteiro", "keywords": [
         "level-up", "automacao semanal", "automatizar rotina", "alavanca de automacao"]},
 }
@@ -108,6 +136,24 @@ def carrega(arquivo, modo):
     return texto[:MAX_CHARS_ARQUIVO].strip()
 
 
+def resumo_ponteiro(arquivo, modo):
+    caminho = os.path.join(REF, arquivo)
+    if not os.path.isfile(caminho):
+        return None
+    try:
+        with open(caminho, encoding="utf-8") as f:
+            cabeca = f.read(600)
+    except Exception:
+        cabeca = ""
+    linhas = [l.strip() for l in cabeca.splitlines() if l.strip() and not l.startswith("<!--")]
+    titulo = next((l.lstrip("#").strip() for l in linhas if l.startswith("#")), None)
+    frase = next((l for l in linhas if not l.startswith("#") and len(l) > 20), None)
+    hint = "guia: leia a secao acionavel" if modo == "secao" else "referencia: leia se necessario"
+    partes = [p for p in [titulo, frase] if p]
+    resumo = " | ".join(partes[:2])
+    return f"- {caminho}" + (f"  # {resumo} ({hint})" if resumo else f"  # {hint}")
+
+
 def main():
     # le o stdin como UTF-8 explicito: o harness manda JSON UTF-8, mas o default do
     # Python no Windows e cp1252 e quebraria acento ('conversão' -> 'conversÃ£o').
@@ -138,25 +184,22 @@ def main():
     candidatos.sort(key=lambda c: c[0], reverse=True)
     escolhidos = candidatos[:TETO_ARQUIVOS]
 
-    blocos = []
+    ponteiros = []
     for _, arquivo, modo in escolhidos:
-        conteudo = carrega(arquivo, modo)
-        if not conteudo:
+        linha = resumo_ponteiro(arquivo, modo)
+        if not linha:
             continue
-        rotulo = "GUIA" if modo == "secao" else "REGRA"
-        blocos.append(
-            f"--- [{rotulo}] {arquivo} (injetado por retrieval de topico) ---\n{conteudo}"
-        )
+        ponteiros.append(linha)
 
-    if not blocos:
+    if not ponteiros:
         return
 
     cabeca = (
         "[RETRIEVAL POR TOPICO] O prompt casou com material do CORTEX. "
-        "Conteudo relevante injetado abaixo (use como piso de qualidade ANTES de entregar). "
+        "Leia o ponteiro se necessario, sem carregar contexto por garantia. "
         "Precedencia: bloqueio global > cliente > preferencia/skill > guia > generico."
     )
-    print(cabeca + "\n\n" + "\n\n".join(blocos))
+    print(cabeca + "\n" + "\n".join(ponteiros))
 
 
 if __name__ == "__main__":

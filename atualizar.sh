@@ -3,7 +3,7 @@
 # CORTEX OS - atualizador (macOS / Linux)
 # Troca SO a camada de produto; preserva o dado do usuario (memoria, voz, nicho).
 # Uso:
-#   ./atualizar.sh --novo /caminho/do/CORTEX-novo [--instalado ~/CORTEX] [--aplicar]
+#   ./atualizar.sh --novo /caminho/do/CORTEX-novo --instalado /caminho/do/CORTEX-fonte-antigo [--aplicar]
 # Sem --aplicar = dry-run (so mostra o plano). Confira e rode de novo com --aplicar.
 # =============================================================================
 set -euo pipefail
@@ -34,11 +34,12 @@ if [ ! -f "$MOTOR" ]; then
 fi
 
 if [ -z "$INSTALADO" ]; then
-    INSTALADO="$HOME/CORTEX"
-    echo "[..] instalado nao informado; assumindo: $INSTALADO"
+    echo "[ERRO] --instalado e obrigatorio."
+    echo "[ERRO] Aponte a pasta do pacote antigo, nao a pasta viva de trabalho."
+    exit 1
 fi
 if [ ! -d "$INSTALADO" ]; then
-    echo "[ERRO] pasta instalada nao encontrada: $INSTALADO"
+    echo "[ERRO] pasta-fonte antiga nao encontrada: $INSTALADO"
     exit 1
 fi
 

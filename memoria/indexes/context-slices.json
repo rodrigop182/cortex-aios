@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "slices": [
+    {
+      "id": "update-politica::regra-central",
+      "domain": "update-template",
+      "path": "memoria/references/politica-update-organizacao-nao-destrutiva-cortex.md",
+      "heading": "## Regra central",
+      "aliases": ["update seguro", "usuario antigo", "instalacao existente", "atualizar sem estragar"],
+      "include_parent_header": true,
+      "max_chars": 2400
+    },
+    {
+      "id": "update-politica::modo-legado",
+      "domain": "update-template",
+      "path": "memoria/references/politica-update-organizacao-nao-destrutiva-cortex.md",
+      "heading": "## Modo legado",
+      "aliases": ["modo legado", "pasta customizada", "update sem reorganizar"],
+      "include_parent_header": true,
+      "max_chars": 2200
+    },
+    {
+      "id": "context-engineering::camadas",
+      "domain": "memoria-contexto",
+      "path": "memoria/references/context-engineering-cortex.md",
+      "heading": "## Camadas",
+      "aliases": ["boot minimo", "camadas", "context engineering", "regra global"],
+      "include_parent_header": true,
+      "max_chars": 2400
+    },
+    {
+      "id": "acesso-contexto::escada",
+      "domain": "memoria-contexto",
+      "path": "memoria/references/criterio-acesso-contexto-cortex.md",
+      "heading": "## Escada de acesso",
+      "aliases": ["menor contexto", "rg antes de ler", "arquivo grande", "biblioteca roteavel"],
+      "include_parent_header": true,
+      "max_chars": 2600
+    },
+    {
+      "id": "compactacao::politica-memory",
+      "domain": "memoria-contexto",
+      "path": "memoria/references/politica-contexto-memoria-compactacao.md",
+      "heading": "## Politica do MEMORY.md",
+      "aliases": ["tamanho da memoria", "memory md", "compactacao", "indice"],
+      "include_parent_header": true,
+      "max_chars": 2200
+    },
+    {
+      "id": "backstage::regra",
+      "domain": "backstage-governanca",
+      "path": "memoria/references/manutencao-backstage-arquitetura.md",
+      "heading": "## A regra",
+      "aliases": ["backstage", "poluir chat", "ruido de regras", "spam no chat"],
+      "include_parent_header": true,
+      "max_chars": 2200
+    },
+    {
+      "id": "auto-melhoria::contrato",
+      "domain": "backstage-governanca",
+      "path": "memoria/references/protocolo-auto-melhoria-continua-cortex.md",
+      "heading": "## Contrato",
+      "aliases": ["auto melhoria continua", "melhorar a cada dia", "atrito"],
+      "include_parent_header": true,
+      "max_chars": 2200
+    },
+    {
+      "id": "gatilhos::regra-central",
+      "domain": "operacao-cockpit",
+      "path": "memoria/references/gatilhos-operacionais-cortex.md",
+      "heading": "## Regra central",
+      "aliases": ["gatilho operacional", "sensor read-only", "acionar sozinho"],
+      "include_parent_header": true,
+      "max_chars": 2200
+    },
+    {
+      "id": "retroatividade::regra-central",
+      "domain": "operacao-cockpit",
+      "path": "memoria/references/retroatividade-operacional-cortex.md",
+      "heading": "## Regra central",
+      "aliases": ["retroatividade", "feature vale pro passado", "sensor minimo"],
+      "include_parent_header": true,
+      "max_chars": 2200
+    },
+    {
+      "id": "repo-intacto::regra-central",
+      "domain": "repo-intacto-entregaveis",
+      "path": "memoria/references/politica-entregaveis-visiveis-repo-intacto.md",
+      "heading": "## Regra central",
+      "aliases": ["repo intacto", "arquivo pesado", "_entregas", "manifesto leve"],
+      "include_parent_header": true,
+      "max_chars": 2400
+    },
+    {
+      "id": "guardrails::confirmacao",
+      "domain": "autoevolucao-seguranca",
+      "path": "memoria/references/guardrails-autoevolucao-cortex.md",
+      "heading": "## Exige confirmacao do usuario",
+      "aliases": ["confirmacao", "credencial", "token", "migracao fisica", "apagar memoria"],
+      "include_parent_header": true,
+      "max_chars": 2200
+    },
+    {
+      "id": "paridade::protocolo",
+      "domain": "orquestracao-operacao",
+      "path": "memoria/references/paridade-multiagente-cortex.md",
+      "heading": "## Protocolo de implementacao",
+      "aliases": ["paridade", "multiagente", "claude", "codex", "portabilidade"],
+      "include_parent_header": true,
+      "max_chars": 2400
+    }
+  ]
+}

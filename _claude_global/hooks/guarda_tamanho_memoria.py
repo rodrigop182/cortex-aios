@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-guarda_tamanho_memoria.py — chamado pelo hook SessionStart do Claude Code.
+guarda_tamanho_memoria.py - medidor do tamanho do MEMORY.md.
 
 FREIO ESTRUTURAL do indice fino. O MEMORY.md (auto-memoria) e lido todo turno, mas
 o Claude Code so carrega ~24.4KB dele: o que passa disso fica INVISIVEL ao modelo —
@@ -9,17 +9,17 @@ inclusive regras gravadas recentemente. Sem um freio, o arquivo reestoura em sem
 e volta a truncar silencioso, quebrando a promessa de "nunca explicar 2x" no elo da
 RECUPERACAO.
 
-Faz DUAS medicoes (FASE 5 — auto-manutencao):
-  1) BYTES: se passar do limiar, avisa pra enxugar.
+Faz DUAS medicoes (FASE 5 - auto-manutencao):
+  1) BYTES: se passar do limiar, pode avisar quando chamado com --emit.
   2) FAMILIA INCHADA: conta as linhas-item ("- [") por secao "##". Familia com muitas
      entradas INDIVIDUAIS (nao consolidadas) e o sinal de que cresceu LINEAR e pede
      consolidacao num bloco tematico (varios ponteiros por linha) — e o mecanismo que
      mantem o indice crescendo com o nº de TEMAS (finito), nao de REGRAS (infinito).
      Ver references/auto-manutencao-memoria.md.
 
-Este hook NAO poda nem consolida sozinho (principio 6: transparente, nao muta no escuro).
-So MEDE e, no limiar, injeta um aviso curto pro Claude agir com julgamento. Mesma
-filosofia do nudge_destilacao: cutuca, nao executa.
+Este script NAO poda nem consolida sozinho (principio 6: transparente, nao muta no escuro).
+Por padrao ele e silencioso para nao inflar SessionStart. Use --emit no /audit ou em
+manutencao dedicada para gerar additionalContext.
 
 Imprime JSON em stdout (additionalContext). Falha em silencio (nunca trava o inicio).
 """
@@ -29,10 +29,9 @@ import sys, json, re, os, pathlib
 # (a mesma do captura_regra / fecha-sessao). O instalador resolve esse placeholder.
 MEMORY = pathlib.Path(os.path.join(r"{{CAMINHO_MEMORIA}}", "MEMORY.md"))
 
-# Teto REAL de carregamento do Claude Code (~24.4KB). O que passa disso nao e lido.
-TETO = 24400
-# Limiar de alerta: avisa ANTES de estourar, com margem pra agir sem perder nada.
-LIMIAR_ALERTA = 23000
+# Meta do produto: o indice precisa ficar bem abaixo do teto tecnico.
+TETO = 20000
+LIMIAR_ALERTA = 18000
 # Limiar de familia inchada: nº de linhas-item INDIVIDUAIS numa mesma secao "##".
 # Acima disso, a familia pede consolidacao em bloco tematico. Calibrado ACIMA do
 # nucleo de conducao ja consolidado (~19 regras heterogeneas, sem sub-tema extraivel):
@@ -92,6 +91,9 @@ def main():
 
     if not avisos:
         return  # dentro do saudavel, nao incomoda
+
+    if "--emit" not in sys.argv:
+        return  # medicao silenciosa por default; nao sujar boot
 
     out = {
         "hookSpecificOutput": {

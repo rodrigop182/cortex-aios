@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "update-preservar-usuario-antigo",
+      "domain": "update-template",
+      "operators": ["sempre", "nunca"],
+      "strength": "P0",
+      "trigger": "update em instalacao existente",
+      "action": "preservar pasta viva, arquivo customizado, skill, hook e dado do usuario",
+      "exception": "migracao fisica separada com dry-run, backup e confirmacao explicita",
+      "status": "active",
+      "target": "template",
+      "aliases": ["usuario antigo", "instalacao existente", "nao quebrar", "preservar estrutura", "template distribuivel"],
+      "source": {
+        "path": "memoria/references/politica-update-organizacao-nao-destrutiva-cortex.md",
+        "heading": "## Regra central"
+      }
+    },
+    {
+      "id": "update-modo-legado-preserva-customizacao",
+      "domain": "update-template",
+      "operators": ["sempre", "nunca"],
+      "strength": "P0",
+      "trigger": "instalacao existente tem pasta customizada ou taxonomia antiga",
+      "action": "entrar em modo legado e preservar estrutura fisica por padrao",
+      "exception": "migracao opcional em lote separado com confirmacao",
+      "status": "active",
+      "target": "template",
+      "aliases": ["modo legado", "pasta customizada", "usuario existente", "update sem reorganizar"],
+      "source": {
+        "path": "memoria/references/politica-update-organizacao-nao-destrutiva-cortex.md",
+        "heading": "## Modo legado"
+      }
+    },
+    {
+      "id": "bootstrap-linha-precisa-evitar-erro",
+      "domain": "memoria-contexto",
+      "operators": ["antes de"],
+      "strength": "P1",
+      "trigger": "promover linha para AGENTS.md, CLAUDE.md ou MEMORY.md",
+      "action": "manter no boot so se remover a linha faria o agente errar em muitos turnos",
+      "exception": "seguranca e identidade operacional podem ficar curtas no bootstrap",
+      "status": "active",
+      "target": "shared",
+      "aliases": ["boot minimo", "regra global", "inchar bootstrap", "context engineering"],
+      "source": {
+        "path": "memoria/references/context-engineering-cortex.md",
+        "heading": "## Como decidir se algo entra no global"
+      }
+    },
+    {
+      "id": "acesso-contexto-menor-suficiente",
+      "domain": "memoria-contexto",
+      "operators": ["antes de"],
+      "strength": "P1",
+      "trigger": "tarefa pode abrir contexto demais",
+      "action": "abrir o menor contexto que muda a proxima acao e buscar com rg antes de ler arquivo grande",
+      "exception": "arquivo apontado explicitamente deve ser lido",
+      "status": "active",
+      "target": "shared",
+      "aliases": ["menor contexto", "rg antes de ler", "arquivo grande", "biblioteca roteavel"],
+      "source": {
+        "path": "memoria/references/criterio-acesso-contexto-cortex.md",
+        "heading": "## Escada de acesso"
+      }
+    },
+    {
+      "id": "backstage-nao-polui-chat",
+      "domain": "backstage-governanca",
+      "operators": ["sempre", "nunca"],
+      "strength": "P1",
+      "trigger": "manutencao de regra, contexto ou feedback durante tarefa principal",
+      "action": "registrar no backstage e falar no chat so se mudar risco, custo, proximo passo ou comportamento persistente",
+      "exception": "acao irreversivel, conflito, bloqueio ou entrega verificada exigem mensagem",
+      "status": "active",
+      "target": "shared",
+      "aliases": ["poluir chat", "spam no chat", "ruido de regras", "backstage"],
+      "source": {
+        "path": "memoria/references/manutencao-backstage-arquitetura.md",
+        "heading": "## A regra"
+      }
+    },
+    {
+      "id": "repo-intacto-entregaveis",
+      "domain": "repo-intacto-entregaveis",
+      "operators": ["sempre", "nunca"],
+      "strength": "P1",
+      "trigger": "entrega pesada, render, zip, print ou download gerado por projeto",
+      "action": "guardar dentro da pasta do projeto em diretorio local ignorado e versionar so manifesto leve",
+      "exception": "asset final pequeno exigido pelo produto pode ser versionado quando fizer parte do codigo",
+      "status": "active",
+      "target": "shared",
+      "aliases": ["arquivo pesado", "_entregas", "_renders", "repo intacto", "manifesto leve"],
+      "source": {
+        "path": "memoria/references/politica-entregaveis-visiveis-repo-intacto.md",
+        "heading": "## Regra central"
+      }
+    },
+    {
+      "id": "autoevolucao-confirmacao-sensivel",
+      "domain": "autoevolucao-seguranca",
+      "operators": ["nunca", "antes de"],
+      "strength": "P0",
+      "trigger": "mudanca no CORTEX envolve seguranca, credencial, apagamento, publicacao ou migracao fisica",
+      "action": "parar e pedir confirmacao explicita do usuario",
+      "exception": "checagem read-only e patch pequeno reversivel em arquivo de produto",
+      "status": "active",
+      "target": "shared",
+      "aliases": ["confirmacao", "credencial", "token", "apagar memoria", "migracao fisica"],
+      "source": {
+        "path": "memoria/references/guardrails-autoevolucao-cortex.md",
+        "heading": "## Exige confirmacao do usuario"
+      }
+    }
+  ]
+}

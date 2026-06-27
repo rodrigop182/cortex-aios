@@ -16,7 +16,7 @@ vez. Se ao mexer eu achar que este mapa diverge do disco, CORRIJO este arquivo n
 |---|---|---|
 | `C:\Users\{{USUARIO}}\.claude\` | Instalação global do Claude Code: hooks, skills, settings, CLAUDE.md global | Toda sessão, qualquer pasta |
 | `{{CAMINHO_MEMORIA}}\` | **Pasta CORTEX** (o cérebro de longo prazo): references, context, decisions, projects | Ao abrir `{{CAMINHO_CORTEX}}` |
-| `C:\Users\{{USUARIO}}\.claude\projects\c--Projetos\memory\` | **Memória persistente** por-projeto: MEMORY.md + ~140 .md + logs backstage | Ao trabalhar dentro do projeto |
+| `C:\Users\{{USUARIO}}\.claude\projects\c--CORTEX\memory\` | **Memória persistente** por-projeto: MEMORY.md + ~140 .md + logs backstage | Ao trabalhar dentro do projeto |
 
 Erro clássico meu: tratar "memória" como uma coisa só. São TRÊS. `{{CAMINHO_MEMORIA}}` (template)
 aponta pra a 3ª (`projects/.../memory`), NÃO pra a 2ª (`memoria/`). A pasta `references/` mora na 2ª.
@@ -33,24 +33,24 @@ Vivo: `C:\Users\{{USUARIO}}\.claude\hooks\*.py`. Registro: `~/.claude/settings.j
 | **PreToolUse** Write/Edit | `snapshot_memoria.py`, `guardiao_escrita.py` |
 | **PostToolUse** Read | `registra_uso_memoria.py` |
 | **UserPromptSubmit** | `hook_contexto.py`, `roteia_cliente.py`, `retrieval_topico.py`, `captura_regra.py`, `captura_feedback.py` |
-| **SessionStart** | `nudge_destilacao.py`, `nudge_referencias.py`, `guarda_tamanho_memoria.py`, git pull (shell inline) |
+| **SessionStart** | `nudge_destilacao.py`, `sync_pull.py` quando configurado |
 | **PreCompact** auto | `precompact_flush.py` |
 | **SessionEnd** | `auto_sync_cerebro.py`, `registrar_sessao.py` (skill fecha-sessao) |
 
 Papel de cada (1 linha): segurança bloqueia rm-rf/push-f · snapshot/guardiao protegem escrita ·
-registra_uso mede leitura · hook_contexto avisa ~250k · roteia_cliente injeta ficha de cliente
-citado · retrieval_topico injeta guia/regra por tópico · captura_regra/feedback logam sinais ·
-nudges avisam fila · guarda_tamanho mede MEMORY.md · precompact_flush marca antes de compactar ·
+registra_uso mede leitura · hook_contexto avisa ~220k quando existir · roteia_cliente injeta ficha de cliente
+citado · retrieval_topico injeta ponteiro por tópico · captura_regra/feedback logam sinais ·
+nudge_destilacao roda silencioso e só alerta conflito · guarda_tamanho mede MEMORY.md sob demanda · precompact_flush marca antes de compactar ·
 auto_sync espelha ~/.claude→memoria/dot-claude e faz push · registrar_sessao destila a sessão.
 
 **Padrão técnico OBRIGATÓRIO de hook novo** (aprendido na dor, 23/06):
 - **stdin em UTF-8 explícito:** `sys.stdin.buffer.read().decode("utf-8")`. O default Windows é cp1252
-  e quebra acento ("conversão"→"conversÃ£o").
+  e quebra acento ("conversão"→"conversão").
 - **stdout em UTF-8 explícito:** `sys.stdout.reconfigure(encoding="utf-8")` (quebra em ↔/emoji senão).
 - **Falha silenciosa:** `try/except` genérico, exit 0, nunca polui o turno. Só `guarda_seguranca` usa exit 2.
 - **Lê JSON do stdin** (campo `prompt`, `cwd`, etc.), escreve em LOG ou stdout, nunca em arquivo de trabalho.
 - **Match de texto:** por palavra inteira (`(?<!\w)…(?!\w)`) e SEM acento (normaliza NFKD) pra casar
-  o que o {{USUARIO}}go digita com acento contra keyword sem acento.
+  o que o operador digita com acento contra keyword sem acento.
 
 ---
 
@@ -72,7 +72,7 @@ karpathy), **13 guias de nicho** (`guia-*.md` + `ref-design-fcc.md`, cada um com
 fim), voz/design-system, processo (playbook, fluxo-roteamento, manutencao-backstage), aprendizado
 (como-o-sistema-aprende, auto-*, loop-*). Índice dos guias: `_indice-guias-nicho.md`.
 
-O `retrieval_topico.py` injeta daqui por tópico (guia → só o `## Checklist`; regra curta → inteira).
+O `retrieval_topico.py` injeta so ponteiro por topico. O agente le o arquivo quando a tarefa pedir.
 
 ---
 
@@ -106,20 +106,20 @@ Zip = espelho da raiz do template (excluindo `__pycache__`/`.pyc`/`.git`/testes)
 
 Toda feature paga isso DUAS vezes. O que difere:
 
-| Dimensão | Vivo ({{USUARIO}}go) | Template (amigo) |
+| Dimensão | Vivo preenchido | Template distribuível |
 |---|---|---|
 | **Guias de nicho** | 13 `guia-*.md` granulares, cada um com `## Checklist` | 6 `nichos/nicho-*.md` consolidados, com `## Regras extras` (SEM checklist) |
-| **FCC / design-system** | tem `ref-design-fcc.md` | NÃO tem (é da identidade do {{USUARIO}}go) |
+| **FCC / design-system** | tem `ref-design-fcc.md` | NÃO tem (é da identidade do operador) |
 | **Caminhos** | hardcoded `{{CAMINHO_MEMORIA}}` | placeholder `{{...}}` |
 | **Hooks só do vivo** | `roteia_cliente.py`, `auto_sync_cerebro.py` | NÃO portar sem decidir arquitetura do amigo |
-| **Sync** | `auto_sync_cerebro` (espelha ~/.claude do {{USUARIO}}go) | `sync_pull/push` via `{{REPO_SYNC}}` (genérico) |
-| **Pessoa** | "{{USUARIO}}go" | "operador", "você" |
+| **Sync** | `auto_sync_cerebro` (espelha ~/.claude do operador) | `sync_pull/push` via `{{REPO_SYNC}}` (genérico) |
+| **Pessoa** | nome real/preferências do usuário | "operador", "você" |
 
 ### Porte vivo→template, o checklist (pra não quebrar)
 1. **Adaptar, não copiar.** Se a estrutura difere (guia vs nicho), reescrever o MAPA/caminho pro lado
    do template, não colar o do vivo.
 2. **Caminho vira placeholder.** Trocar `{{CAMINHO_MEMORIA}}` por `{{PASTA_CORTEX}}`/`{{CAMINHO_MEMORIA}}`.
-3. **Despessoalizar.** "{{USUARIO}}go" → "operador"; tirar nome de cliente, FCC, dado pessoal.
+3. **Despessoalizar.** Nome real/preferências locais viram "operador"; tirar nome de cliente, FCC, dado pessoal.
 4. **Registrar hook novo** no `settings.json` do template com `{{CAMINHO_CLAUDE}}` E documentar
    qualquer placeholder novo no `INSTALAR-AGENTE.md`.
 5. **NUNCA sobrescrever DADO** do amigo no /atualizar: `context/`, `decisions/`, `memory/`,
@@ -142,7 +142,7 @@ não rede de desfazer mid-session.
 
 | O quê | Onde |
 |---|---|
-| Regra de como trabalhar com o {{USUARIO}}go | `MEMORY.md` + arquivo em `projects/.../memory/` |
+| Regra de como trabalhar com o operador | `MEMORY.md` + arquivo em `projects/.../memory/` |
 | Conhecimento atemporal / framework / guia | `memoria/references/` |
 | Skill (procedural) | `~/.claude/skills/` ou `memoria/.claude/skills/` |
 | Decisão e porquê | `memoria/decisions/log.md` (append, mais recente no topo) |

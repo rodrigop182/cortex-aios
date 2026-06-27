@@ -11,10 +11,10 @@ description: Invoke this skill when the user asks to resume, pick up, or retriev
 
 2. **Pista de assunto** (citou cliente/tema/"a landing"/"o CORTEX" etc.) → achar o handoff que bate, retomar direto. Sem pop-up.
 
-3. **Sem argumento ou pista genérica** ("continuar", "mais recente", "o que fechei") → mostrar painel compacto: 1 linha por frente (título + próximo passo), Rodrigo escolhe pelo nome ou número. Nunca chutar. Formato:
+3. **Sem argumento ou pista genérica** ("continuar", "mais recente", "o que fechei") → mostrar painel compacto: 1 linha por frente (título + próximo passo), o operador escolhe pelo nome ou número. Nunca chutar. Formato:
    ```
    Frentes abertas:
-   1. combo-claude/João — aguardando acesso ao repo Firebase
+   1. projeto-site — aguardando acesso ao repo
    2. funil/empresa — decidir marca pessoal vs estúdio, PDF dos 20 furos
    3. CORTEX manutenção — auditoria critérios vagos, /frentes, /fecha-sessao
    Qual retoma?
@@ -31,7 +31,7 @@ description: Invoke this skill when the user asks to resume, pick up, or retriev
 
 ## Limpeza depois da retomada
 
-- Se a tarefa retomada foi concluída e há confiança alta, remover o handoff canônico em `C:\Users\rodri\.claude\skills\handoff\handoff-session\` e avisar em 1 linha.
+- Se a tarefa retomada foi concluída e há confiança alta, remover o handoff canônico em `{{CAMINHO_CLAUDE}}\skills\handoff\handoff-session\` e avisar em 1 linha.
 - Confiança alta = vi a conclusão nesta sessão, ou o estado em disco/memória registra claramente que acabou.
 - Se houver dúvida, manter o handoff. Não limpar no escuro.
 - Handoff `AUTO-*` ou de outro agente só limpa com conclusão clara do mesmo assunto.

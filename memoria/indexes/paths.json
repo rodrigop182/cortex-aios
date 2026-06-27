@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "root": "{{PASTA_CORTEX}}",
+  "text_extensions": [".md", ".txt", ".json", ".yaml", ".yml", ".toml", ".py"],
+  "ignore_globs": [
+    "**/_renders/**",
+    "**/_downloads/**",
+    "**/_assets-pesados/**",
+    "**/_tmp/**",
+    "**/_local/**",
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/.atividade/**",
+    "**/.historico/**",
+    "**/history.jsonl",
+    "**/sessions/**",
+    "**/session-env/**",
+    "**/shell-snapshots/**",
+    "**/handoff-session/**",
+    "**/*backup*/**",
+    "**/*bak*/**",
+    "**/*credentials*.md",
+    "**/*credential*.md",
+    "**/*secret*.md",
+    "**/*token*.md",
+    "**/*cookie*.md",
+    "**/*session*.md",
+    "memoria/briefs/**",
+    "memoria/indexes/training/**"
+  ],
+  "domains": {
+    "update-template": {
+      "description": "Atualizar o template sem quebrar instalacao existente",
+      "aliases": ["atualizar", "update", "usuario antigo", "instalacao existente", "migracao", "nao quebrar", "modo legado", "pasta customizada", "preservar estrutura", "template distribuivel"],
+      "negative_aliases": ["npm update", "pip update"],
+      "files": [
+        "MANIFESTO-UPDATE.md",
+        "memoria/references/politica-update-organizacao-nao-destrutiva-cortex.md"
+      ]
+    },
+    "memoria-contexto": {
+      "description": "Context engineering, retrieval, memoria, regras e acesso ao CORTEX",
+      "aliases": ["contexto", "memoria", "retrieval", "resolver", "context engineering", "boot minimo", "arquivo grande", "rg antes de ler", "orçamento de contexto", "compactacao"],
+      "negative_aliases": ["landing", "pagina de venda", "git push"],
+      "files": [
+        "memoria/references/context-engineering-cortex.md",
+        "memoria/references/criterio-acesso-contexto-cortex.md",
+        "memoria/references/estrategia-retrieval-md-cortex.md",
+        "memoria/references/politica-contexto-memoria-compactacao.md",
+        "memoria/references/protocolo-agrupamento-regras-cortex.md"
+      ]
+    },
+    "backstage-governanca": {
+      "description": "Manutencao de contexto e regras sem poluir a conversa principal",
+      "aliases": ["backstage", "poluir chat", "spam no chat", "ruido de regras", "manutencao de regras", "custo beneficio de contexto", "auto melhoria continua"],
+      "negative_aliases": ["subagentes em paralelo"],
+      "files": [
+        "memoria/references/manutencao-backstage-arquitetura.md",
+        "memoria/references/protocolo-auto-melhoria-continua-cortex.md"
+      ]
+    },
+    "operacao-cockpit": {
+      "description": "Gatilhos operacionais, sensores e retroatividade",
+      "aliases": ["gatilho operacional", "sensor", "read-only", "acionar sozinho", "retroatividade", "feature vale pro passado"],
+      "negative_aliases": ["gancho de copy"],
+      "files": [
+        "memoria/references/gatilhos-operacionais-cortex.md",
+        "memoria/references/retroatividade-operacional-cortex.md"
+      ]
+    },
+    "repo-intacto-entregaveis": {
+      "description": "Entregaveis visiveis sem sujar o repositorio",
+      "aliases": ["repo", "zip", "render", "print", "arquivo pesado", "gitignore", "_entregas", "_renders", "_downloads", "_assets-pesados"],
+      "negative_aliases": ["npm package"],
+      "files": [
+        "memoria/references/politica-entregaveis-visiveis-repo-intacto.md"
+      ]
+    },
+    "autoevolucao-seguranca": {
+      "description": "Guardrails para mudancas no CORTEX",
+      "aliases": ["auto evolucao", "melhorar o cortex", "mudanca no cortex", "seguranca", "credencial", "token", "webhook", "apagar memoria", "confirmacao"],
+      "negative_aliases": [],
+      "files": [
+        "memoria/references/guardrails-autoevolucao-cortex.md"
+      ]
+    },
+    "orquestracao-operacao": {
+      "description": "Paridade multiagente e portabilidade entre agentes",
+      "aliases": ["multiagente", "paridade", "claude", "codex", "cursor", "cline", "portabilidade", "fan-out"],
+      "negative_aliases": [],
+      "files": [
+        "memoria/references/paridade-multiagente-cortex.md"
+      ]
+    }
+  }
+}

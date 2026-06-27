@@ -14,7 +14,7 @@ Não usar para: executar tarefa do usuário ou substituir summary de projeto
 | Lugar | O que mora | Carrega quando |
 |---|---|---|
 | `~/.claude/CLAUDE.md` (global) | O CÉREBRO: quem é o operador (curto), como trabalhar, PONTEIROS | TODO turno (fino de propósito) |
-| `~/.claude/projects/c--Projetos/memory/` + `MEMORY.md` | AUTO-MEMÓRIA: regras de feedback, preferências, voz, estado. 1 fato por arquivo. `MEMORY.md` = índice | `MEMORY.md` TODO turno; os arquivos sob demanda |
+| `~/.claude/projects/c--CORTEX/memory/` + `MEMORY.md` | AUTO-MEMÓRIA: regras de feedback, preferências, voz, estado. 1 fato por arquivo. `MEMORY.md` = índice | `MEMORY.md` TODO turno; os arquivos sob demanda |
 | `{{CAMINHO_MEMORIA}}\references/` | Conhecimento PESADO: guias de nicho, frameworks, doutrinas, este doc | sob demanda (link explícito) |
 | `{{CAMINHO_MEMORIA}}\decisions/log.md` | Decisões datadas + porquê (append-only, episódico) | sob demanda |
 | `{{CAMINHO_MEMORIA}}\context/` | Sobre o operador, operação e prioridades (pesado) | sob demanda |
@@ -37,6 +37,19 @@ Pergunte, nesta ordem:
    `memoria/references/` + 1 linha de ponteiro no lugar que o invoca (CLAUDE.md ou MEMORY.md).
 5. **É SOBRE UM PROJETO/CLIENTE específico?** → ficha em `memoria/projects/` ou CLAUDE.md do cliente.
 6. **É ESTADO de projeto (onde paramos)?** → STATUS.md na pasta do projeto (gerado automático).
+
+### Onboarding, contexto e ficha de cliente são documentos vivos
+
+Regra: arquivo preenchido no onboard inicial é base, não verdade congelada.
+
+- Se o uso real contradiz a intenção antiga, atualizar o arquivo para o estado atual.
+- Sinal forte vence declaração antiga: frequência observada, entregas repetidas, prioridade
+  recorrente, canal em uso, oferta ativa, rotina real.
+- Não criar memória paralela só porque ficou com medo de mexer no onboard. O correto é reconciliar
+  e reescrever a fonte viva, registrando a mudança relevante em `decisions/log.md` quando ajudar.
+- Exemplos: "quero postar mais" no dia 1, mas no dia 30 já publica 10-20 peças por dia; "cliente
+  quer site institucional", mas depois a operação real vira funil, criativo e conteúdo contínuo.
+  O arquivo deve refletir o dia 30.
 
 ### Sub-regra para linguagem do operador
 
@@ -72,6 +85,8 @@ Ao gravar: olhar 2-3 memórias vizinhas e cruzar referências nos dois sentidos.
 ## CHECKLIST ao gravar um aprendizado (rodar mentalmente, é rápido)
 
 - [ ] Roteei pela pergunta certa (1-6 acima)? Não joguei tudo em `memory/` por preguiça?
+- [ ] Se o fato novo contradiz onboard, contexto ou ficha do cliente, atualizei a fonte viva em vez
+  de empilhar remendo?
 - [ ] Se foi pro índice: hook tem 1 linha só?
 - [ ] Conhecimento pesado ficou em `references/` com ponteiro, não inflado no índice?
 - [ ] Linkei `[[ ]]` as memórias vizinhas?

@@ -22,6 +22,10 @@ Uso:
 
   --dry-run            so mostra o que faria, nao escreve nada (DEFAULT recomendado primeiro)
   --yes                aplica sem perguntar (use depois de conferir o dry-run)
+  --permitir-remocao-produto
+                       permite remover somente caminhos listados em REMOVER_PRODUTO
+  --permitir-sobrescrever-produto
+                       permite sobrescrever produto existente diferente sem ledger
   --claude-dir <dir>   tambem faz deploy de _claude_global/* pra esta pasta (ex: ~/.claude)
   --cortex-dir <dir>   tambem faz deploy das skills do motor (memoria/.claude/*) pra esta pasta
   --github-repo        repo no formato owner/repo (ex: rodrigo/cortex-aios)
@@ -44,18 +48,21 @@ from pathlib import Path
 
 
 def carregar_manifesto(raiz_novo: Path):
-    """Le MANIFESTO-UPDATE.md da versao nova e extrai as listas PRODUTO e DADO."""
+    """Le MANIFESTO-UPDATE.md e extrai PRODUTO, DADO e remocoes explicitas."""
     man = raiz_novo / "MANIFESTO-UPDATE.md"
     if not man.exists():
         sys.exit(f"ERRO: MANIFESTO-UPDATE.md nao encontrado em {raiz_novo}. "
                  "A versao nova precisa trazer o manifesto.")
     texto = man.read_text(encoding="utf-8")
-    produto, dado = [], []
+    produto, dado, remover_produto = [], [], []
     alvo = None
     for linha in texto.splitlines():
         s = linha.strip()
         if s.startswith("## PRODUTO"):
             alvo = produto
+            continue
+        if s.startswith("## REMOVER_PRODUTO"):
+            alvo = remover_produto
             continue
         if s.startswith("## DADO"):
             alvo = dado
@@ -67,7 +74,7 @@ def carregar_manifesto(raiz_novo: Path):
             alvo.append(s)
     if not produto:
         sys.exit("ERRO: manifesto sem caminhos de PRODUTO. Abortado.")
-    return produto, dado
+    return produto, dado, remover_produto
 
 
 def casa_padrao(rel: str, padroes) -> bool:
@@ -395,6 +402,10 @@ def main():
     ap.add_argument("--novo", default="", help="raiz da versao nova (zip descompactado). Alternativa: --github-repo")
     ap.add_argument("--dry-run", action="store_true", help="so mostra, nao aplica")
     ap.add_argument("--yes", action="store_true", help="aplica sem perguntar")
+    ap.add_argument("--permitir-remocao-produto", action="store_true",
+                    help="remove apenas caminhos listados em REMOVER_PRODUTO no manifesto")
+    ap.add_argument("--permitir-sobrescrever-produto", action="store_true",
+                    help="sobrescreve produto existente diferente mesmo sem ledger/hash antigo")
     ap.add_argument("--claude-dir", default="", help="tambem deploya _claude_global/* aqui (ex ~/.claude)")
     ap.add_argument("--cortex-dir", default="", help="tambem deploya as skills do motor (memoria/.claude/*) aqui")
     ap.add_argument("--github-repo", default="", help="repo GitHub no formato owner/repo (ex: rodrigo/cortex-aios)")
@@ -426,7 +437,7 @@ def main():
     if inst == novo:
         sys.exit("ERRO: instalado e novo sao a mesma pasta.")
 
-    produto, dado = carregar_manifesto(novo)
+    produto, dado, remover_produto = carregar_manifesto(novo)
 
     # versoes
     def ler_versao(raiz):
@@ -452,46 +463,45 @@ def main():
 
     arquivos_novos = listar_produto_no_novo(novo, produto, dado)
 
-    # plano: o que cria, o que sobrescreve, o que remove (produto sumido)
-    a_escrever, editados_a_mao = [], []
+    # plano: o que cria e o que sobrescreve.
+    a_escrever, pendentes_merge = [], []
     for rel in arquivos_novos:
         dst = inst / rel
         if dst.exists():
             if dst.read_bytes() != (novo / rel).read_bytes():
-                a_escrever.append(rel)
+                if args.permitir_sobrescrever_produto:
+                    a_escrever.append(rel)
+                else:
+                    pendentes_merge.append(rel)
         else:
             a_escrever.append(rel)
 
-    # produto que existe no instalado mas sumiu na versao nova.
-    # CUIDADO (regra dura): nao apagar nada que o USUARIO possa ter criado. Skill ou
-    # agent que o amigo escreveu por conta cai num caminho de PRODUTO (skills/, agents/)
-    # mas NAO veio de nenhuma versao do CORTEX. Como o motor nao tem a lista da versao
-    # anterior pra comparar, usamos uma heuristica segura por PASTA DE SKILL/AGENT:
-    #   - arquivo solto de produto core (nucleo, refs, doc) que sumiu -> remocao legitima
-    #   - arquivo dentro de skills/<nome>/ ou agents/<nome> cujo <nome> NAO existe na
-    #     versao nova -> PRESUMIR que e do usuario: NAO apagar, mover pro backup e avisar.
-    # Vies: na duvida, preservar. E mais barato deixar uma skill velha do que apagar a
-    # skill que o amigo criou.
-    a_remover = []          # produto core descontinuado: remover (apos backup)
-    preservar_usuario = []  # provavel criacao do usuario: NAO apagar, so avisar
+    # Produto ausente na nova versao e preservado por padrao. Remocao so entra
+    # por REMOVER_PRODUTO + flag explicita, porque sem ledger/checksum nao ha
+    # prova de que o arquivo nao foi customizado pelo usuario.
+    a_remover = []
+    preservar_usuario = []
     set_novos = set(arquivos_novos)
     produto_exatos = {p.replace("\\", "/").lower() for p in produto if "*" not in p}
 
-    # nomes de skill/agent presentes na versao NOVA (pra saber o que e do CORTEX)
-    def _grupo_skill(rel):
-        """Se rel esta dentro de skills/<nome>/ ou agents/<nome>(.md), devolve
-        ('skills'|'agents', <nome>). Senao, None."""
+    # nomes de extensoes customizaveis presentes na versao NOVA.
+    def _grupo_customizavel(rel):
+        """Se rel esta dentro de skills/<nome>/, agents/<nome> ou hooks/<nome>, devolve
+        ('skills'|'agents'|'hooks', <nome>). Senao, None."""
         partes = rel.lower().split("/")
-        for marcador in ("skills", "agents"):
+        for marcador in ("skills", "agents", "hooks"):
             if marcador in partes:
                 i = partes.index(marcador)
                 if i + 1 < len(partes):
-                    return (marcador, partes[i + 1].removesuffix(".md"))
+                    nome = partes[i + 1]
+                    for suf in (".md", ".py", ".ps1", ".sh", ".json"):
+                        nome = nome.removesuffix(suf)
+                    return (marcador, nome)
         return None
 
     grupos_novos = set()
     for rel in arquivos_novos:
-        g = _grupo_skill(rel)
+        g = _grupo_customizavel(rel)
         if g:
             grupos_novos.add(g)
 
@@ -505,7 +515,7 @@ def main():
             continue
         if not (eh_produto(rel, produto, dado, produto_exatos) and rel not in set_novos):
             continue
-        g = _grupo_skill(rel)
+        g = _grupo_customizavel(rel)
         if g and g not in grupos_novos:
             # skill/agent cujo nome NAO existe na versao nova: provavel criacao do
             # usuario (ou skill renomeada). Nao apagar — preservar e avisar.
@@ -513,19 +523,51 @@ def main():
         else:
             a_remover.append(rel)
 
+    obsoletos_preservados = sorted(dict.fromkeys(a_remover + preservar_usuario))
+    remocoes_bloqueadas = []
+    remocoes_explicitas = []
+    if remover_produto:
+        for f in inst.rglob("*"):
+            if not f.is_file():
+                continue
+            rel = str(f.relative_to(inst)).replace("\\", "/")
+            if any(seg in (".git", "__pycache__") for seg in f.parts):
+                continue
+            if rel.startswith("_backup-") or rel.startswith("_update-pendente/"):
+                continue
+            if not casa_padrao(rel, remover_produto):
+                continue
+            if casa_padrao(rel, dado) and rel.lower() not in produto_exatos:
+                remocoes_bloqueadas.append(f"{rel} (bloqueado: classificado como DADO)")
+            elif args.permitir_remocao_produto:
+                remocoes_explicitas.append(rel)
+            else:
+                remocoes_bloqueadas.append(
+                    f"{rel} (bloqueado: requer --permitir-remocao-produto)")
+    a_remover = sorted(dict.fromkeys(remocoes_explicitas))
+    preservar_usuario = obsoletos_preservados
+
     # relatorio
     print("\n=== PLANO DE ATUALIZACAO (pasta-fonte) ===")
     print(f"  PRODUTO a escrever/atualizar: {len(a_escrever)}")
     for r in a_escrever:
         print(f"    + {r}")
-    print(f"  PRODUTO a remover (sumiu na nova): {len(a_remover)}")
+    if pendentes_merge:
+        print(f"  MERGE MANUAL (existente diferente; original preservado): {len(pendentes_merge)}")
+        for r in pendentes_merge:
+            print(f"    ! {r}")
+    print(f"  PRODUTO a remover (REMOVER_PRODUTO + flag explicita): {len(a_remover)}")
     for r in a_remover:
         print(f"    - {r}")
+    if remocoes_bloqueadas:
+        print(f"  REMOCAO BLOQUEADA: {len(remocoes_bloqueadas)}")
+        for r in remocoes_bloqueadas:
+            print(f"    ! {r}")
     if preservar_usuario:
-        print(f"  PRESERVADO (parece skill/agent SEU, nao do CORTEX): "
+        print(f"  PRESERVADO (produto ausente na nova; update nao apaga por padrao): "
               f"{len(preservar_usuario)}")
         for r in preservar_usuario:
-            print(f"    = {r}  (mantido; nao apago o que voce criou)")
+            print(f"    = {r}")
     print("  DADO DO USUARIO: PRESERVADO (intocado)")
 
     deploy_pedido = bool(args.claude_dir or args.cortex_dir)
@@ -551,7 +593,7 @@ def main():
         return 0
 
     # --- aplicar na PASTA-FONTE ---
-    if a_escrever or a_remover:
+    if a_escrever or a_remover or pendentes_merge:
         carimbo = datetime.now().strftime("%Y%m%d-%H%M%S")
         bdir = inst / f"_backup-update-{v_inst}-{carimbo}"
         print(f"\nBackup da raiz instalada -> {bdir.name}")
@@ -578,7 +620,16 @@ def main():
                 print("O instalado pode estar PARCIALMENTE atualizado.")
                 print(f"RESTAURE copiando o conteudo de {bdir.name} de volta pra raiz.")
                 return 2
-        # remover produto sumido; falha de remocao vira AVISO, nao silencio
+        for rel in pendentes_merge:
+            dst = inst / "_update-pendente" / f"{rel}.new"
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            try:
+                shutil.copy2(novo / rel, dst)
+            except OSError as e:
+                print(f"\nERRO ao preparar merge manual {rel}: {e}")
+                print("O original foi preservado. Resolva manualmente ou rode novamente.")
+                return 2
+        # Remocao so acontece para REMOVER_PRODUTO + flag explicita.
         nao_removidos = []
         for rel in a_remover:
             try:
@@ -587,7 +638,9 @@ def main():
                 nao_removidos.append(rel)
 
         print(f"\nOK: pasta-fonte atualizada pra {v_novo}. {len(a_escrever)} escritos, "
-              f"{len(a_remover) - len(nao_removidos)} removidos. Dado do usuario intocado.")
+              f"{len(a_remover) - len(nao_removidos)} removidos, "
+              f"{len(pendentes_merge)} pendente(s) em _update-pendente. "
+              "Dado do usuario intocado.")
         if nao_removidos:
             print(f"AVISO: nao removi {len(nao_removidos)} arquivo(s) (sem permissao?): "
                   f"{nao_removidos}")
